@@ -118,6 +118,18 @@ CREATE TABLE IF NOT EXISTS admin_log (
 	ip          TEXT NOT NULL DEFAULT '',
 	created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+ALTER TABLE admin_log ADD COLUMN IF NOT EXISTS details TEXT NOT NULL DEFAULT '';
+
+-- Per-user lesson access set by an admin. No row = the normal order (the
+-- lesson opens after the previous one is finished); 'open' = can be watched
+-- right away; 'hidden' = the lesson is taken away from this user.
+CREATE TABLE IF NOT EXISTS lesson_access (
+	user_id    BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+	lesson_id  TEXT NOT NULL,
+	mode       TEXT NOT NULL CHECK (mode IN ('open', 'hidden')),
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+	PRIMARY KEY (user_id, lesson_id)
+);
 `
 
 func openDB(ctx context.Context, url string) (*pgxpool.Pool, error) {

@@ -63,9 +63,9 @@ export function TopologyMap({ lessons, nextId, onOpen }: Props) {
             onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && open()}
             tabIndex={watchable ? 0 : -1}
             role={watchable ? 'button' : undefined}
-            aria-label={`${t.lessonN(h.i + 1)}: ${lessonTitle(lesson, lang)}${lesson.state === 'locked' ? ` (${t.locked})` : ''}`}
+            aria-label={`${t.lessonN(lesson.number ?? h.i + 1)}: ${lessonTitle(lesson, lang)}${lesson.state === 'locked' ? ` (${t.locked})` : ''}`}
           >
-            <title>{`${t.lessonN(h.i + 1)}: ${lessonTitle(lesson, lang)}`}</title>
+            <title>{`${t.lessonN(lesson.number ?? h.i + 1)}: ${lessonTitle(lesson, lang)}`}</title>
             {lesson.id === nextId && <circle cx={h.x} cy={h.y} r="30" className="pulse" />}
             <circle cx={h.x} cy={h.y} r="30" className="host-dot" />
             {lesson.state === 'locked' ? (
@@ -75,7 +75,7 @@ export function TopologyMap({ lessons, nextId, onOpen }: Props) {
               />
             ) : (
               <text x={h.x} y={h.y + 8} className="host-num">
-                {lesson.state === 'done' ? '✓' : lesson.state === 'test' ? '?' : h.i + 1}
+                {lesson.state === 'done' ? '✓' : lesson.state === 'test' ? '?' : (lesson.number ?? h.i + 1)}
               </text>
             )}
           </g>

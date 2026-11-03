@@ -210,7 +210,7 @@ export function VideoModal({ lesson, index, hasNext, onClose, onNext, onChanged 
       <div className="modal-box" onClick={(e) => e.stopPropagation()}>
         <div className="modal-head">
           <h2>
-            <span>{t.lessonN(index + 1)}:</span> {title}
+            <span>{t.lessonN(lesson.number ?? index + 1)}:</span> {title}
             {mode === 'test' && <span className="head-test"> · {t.testBadge}</span>}
           </h2>
           {mode === 'test' && (

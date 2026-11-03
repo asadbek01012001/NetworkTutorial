@@ -9,7 +9,7 @@ interface Props {
 
 export function LessonCard({ lesson, index, onOpen }: Props) {
   const { t, lang } = useI18n()
-  const number = index + 1
+  const number = lesson.number ?? index + 1
   const watchable = canWatch(lesson.state)
   // The frame from the video in the interface language, if that video exists.
   const poster = lesson.videos.find((v) => v.lang === lang)?.poster ?? lesson.poster

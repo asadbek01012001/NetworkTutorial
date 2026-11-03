@@ -127,7 +127,32 @@ const (
 	stateOpen   = "open"   // video can be watched
 	stateTest   = "test"   // video watched, test not passed yet
 	stateDone   = "done"   // video watched and test passed
+	stateHidden = "hidden" // taken away from this user by an admin
 )
+
+// Per-user lesson access (lesson_access.mode); no entry means accessQueue.
+const (
+	accessQueue  = "queue"  // normal order: opens after the previous lesson
+	accessOpen   = "open"   // can be watched right away
+	accessHidden = "hidden" // not shown to the user at all
+)
+
+func loadAccess(ctx context.Context, db dbtx, userID int64) (map[string]string, error) {
+	rows, err := db.Query(ctx, `SELECT lesson_id, mode FROM lesson_access WHERE user_id = $1`, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	out := map[string]string{}
+	for rows.Next() {
+		var id, mode string
+		if err := rows.Scan(&id, &mode); err != nil {
+			return nil, err
+		}
+		out[id] = mode
+	}
+	return out, rows.Err()
+}
 
 func (c *Course) loadProgress(ctx context.Context, db dbtx, userID int64) (map[string]Progress, error) {
 	rows, err := db.Query(ctx,
@@ -149,15 +174,22 @@ func (c *Course) loadProgress(ctx context.Context, db dbtx, userID int64) (map[s
 	return out, rows.Err()
 }
 
-// states applies the rule: lesson N opens only after lesson N-1's video was
-// watched and its test passed.
-func (c *Course) states(prog map[string]Progress) []string {
+// states applies the rule: a lesson opens only after the previous lesson's
+// video was watched and its test passed. An admin can open a lesson for a
+// user right away (access "open") or hide it; hidden lessons are left out of
+// the chain, so the next one waits for the lesson before the hidden one.
+func (c *Course) states(prog map[string]Progress, access map[string]string) []string {
 	out := make([]string, len(c.Lessons))
 	prevDone := true
 	for i, l := range c.Lessons {
 		p := prog[l.ID]
+		mode := access[l.ID]
+		if mode == accessHidden {
+			out[i] = stateHidden
+			continue
+		}
 		switch {
-		case !prevDone:
+		case !prevDone && mode != accessOpen:
 			out[i] = stateLocked
 		case p.VideoDone && p.TestPassed:
 			out[i] = stateDone
@@ -180,7 +212,11 @@ func (c *Course) stateOf(ctx context.Context, db dbtx, userID int64, lessonID st
 	if err != nil {
 		return "", Progress{}, err
 	}
-	return c.states(prog)[i], prog[lessonID], nil
+	access, err := loadAccess(ctx, db, userID)
+	if err != nil {
+		return "", Progress{}, err
+	}
+	return c.states(prog, access)[i], prog[lessonID], nil
 }
 
 // heartbeat stores the playback position and credits real watch time:

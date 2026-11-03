@@ -50,7 +50,7 @@ export function Dashboard({ course, refresh }: Props) {
             <span>
               <span className="start-label">{startLabel}</span>
               <span className="start-title">
-                {t.lessonN(nextIndex + 1)}: {lessonTitle(next, lang)}
+                {t.lessonN(next.number ?? nextIndex + 1)}: {lessonTitle(next, lang)}
               </span>
             </span>
           </button>

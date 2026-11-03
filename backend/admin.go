@@ -28,6 +28,9 @@ func (s *Server) adminRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("POST /api/admin/users/{id}/block", s.handleAdminBlock)
 	mux.HandleFunc("POST /api/admin/users/{id}/reset", s.handleAdminReset)
 	mux.HandleFunc("DELETE /api/admin/users/{id}", s.handleAdminDelete)
+	mux.HandleFunc("GET /api/admin/lessons", s.handleAdminLessons)
+	mux.HandleFunc("GET /api/admin/lessons/{id}/users", s.handleAdminLessonUsers)
+	mux.HandleFunc("POST /api/admin/lessons/{id}/access", s.handleAdminLessonAccess)
 	mux.HandleFunc("GET /api/admin/questions", s.handleAdminQuestions)
 	mux.HandleFunc("GET /api/admin/log", s.handleAdminLog)
 }
@@ -45,10 +48,10 @@ func (s *Server) admin(w http.ResponseWriter, r *http.Request) *User {
 	return u
 }
 
-func (s *Server) logAdmin(ctx context.Context, r *http.Request, a *User, action string, targetID int64, targetName string) error {
+func (s *Server) logAdmin(ctx context.Context, r *http.Request, a *User, action string, targetID int64, targetName, details string) error {
 	_, err := s.db.Exec(ctx,
-		`INSERT INTO admin_log (admin_id, admin_name, action, target_id, target_name, ip) VALUES ($1, $2, $3, $4, $5, $6)`,
-		a.ID, a.Username, action, targetID, targetName, s.ids.clientIP(r))
+		`INSERT INTO admin_log (admin_id, admin_name, action, target_id, target_name, details, ip) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+		a.ID, a.Username, action, targetID, targetName, details, s.ids.clientIP(r))
 	return err
 }
 
@@ -123,63 +126,8 @@ func (s *Server) handleAdminStats(w http.ResponseWriter, r *http.Request) {
 	}
 	rows.Close()
 
-	// Per-lesson funnel: how many reached each step.
-	type lessonStat struct {
-		Index     int     `json:"index"`
-		Title     string  `json:"title"`
-		Started   int     `json:"started"`
-		VideoDone int     `json:"videoDone"`
-		Passed    int     `json:"passed"`
-		Attempts  int     `json:"attempts"`
-		AvgScore  float64 `json:"avgScore"` // out of 10, over all attempts
-	}
-	byID := map[string]*lessonStat{}
-	lessons := make([]lessonStat, len(s.course.Lessons))
-	for i, l := range s.course.Lessons {
-		lessons[i] = lessonStat{Index: i, Title: l.Title}
-		byID[l.ID] = &lessons[i]
-	}
-	rows, err = s.db.Query(ctx, `
-		SELECT p.lesson_id, count(*)::int, (count(*) FILTER (WHERE p.video_done))::int, (count(*) FILTER (WHERE p.test_passed))::int
-		FROM progress p JOIN users u ON u.id = p.user_id AND NOT u.is_admin
-		GROUP BY p.lesson_id`)
+	lessons, err := s.lessonStats(ctx)
 	if err != nil {
-		s.internal(w, err)
-		return
-	}
-	for rows.Next() {
-		var id string
-		var a, b, c int
-		if err := rows.Scan(&id, &a, &b, &c); err != nil {
-			rows.Close()
-			s.internal(w, err)
-			return
-		}
-		if l := byID[id]; l != nil {
-			l.Started, l.VideoDone, l.Passed = a, b, c
-		}
-	}
-	rows.Close()
-	rows, err = s.db.Query(ctx, `SELECT lesson_id, count(*)::int, COALESCE(avg(score), 0)::float8 FROM test_attempts GROUP BY lesson_id`)
-	if err != nil {
-		s.internal(w, err)
-		return
-	}
-	for rows.Next() {
-		var id string
-		var n int
-		var avg float64
-		if err := rows.Scan(&id, &n, &avg); err != nil {
-			rows.Close()
-			s.internal(w, err)
-			return
-		}
-		if l := byID[id]; l != nil {
-			l.Attempts, l.AvgScore = n, float64(int(avg*10+0.5))/10
-		}
-	}
-	rows.Close()
-	if err := rows.Err(); err != nil {
 		s.internal(w, err)
 		return
 	}
@@ -306,15 +254,22 @@ func (s *Server) handleAdminUser(w http.ResponseWriter, r *http.Request) {
 	}
 	rows.Close()
 
+	access, err := loadAccess(ctx, s.db, id)
+	if err != nil {
+		s.internal(w, err)
+		return
+	}
 	type lessonRow struct {
+		ID        string `json:"id"`
 		Index     int    `json:"index"`
 		Title     string `json:"title"`
 		State     string `json:"state"`
+		Access    string `json:"access"`
 		Watched   int    `json:"watched"` // percent of the video really played
 		BestScore int    `json:"bestScore"`
 		Attempts  int    `json:"attempts"`
 	}
-	states := s.course.states(prog)
+	states := s.course.states(prog, access)
 	lessons := make([]lessonRow, len(s.course.Lessons))
 	for i, l := range s.course.Lessons {
 		p := prog[l.ID]
@@ -325,7 +280,7 @@ func (s *Server) handleAdminUser(w http.ResponseWriter, r *http.Request) {
 		if p.VideoDone {
 			pct = 100
 		}
-		lessons[i] = lessonRow{i, l.Title, states[i], pct, p.BestScore, attemptsBy[l.ID]}
+		lessons[i] = lessonRow{l.ID, i, l.Title, states[i], accessOf(access, l.ID), pct, p.BestScore, attemptsBy[l.ID]}
 	}
 
 	exams := []attempt{}
@@ -464,7 +419,7 @@ func (s *Server) handleAdminPassword(w http.ResponseWriter, r *http.Request) {
 		s.internal(w, err)
 		return
 	}
-	if err := s.logAdmin(ctx, r, a, "password", id, name); err != nil {
+	if err := s.logAdmin(ctx, r, a, "password", id, name, ""); err != nil {
 		s.internal(w, err)
 		return
 	}
@@ -500,7 +455,7 @@ func (s *Server) handleAdminBlock(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	if err := s.logAdmin(ctx, r, a, action, id, name); err != nil {
+	if err := s.logAdmin(ctx, r, a, action, id, name, ""); err != nil {
 		s.internal(w, err)
 		return
 	}
@@ -527,7 +482,7 @@ func (s *Server) handleAdminReset(w http.ResponseWriter, r *http.Request) {
 		s.internal(w, err)
 		return
 	}
-	if err := s.logAdmin(ctx, r, a, "reset", id, name); err != nil {
+	if err := s.logAdmin(ctx, r, a, "reset", id, name, ""); err != nil {
 		s.internal(w, err)
 		return
 	}
@@ -548,7 +503,7 @@ func (s *Server) handleAdminDelete(w http.ResponseWriter, r *http.Request) {
 		s.internal(w, err)
 		return
 	}
-	if err := s.logAdmin(ctx, r, a, "delete", id, name); err != nil {
+	if err := s.logAdmin(ctx, r, a, "delete", id, name, ""); err != nil {
 		s.internal(w, err)
 		return
 	}
@@ -631,23 +586,24 @@ func (s *Server) handleAdminLog(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	rows, err := s.db.Query(r.Context(),
-		`SELECT admin_name, action, target_name, ip, created_at FROM admin_log ORDER BY id DESC LIMIT 300`)
+		`SELECT admin_name, action, target_name, details, ip, created_at FROM admin_log ORDER BY id DESC LIMIT 300`)
 	if err != nil {
 		s.internal(w, err)
 		return
 	}
 	defer rows.Close()
 	type entry struct {
-		Admin  string    `json:"admin"`
-		Action string    `json:"action"`
-		Target string    `json:"target"`
-		IP     string    `json:"ip"`
-		At     time.Time `json:"at"`
+		Admin   string    `json:"admin"`
+		Action  string    `json:"action"`
+		Target  string    `json:"target"`
+		Details string    `json:"details"`
+		IP      string    `json:"ip"`
+		At      time.Time `json:"at"`
 	}
 	out := []entry{}
 	for rows.Next() {
 		var e entry
-		if err := rows.Scan(&e.Admin, &e.Action, &e.Target, &e.IP, &e.At); err != nil {
+		if err := rows.Scan(&e.Admin, &e.Action, &e.Target, &e.Details, &e.IP, &e.At); err != nil {
 			s.internal(w, err)
 			return
 		}

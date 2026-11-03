@@ -1,21 +1,25 @@
 import { useCallback, useEffect, useState } from 'react'
 import {
   admin,
+  type AccessMode,
+  type AdminLesson,
+  type AdminLessonState,
+  type AdminLessonUser,
   type AdminLogEntry,
   type AdminQuestion,
   type AdminStats,
   type AdminUser,
   type AdminUserDetail,
-  type LessonState,
   type PracticeKind,
 } from '../lib/api'
 
 // Admin panel (Uzbek only — it is for the site owner). Full screen like the
 // practice view: overview, accounts, test-question analysis and the action log.
 
-type Tab = 'stats' | 'users' | 'questions' | 'log'
+type Tab = 'stats' | 'lessons' | 'users' | 'questions' | 'log'
 const PAGES: { id: Tab; label: string; icon: string }[] = [
   { id: 'stats', label: 'Dashboard', icon: 'M4 13h6V4H4zM14 20h6v-9h-6zM14 4v4h6V4zM4 20h6v-4H4z' },
+  { id: 'lessons', label: 'Darslar', icon: 'M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM10 9v6l5-3z' },
   { id: 'users', label: 'Foydalanuvchilar', icon: 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M16 3.5a4 4 0 0 1 0 7.5M18 14.5a7 7 0 0 1 4 6.5' },
   { id: 'questions', label: 'Test savollari', icon: 'M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z' },
   { id: 'log', label: 'Jurnal', icon: 'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01' },
@@ -23,22 +27,29 @@ const PAGES: { id: Tab; label: string; icon: string }[] = [
 
 // The open page lives in the address (#admin/<page>[/<user id>]) so a reload
 // or the browser's Back button keeps the admin where they were.
-function parseHash(): { tab: Tab; userId: number | null } {
+function parseHash(): { tab: Tab; userId: number | null; lessonId: string | null } {
   const [, page, id] = window.location.hash.slice(1).split('/')
   const tab = PAGES.some((p) => p.id === page) ? (page as Tab) : 'stats'
   const n = Number(id)
-  return { tab, userId: tab === 'users' && n > 0 ? n : null }
+  return { tab, userId: tab === 'users' && n > 0 ? n : null, lessonId: tab === 'lessons' && id ? decodeURIComponent(id) : null }
 }
-const go = (tab: Tab, userId?: number | null) => {
-  window.location.hash = `admin/${tab}${userId ? `/${userId}` : ''}`
+const go = (tab: Tab, sub?: number | string | null) => {
+  window.location.hash = `admin/${tab}${sub ? `/${encodeURIComponent(sub)}` : ''}`
 }
 
-const STATE_LABEL: Record<LessonState, string> = {
+const STATE_LABEL: Record<AdminLessonState, string> = {
   done: 'Tugatgan',
   test: 'Test kutilmoqda',
-  open: 'Ko‘ryapti',
-  locked: 'Yopiq',
+  open: 'Ko‘ra oladi',
+  locked: 'Navbatini kutyapti',
+  hidden: 'Unga ko‘rinmaydi',
 }
+// Per-user lesson access chosen by the admin.
+const ACCESS: { id: AccessMode; label: string; hint: string }[] = [
+  { id: 'open', label: 'Ochiq', hint: 'Videoni darhol ko‘ra oladi' },
+  { id: 'queue', label: 'Navbatda', hint: 'Oldingi dars tugagach ochiladi (odatiy)' },
+  { id: 'hidden', label: 'Yopiq', hint: 'Dars unga umuman ko‘rinmaydi' },
+]
 const KIND_LABEL: Record<PracticeKind, string> = { switch: 'Switch / MAC', subnet: 'Subnet jadval', range: 'IP + mask' }
 const ACTION_LABEL: Record<AdminLogEntry['action'], string> = {
   password: 'Yangi parol berdi',
@@ -46,6 +57,9 @@ const ACTION_LABEL: Record<AdminLogEntry['action'], string> = {
   unblock: 'Blokdan chiqardi',
   reset: 'Progressni tozaladi',
   delete: 'O‘chirdi',
+  access_open: 'Darsni ochdi',
+  access_queue: 'Darsni navbatga qo‘ydi',
+  access_hidden: 'Darsni yopdi',
 }
 
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -56,6 +70,8 @@ function fmtDate(iso: string | null | undefined, time = true) {
   return time ? `${day} ${pad(d.getHours())}:${pad(d.getMinutes())}` : day
 }
 const pct = (a: number, b: number) => (b > 0 ? Math.round((100 * a) / b) : 0)
+const fmtDuration = (sec: number) => `${Math.floor(sec / 60)}:${pad(Math.round(sec % 60))}`
+const LANG_LABEL: Record<string, string> = { uz: 'UZ', en: 'EN', ru: 'RU' }
 
 function useLoad<T>(load: () => Promise<T>, deps: unknown[]) {
   const [data, setData] = useState<T | null>(null)
@@ -77,7 +93,7 @@ function useLoad<T>(load: () => Promise<T>, deps: unknown[]) {
 }
 
 export function AdminPanel({ username, onClose }: { username: string; onClose: () => void }) {
-  const [{ tab, userId }, setRoute] = useState(parseHash)
+  const [{ tab, userId, lessonId }, setRoute] = useState(parseHash)
   const [reloadKey, setReloadKey] = useState(0)
 
   useEffect(() => {
@@ -129,13 +145,15 @@ export function AdminPanel({ username, onClose }: { username: string; onClose: (
 
       <section className="adm-main">
         <header className="adm-top">
-          <h1>{userId ? 'Foydalanuvchi' : page.label}</h1>
+          <h1>{userId ? 'Foydalanuvchi' : lessonId ? 'Dars ruxsatlari' : page.label}</h1>
           <button className="mbtn" onClick={() => setReloadKey((k) => k + 1)}>
             ⟳ Yangilash
           </button>
         </header>
-        <div className="adm-body" key={`${tab}-${userId}-${reloadKey}`}>
+        <div className="adm-body" key={`${tab}-${userId}-${lessonId}-${reloadKey}`}>
           {tab === 'stats' && <StatsTab />}
+          {tab === 'lessons' &&
+            (lessonId === null ? <LessonsTab onOpen={(id) => go('lessons', id)} /> : <LessonUsers id={lessonId} onBack={() => go('lessons')} />)}
           {tab === 'users' &&
             (userId === null ? <UsersTab onOpen={(id) => go('users', id)} /> : <UserView id={userId} onBack={() => go('users')} />)}
           {tab === 'questions' && <QuestionsTab />}
@@ -168,7 +186,7 @@ function StatsTab() {
     ['Mashqlar', c.practice],
   ]
   const max = Math.max(1, ...data.signups.map((d) => d.count))
-  const first = data.lessons[0]?.started || 0
+  const funnelMax = Math.max(1, ...data.lessons.map((l) => l.started))
   return (
     <div className="adm-wrap">
       <div className="adm-tiles">
@@ -195,40 +213,237 @@ function StatsTab() {
         <span>Bugun</span>
       </div>
 
-      <h2 className="adm-h2">Darslar bo‘yicha</h2>
+      <h2 className="adm-h2">Darslar bo‘yicha o‘tish</h2>
+      <div className="adm-chart">
+        <div className="adm-legend">
+          <span>
+            <i className="started" /> Boshlagan
+          </span>
+          <span>
+            <i className="video" /> Videoni tugatgan
+          </span>
+          <span>
+            <i className="passed" /> Testdan o‘tgan
+          </span>
+        </div>
+        {data.lessons.map((l) => {
+          const w = (n: number) => `${(n / funnelMax) * 100}%`
+          return (
+            <div key={l.id} className="adm-funnel-row" title={`${l.index + 1}. ${l.title}`}>
+              <span className="adm-funnel-label">{l.index + 1}-dars</span>
+              <span className="adm-funnel-track">
+                <span className="started" style={{ width: w(l.started) }} />
+                <span className="video" style={{ width: w(l.videoDone) }} />
+                <span className="passed" style={{ width: w(l.passed) }} />
+              </span>
+              <span className="adm-funnel-nums">
+                {l.started} · {l.videoDone} · <b>{l.passed}</b>
+              </span>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+// ---------- lessons (a list like a video studio) ----------
+
+function LessonsTab({ onOpen }: { onOpen: (id: string) => void }) {
+  const { data, error } = useLoad(admin.lessons, [])
+  if (error) return <LoadError />
+  if (!data) return <Loading />
+  return (
+    <div className="adm-wrap">
       <div className="adm-table-wrap">
-        <table className="adm-table">
+        <table className="adm-table adm-studio">
           <thead>
             <tr>
-              <th>Dars</th>
+              <th>Video</th>
               <th>Boshlagan</th>
-              <th>Video ko‘rgan</th>
+              <th>Video tugatgan</th>
               <th>Test o‘tgan</th>
-              <th>Urinishlar</th>
               <th>O‘rtacha ball</th>
+              <th>Maxsus ruxsat</th>
+              <th />
             </tr>
           </thead>
           <tbody>
             {data.lessons.map((l) => (
-              <tr key={l.index}>
+              <tr key={l.id}>
                 <td>
-                  <b>{l.index + 1}.</b> {l.title}
+                  <LessonVideo lesson={l} />
                 </td>
                 <td>{l.started}</td>
                 <td>{l.videoDone}</td>
                 <td>
-                  <span className="adm-funnel">
-                    <span className="adm-funnel-fill" style={{ width: `${pct(l.passed, first)}%` }} />
-                    <span className="adm-funnel-n">{l.passed}</span>
-                  </span>
+                  <b className="adm-good">{l.passed}</b>
                 </td>
-                <td>{l.attempts}</td>
                 <td className={l.attempts && l.avgScore < data.passScore ? 'adm-warn' : ''}>{l.attempts ? `${l.avgScore} / 10` : '—'}</td>
+                <td>
+                  {l.opened || l.hidden ? (
+                    <span className="adm-overrides">
+                      {l.opened > 0 && <span className="adm-tag ok">{l.opened} ochiq</span>}
+                      {l.hidden > 0 && <span className="adm-tag bad">{l.hidden} yopiq</span>}
+                    </span>
+                  ) : (
+                    '—'
+                  )}
+                </td>
+                <td>
+                  <button className="tbtn adm-act" onClick={() => onOpen(l.id)}>
+                    Foydalanuvchilar
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+    </div>
+  )
+}
+
+function LessonVideo({ lesson, sub, big }: { lesson: AdminLesson; sub?: string; big?: boolean }) {
+  return (
+    <div className={`adm-video${big ? ' big' : ''}`}>
+      <span className="adm-thumb">
+        <img src={lesson.poster} alt="" loading="lazy" />
+        <span className="adm-dur">{fmtDuration(lesson.duration)}</span>
+      </span>
+      <span className="adm-video-text">
+        <span className="adm-video-num">{lesson.index + 1}-dars</span>
+        <b>{lesson.title}</b>
+        {sub ? (
+          <span className="adm-muted">{sub}</span>
+        ) : (
+          <span className="adm-langs">
+            {lesson.langs.map((x) => (
+              <span key={x}>{LANG_LABEL[x] ?? x}</span>
+            ))}
+            <span className="adm-muted">{lesson.questions} ta savol</span>
+          </span>
+        )}
+      </span>
+    </div>
+  )
+}
+
+function AccessSwitch({ value, disabled, onChange }: { value: AccessMode; disabled?: boolean; onChange: (m: AccessMode) => void }) {
+  return (
+    <span className="adm-access" role="radiogroup" aria-label="Ruxsat">
+      {ACCESS.map((a) => (
+        <button
+          key={a.id}
+          role="radio"
+          aria-checked={value === a.id}
+          className={`${a.id}${value === a.id ? ' active' : ''}`}
+          title={a.hint}
+          disabled={disabled}
+          onClick={() => value !== a.id && onChange(a.id)}
+        >
+          {a.label}
+        </button>
+      ))}
+    </span>
+  )
+}
+
+const AccessLegend = () => (
+  <ul className="adm-access-legend">
+    {ACCESS.map((a) => (
+      <li key={a.id}>
+        <b className={a.id}>{a.label}</b> — {a.hint}
+      </li>
+    ))}
+  </ul>
+)
+
+function LessonUsers({ id, onBack }: { id: string; onBack: () => void }) {
+  const [q, setQ] = useState('')
+  const [query, setQuery] = useState('')
+  useEffect(() => {
+    const t = setTimeout(() => setQuery(q.trim()), 250)
+    return () => clearTimeout(t)
+  }, [q])
+  const { data, error, reload } = useLoad(() => admin.lessonUsers(id, query), [id, query])
+  const [saving, setSaving] = useState<number | null>(null)
+  const [failed, setFailed] = useState(false)
+
+  const change = async (u: AdminLessonUser, mode: AccessMode) => {
+    setSaving(u.id)
+    setFailed(false)
+    try {
+      await admin.setAccess(id, u.id, mode)
+      reload()
+    } catch {
+      setFailed(true)
+    } finally {
+      setSaving(null)
+    }
+  }
+
+  return (
+    <div className="adm-wrap">
+      <button className="mbtn" onClick={onBack}>
+        ← Darslarga qaytish
+      </button>
+      {error && <LoadError />}
+      {!data && !error && <Loading />}
+      {data && (
+        <>
+          <LessonVideo
+            big
+            lesson={data.lesson}
+            sub={`Testdan o‘tgan: ${data.lesson.passed} · Ochiq: ${data.lesson.opened} · Yopiq: ${data.lesson.hidden}`}
+          />
+          <AccessLegend />
+          <div className="adm-search">
+            <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Login bo‘yicha qidirish" aria-label="Qidirish" />
+            <span className="adm-muted">{data.users.length} ta</span>
+          </div>
+          {failed && <div className="auth-error">Saqlab bo‘lmadi</div>}
+          <div className="adm-table-wrap">
+            <table className="adm-table">
+              <thead>
+                <tr>
+                  <th>Login</th>
+                  <th>Shu darsdagi holati</th>
+                  <th>Video ko‘rilgan</th>
+                  <th>Ball</th>
+                  <th>Ruxsat</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.users.map((u) => (
+                  <tr key={u.id} className={u.access !== 'queue' ? `adm-row-${u.access}` : ''}>
+                    <td>
+                      <b>{u.username}</b>
+                      {u.blocked && <span className="adm-tag bad adm-inline">Bloklangan</span>}
+                      {!u.hasPassword && <span className="adm-tag old adm-inline">Eski</span>}
+                    </td>
+                    <td>
+                      <span className={`adm-state ${u.state}`}>{STATE_LABEL[u.state]}</span>
+                    </td>
+                    <td>{u.watched ? `${u.watched}%` : '—'}</td>
+                    <td>{u.attempts ? `${u.bestScore} / 10` : '—'}</td>
+                    <td>
+                      <AccessSwitch value={u.access} disabled={saving === u.id} onChange={(m) => change(u, m)} />
+                    </td>
+                  </tr>
+                ))}
+                {data.users.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="adm-muted">
+                      Hech kim topilmadi
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
     </div>
   )
 }
@@ -351,6 +566,19 @@ function UserView({ id, onBack }: { id: number; onBack: () => void }) {
     }
   }
 
+  const setAccess = async (lessonId: string, mode: AccessMode) => {
+    setBusy(true)
+    setMsg(null)
+    try {
+      await admin.setAccess(lessonId, u.id, mode)
+      reload()
+    } catch {
+      setMsg({ ok: false, text: 'Saqlab bo‘lmadi' })
+    } finally {
+      setBusy(false)
+    }
+  }
+
   const btn = (what: Exclude<Pending, null>, label: string, danger = false) => (
     <button
       className={`tbtn adm-act${danger ? ' danger' : ''}${confirm === what ? ' confirm' : ''}`}
@@ -420,11 +648,12 @@ function UserView({ id, onBack }: { id: number; onBack: () => void }) {
               <th>Video ko‘rilgan</th>
               <th>Eng yaxshi ball</th>
               <th>Urinishlar</th>
+              <th>Ruxsat</th>
             </tr>
           </thead>
           <tbody>
             {data.lessons.map((l) => (
-              <tr key={l.index}>
+              <tr key={l.index} className={l.access !== 'queue' ? `adm-row-${l.access}` : ''}>
                 <td>
                   <b>{l.index + 1}.</b> {l.title}
                 </td>
@@ -434,6 +663,9 @@ function UserView({ id, onBack }: { id: number; onBack: () => void }) {
                 <td>{l.state === 'locked' && !l.watched ? '—' : `${l.watched}%`}</td>
                 <td>{l.attempts ? `${l.bestScore} / 10` : '—'}</td>
                 <td>{l.attempts || '—'}</td>
+                <td>
+                  <AccessSwitch value={l.access} disabled={busy || u.isAdmin} onChange={(m) => setAccess(l.id, m)} />
+                </td>
               </tr>
             ))}
           </tbody>
@@ -591,6 +823,7 @@ function LogTab() {
               <th>Admin</th>
               <th>Amal</th>
               <th>Kimga</th>
+              <th>Dars</th>
               <th>IP</th>
             </tr>
           </thead>
@@ -603,6 +836,7 @@ function LogTab() {
                 <td>
                   <b>{e.target}</b>
                 </td>
+                <td>{e.details || '—'}</td>
                 <td>{e.ip}</td>
               </tr>
             ))}

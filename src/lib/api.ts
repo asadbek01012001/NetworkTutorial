@@ -15,6 +15,8 @@ export interface VideoView {
 
 export interface LessonView {
   id: string
+  /** Position in the full course; lessons an admin hid for this user leave a gap. */
+  number?: number
   title: string
   /** Title per interface language (uz, ru, en). */
   titles: Record<string, string>
@@ -172,19 +174,10 @@ export interface AdminCounts {
   practice: number
   finished: number
 }
-export interface AdminLessonStat {
-  index: number
-  title: string
-  started: number
-  videoDone: number
-  passed: number
-  attempts: number
-  avgScore: number
-}
 export interface AdminStats {
   counts: AdminCounts
   signups: { day: string; count: number }[]
-  lessons: AdminLessonStat[]
+  lessons: AdminLesson[]
   passScore: number
 }
 export interface AdminUser {
@@ -206,9 +199,39 @@ export interface AdminAttempt {
   total: number
   at: string
 }
+export type AccessMode = 'queue' | 'open' | 'hidden'
+export type AdminLessonState = LessonState | 'hidden'
+export interface AdminLesson {
+  id: string
+  index: number
+  title: string
+  duration: number
+  langs: Lang[]
+  poster: string
+  questions: number
+  started: number
+  videoDone: number
+  passed: number
+  attempts: number
+  avgScore: number
+  opened: number
+  hidden: number
+}
+export interface AdminLessonUser {
+  id: number
+  username: string
+  lastSeen: string | null
+  blocked: boolean
+  hasPassword: boolean
+  state: AdminLessonState
+  access: AccessMode
+  watched: number
+  bestScore: number
+  attempts: number
+}
 export interface AdminUserDetail {
   user: AdminUser
-  lessons: { index: number; title: string; state: LessonState; watched: number; bestScore: number; attempts: number }[]
+  lessons: { id: string; index: number; title: string; state: AdminLessonState; access: AccessMode; watched: number; bestScore: number; attempts: number }[]
   tests: AdminAttempt[]
   exams: AdminAttempt[]
   practice: { kind: PracticeKind; done: number; score: number; total: number }[]
@@ -225,8 +248,9 @@ export interface AdminQuestion {
 }
 export interface AdminLogEntry {
   admin: string
-  action: 'password' | 'block' | 'unblock' | 'reset' | 'delete'
+  action: 'password' | 'block' | 'unblock' | 'reset' | 'delete' | 'access_open' | 'access_queue' | 'access_hidden'
   target: string
+  details: string
   ip: string
   at: string
 }
@@ -239,6 +263,10 @@ export const admin = {
   block: (id: number, blocked: boolean) => call<{ ok: boolean }>('POST', `api/admin/users/${id}/block`, { blocked }),
   reset: (id: number) => call<{ ok: boolean }>('POST', `api/admin/users/${id}/reset`),
   remove: (id: number) => call<{ ok: boolean }>('DELETE', `api/admin/users/${id}`),
+  lessons: () => call<{ lessons: AdminLesson[]; passScore: number }>('GET', 'api/admin/lessons'),
+  lessonUsers: (id: string, q: string) =>
+    call<{ lesson: AdminLesson; users: AdminLessonUser[] }>('GET', `api/admin/lessons/${id}/users?q=${encodeURIComponent(q)}`),
+  setAccess: (id: string, userId: number, mode: AccessMode) => call<{ ok: boolean }>('POST', `api/admin/lessons/${id}/access`, { userId, mode }),
   questions: () => call<{ lessons: { index: number; title: string; questions: AdminQuestion[] }[] }>('GET', 'api/admin/questions'),
   log: () => call<{ log: AdminLogEntry[] }>('GET', 'api/admin/log'),
 }

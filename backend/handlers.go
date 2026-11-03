@@ -75,6 +75,7 @@ type videoView struct {
 
 type lessonView struct {
 	ID        string            `json:"id"`
+	Number    int               `json:"number"` // position in the full course (hidden lessons keep their gap)
 	Title     string            `json:"title"`
 	Titles    map[string]string `json:"titles"` // title per interface language
 	Duration  float64           `json:"duration"`
@@ -109,9 +110,17 @@ func (s *Server) handleCourse(w http.ResponseWriter, r *http.Request) {
 		s.internal(w, err)
 		return
 	}
-	states := s.course.states(prog)
-	lessons := make([]lessonView, len(s.course.Lessons))
+	access, err := loadAccess(r.Context(), s.db, u.ID)
+	if err != nil {
+		s.internal(w, err)
+		return
+	}
+	states := s.course.states(prog, access)
+	lessons := []lessonView{}
 	for i, l := range s.course.Lessons {
+		if states[i] == stateHidden {
+			continue
+		}
 		p := prog[l.ID]
 		var videos []videoView
 		for _, lang := range langOrder {
@@ -123,13 +132,13 @@ func (s *Server) handleCourse(w http.ResponseWriter, r *http.Request) {
 		for k, v := range l.Titles {
 			titles[k] = v
 		}
-		lessons[i] = lessonView{
-			ID: l.ID, Title: l.Title, Titles: titles, Duration: l.Duration,
+		lessons = append(lessons, lessonView{
+			ID: l.ID, Number: i + 1, Title: l.Title, Titles: titles, Duration: l.Duration,
 			Poster:   "posters/" + l.ID + ".uz.jpg",
 			Videos:   videos,
 			State:    states[i],
 			Position: p.Position, BestScore: p.BestScore,
-		}
+		})
 	}
 	writeJSON(w, http.StatusOK, map[string]any{
 		"username":  u.Username,
