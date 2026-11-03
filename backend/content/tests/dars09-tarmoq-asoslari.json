@@ -1,0 +1,105 @@
+{
+  "lessonId": "dars09-tarmoq-asoslari",
+  "questions": [
+    {
+      "q": "Switch qanday qurilma?",
+      "options": [
+        "Har xil tarmoqlarni ulaydi",
+        "Bitta tarmoq ichidagi qurilmalarni ulaydi",
+        "Nomlarni IP ga aylantiradi",
+        "IP manzilni avtomatik beradi"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "Switch maʼlumotni qaysi portga yuborishni nima orqali biladi?",
+      "options": [
+        "DNS keshi",
+        "NAT jadvali",
+        "MAC jadvali",
+        "Lease muddati"
+      ],
+      "answer": 2
+    },
+    {
+      "q": "Router paketni qaysi yoʻldan yuborishni nimaga qarab tanlaydi?",
+      "options": [
+        "Destination IP va marshrutlar jadvali",
+        "Source MAC address",
+        "DNS keshi",
+        "DHCP lease muddati"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "PC 192.168.1.10/24, gateway 192.168.1.1. 8.8.8.8 ga paket qayerga ketadi?",
+      "options": [
+        "Toʻgʻridan-toʻgʻri, switch orqali",
+        "DNS serverga",
+        "Default gateway 192.168.1.1 ga",
+        "Hech qayerga ketmaydi"
+      ],
+      "answer": 2
+    },
+    {
+      "q": "PC 192.168.1.10/24, gateway 192.168.1.1. 192.168.1.50 ga paket qayerga ketadi?",
+      "options": [
+        "Default gateway ga",
+        "Toʻgʻridan-toʻgʻri, switch orqali",
+        "NAT orqali internetga",
+        "DHCP serverga"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "DORA jarayonidagi birinchi qadam qaysi?",
+      "options": [
+        "Offer",
+        "Request",
+        "Acknowledge",
+        "Discover"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "DHCP qurilmaga qaysi 4 narsani beradi?",
+      "options": [
+        "IP, mask, gateway, DNS",
+        "IP, MAC, port, DNS",
+        "MAC, mask, NAT, lease",
+        "IP, sayt nomi, port, gateway"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "Sayt nomini IP addressga qaysi xizmat aylantiradi?",
+      "options": [
+        "DHCP",
+        "NAT",
+        "Switch",
+        "DNS"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "NAT router da nimani almashtiradi?",
+      "options": [
+        "Private manzilni public ga",
+        "MAC addressni IP ga",
+        "Sayt nomini IP ga",
+        "Subnet maskni gateway ga"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "Sayt ochilishidagi qadamlarning toʻgʻri tartibi qaysi?",
+      "options": [
+        "DNS → DHCP → NAT → Gateway",
+        "DHCP → DNS → Gateway → NAT",
+        "DHCP → Gateway → DNS → NAT",
+        "NAT → DHCP → DNS → Gateway"
+      ],
+      "answer": 1
+    }
+  ]
+}

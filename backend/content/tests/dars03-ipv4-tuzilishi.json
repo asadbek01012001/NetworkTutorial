@@ -1,0 +1,105 @@
+{
+  "lessonId": "dars03-ipv4-tuzilishi",
+  "questions": [
+    {
+      "q": "IPv4 ni nuqta bilan ajratilgan 4 ta oʻnlik son qilib yozish qanday ataladi?",
+      "options": [
+        "Hexadecimal",
+        "Dotted decimal",
+        "Binary",
+        "Broadcast"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "IPv4 addressdagi har bir 8 bitli guruh qanday ataladi?",
+      "options": [
+        "Oktet",
+        "Host",
+        "Bit",
+        "Paket"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "192.168.1.10 da uchinchi oktet qaysi?",
+      "options": [
+        "192",
+        "168",
+        "10",
+        "1"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "Nega har bir oktetda aynan 8 bit?",
+      "options": [
+        "32 ÷ 4 = 8 va 8 bit = 1 byte",
+        "Oʻnlikda 8 ta raqam bor",
+        "Oktetda 8 ta nuqta bor",
+        "IPv4 da 8 ta oktet bor"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "10101100 okteti oʻnlikda nechaga teng?",
+      "options": [
+        "168",
+        "172",
+        "176",
+        "162"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "11000000.10101000.00001010.00010100 oʻnlikda qanday yoziladi?",
+      "options": [
+        "192.168.20.10",
+        "192.168.1.20",
+        "192.168.10.20",
+        "172.168.10.20"
+      ],
+      "answer": 2
+    },
+    {
+      "q": "192.168.0.255 dan keyin qaysi manzil keladi?",
+      "options": [
+        "192.168.0.256",
+        "192.168.1.255",
+        "192.169.0.0",
+        "192.168.1.0"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "Jami IPv4 manzillar soni qancha?",
+      "options": [
+        "2¹²⁸",
+        "256 × 4 = 1024",
+        "255 × 255 × 255 × 255",
+        "2³² = 4 294 967 296"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "Qaysi biri toʻgʻri IPv4 address?",
+      "options": [
+        "192.300.1.1",
+        "10.1.1",
+        "100.64.255.0",
+        "172.16.256.4"
+      ],
+      "answer": 2
+    },
+    {
+      "q": "Eng oxirgi IPv4 manzil qaysi (hamma 32 bit bir)?",
+      "options": [
+        "255.255.255.255",
+        "256.256.256.256",
+        "255.255.255.0",
+        "0.0.0.0"
+      ],
+      "answer": 0
+    }
+  ]
+}

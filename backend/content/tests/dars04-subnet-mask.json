@@ -1,0 +1,105 @@
+{
+  "lessonId": "dars04-subnet-mask",
+  "questions": [
+    {
+      "q": "Subnet mask nima vazifani bajaradi?",
+      "options": [
+        "IPni shifrlaydi",
+        "Paketni tezlashtiradi",
+        "IPv4 ni IPv6 ga aylantiradi",
+        "IPni tarmoq va host qismiga ajratadi"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "Koʻcha va uy oʻxshatmasida uy raqami nimaga mos keladi?",
+      "options": [
+        "Tarmoq qismi",
+        "Subnet mask",
+        "Host qismi",
+        "Router"
+      ],
+      "answer": 2
+    },
+    {
+      "q": "Subnet maskdagi 1 bitlari nimani bildiradi?",
+      "options": [
+        "Host qismini",
+        "Tarmoq qismini",
+        "Routerni",
+        "Paketni"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "255.255.255.0 maskada nechta bir bor?",
+      "options": [
+        "8",
+        "16",
+        "32",
+        "24"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "Mask 255.255.255.0 bilan 192.168.1.10 ning host qismi qaysi?",
+      "options": [
+        "10",
+        "192.168.1",
+        "1.10",
+        "192"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "Mask 255.255.255.0: 192.168.1.10 va 192.168.2.10 bitta tarmoqdami?",
+      "options": [
+        "Ha, host qismi bir xil",
+        "Yoʻq, tarmoq qismi farq qiladi",
+        "Ha, birinchi oktet bir xil",
+        "Yoʻq, host qismi farq qiladi"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "Qabul qiluvchi boshqa tarmoqda boʻlsa, kompyuter maʼlumotni nima qiladi?",
+      "options": [
+        "Toʻgʻridan-toʻgʻri yuboradi",
+        "Umuman yubormaydi",
+        "Routerga beradi",
+        "Printerga beradi"
+      ],
+      "answer": 2
+    },
+    {
+      "q": "Mask 255.255.0.0 boʻlsa, 172.16.40.7 ning tarmoq qismi qaysi?",
+      "options": [
+        "172",
+        "172.16.40",
+        "40.7",
+        "172.16"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "255.255.0.0 maskning qisqa yozuvi qaysi?",
+      "options": [
+        "/16",
+        "/8",
+        "/24",
+        "/32"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "Qaysi biri toʻgʻri subnet mask?",
+      "options": [
+        "255.255.255.100",
+        "255.0.255.0",
+        "255.255.240.0",
+        "0.255.255.255"
+      ],
+      "answer": 2
+    }
+  ]
+}

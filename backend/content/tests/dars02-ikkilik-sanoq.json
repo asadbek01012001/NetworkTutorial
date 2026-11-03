@@ -1,0 +1,105 @@
+{
+  "lessonId": "dars02-ikkilik-sanoq",
+  "questions": [
+    {
+      "q": "Kompyuterda tok bor holat qaysi belgi bilan yoziladi?",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "10"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "Oʻnlik sanoq tizimida har bir oʻrin oldingisidan necha marta katta?",
+      "options": [
+        "2 marta",
+        "8 marta",
+        "10 marta",
+        "100 marta"
+      ],
+      "answer": 2
+    },
+    {
+      "q": "Ayirish usulida 168 ni ikkilikka oʻtkazishda 128 ayirilgach qancha qoladi?",
+      "options": [
+        "32",
+        "8",
+        "50",
+        "40"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "Bit soʻzi qaysi inglizcha soʻzlarning qisqartmasi?",
+      "options": [
+        "binary digit",
+        "basic item",
+        "byte unit",
+        "binary time"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "3 ta bit bilan necha xil qiymat yozish mumkin?",
+      "options": [
+        "3",
+        "6",
+        "8",
+        "9"
+      ],
+      "answer": 2
+    },
+    {
+      "q": "1 byte necha bitdan iborat?",
+      "options": [
+        "4 bit",
+        "8 bit",
+        "16 bit",
+        "32 bit"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "Ikkilikdagi 11000000 oʻnlikda nechaga teng?",
+      "options": [
+        "192",
+        "128",
+        "160",
+        "224"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "Ikkilikdagi 01100100 oʻnlikda nechaga teng?",
+      "options": [
+        "64",
+        "96",
+        "110",
+        "100"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "200 sonining 8 bitli ikkilik yozuvi qaysi?",
+      "options": [
+        "11000100",
+        "11001000",
+        "10101000",
+        "11101000"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "Nega 256 soni IP addressdagi oktetga sigʻmaydi?",
+      "options": [
+        "Uni yozish uchun 9 bit kerak",
+        "U juft son boʻlgani uchun",
+        "Oktetda 10 ta joy bor",
+        "256 ikkilikda yozilmaydi"
+      ],
+      "answer": 0
+    }
+  ]
+}

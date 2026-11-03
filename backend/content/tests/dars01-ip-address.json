@@ -1,0 +1,105 @@
+{
+  "lessonId": "dars01-ip-address",
+  "questions": [
+    {
+      "q": "Tarmoqqa ulangan har bir qurilma qanday ataladi?",
+      "options": [
+        "Router",
+        "Host",
+        "Server",
+        "Paket"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "Router qanday vazifani bajaradi?",
+      "options": [
+        "Saytlarni saqlaydi",
+        "Rasmni ekranga chiqaradi",
+        "Videoni boʻlaklarga boʻladi",
+        "Maʼlumotga yoʻl koʻrsatadi"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "Doʻstingizga rasm yuborsangiz, rasm tarmoqda nimalarga boʻlinadi?",
+      "options": [
+        "Paketlarga",
+        "Routerlarga",
+        "Hostlarga",
+        "Serverlarga"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "Konvertdagi joʻnatuvchi manzili paketda nimaga mos keladi?",
+      "options": [
+        "Destination IP",
+        "Router",
+        "Source IP",
+        "Server"
+      ],
+      "answer": 2
+    },
+    {
+      "q": "IP qisqartmasi qanday soʻzlardan olingan?",
+      "options": [
+        "Internet Provider",
+        "Internal Port",
+        "Internet Protocol",
+        "Internet Packet"
+      ],
+      "answer": 2
+    },
+    {
+      "q": "Bitta tarmoqda ikki qurilmaning IP addressi bir xil boʻlsa, bu nima deyiladi?",
+      "options": [
+        "IP conflict",
+        "NAT",
+        "Destination IP",
+        "Protocol"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "Telefon 192.168.1.10, server 203.0.113.25. Server javobidagi Destination IP qaysi?",
+      "options": [
+        "203.0.113.25",
+        "192.168.1.1",
+        "0.0.0.0",
+        "192.168.1.10"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "Qaysi biri toʻgʻri IPv4 address?",
+      "options": [
+        "192.168.1.300",
+        "10.0.0.1",
+        "172.16.5",
+        "8.8.8.8.8"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "IPv4 address necha bitdan iborat?",
+      "options": [
+        "32 bit",
+        "8 bit",
+        "64 bit",
+        "128 bit"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "IPv6 address haqida qaysi gap toʻgʻri?",
+      "options": [
+        "32 bit, 4 ta son",
+        "128 bit, 8 ta hex guruh",
+        "64 bit, 6 ta guruh",
+        "128 bit, 4 ta oʻnlik son"
+      ],
+      "answer": 1
+    }
+  ]
+}

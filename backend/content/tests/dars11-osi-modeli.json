@@ -1,0 +1,55 @@
+{
+  "lessonId": "dars11-osi-modeli",
+  "questions": [
+    {
+      "q": "OSI modeli tarmoq ishini nechta qavatga boʻladi?",
+      "options": ["4", "5", "7", "10"],
+      "answer": 2
+    },
+    {
+      "q": "IP address OSI ning qaysi qavatida ishlaydi?",
+      "options": ["2 — Data Link", "3 — Network", "4 — Transport", "7 — Application"],
+      "answer": 1
+    },
+    {
+      "q": "Switch qaysi manzil boʻyicha ishlaydi va qaysi qavat qurilmasi?",
+      "options": ["IP address, 3-qavat", "Port raqami, 4-qavat", "MAC address, 2-qavat", "Hech qanday manzilni tushunmaydi, 1-qavat"],
+      "answer": 2
+    },
+    {
+      "q": "Transport qavatidagi maʼlumot boʻlagi qanday ataladi?",
+      "options": ["Segment", "Paket", "Kadr (frame)", "Bit"],
+      "answer": 0
+    },
+    {
+      "q": "Inkapsulyatsiyada maʼlumot birliklari qaysi tartibda hosil boʻladi?",
+      "options": ["Bit → Kadr → Paket → Segment → Data", "Data → Paket → Segment → Kadr → Bit", "Data → Kadr → Segment → Paket → Bit", "Data → Segment → Paket → Kadr → Bit"],
+      "answer": 3
+    },
+    {
+      "q": "TCP va UDP ning farqi qaysi javobda toʻgʻri?",
+      "options": ["TCP tez, lekin tekshirmaydi; UDP ishonchli", "TCP yoʻqolgan segmentni qayta yuboradi; UDP kutib oʻtirmaydi", "Ikkalasi ham 3-qavatda ishlaydi", "UDP faqat fayl yuklash uchun ishlatiladi"],
+      "answer": 1
+    },
+    {
+      "q": "HTTPS dagi TLS shifrlash qaysi qavat vazifasiga kiradi?",
+      "options": ["6 — Presentation", "5 — Session", "4 — Transport", "1 — Physical"],
+      "answer": 0
+    },
+    {
+      "q": "Yoʻldagi router paketni olganda qaysi qavatgacha ochadi?",
+      "options": ["Faqat 1-qavat", "2-qavatgacha", "3-qavatgacha (IP ga qaraydi)", "7-qavatgacha"],
+      "answer": 2
+    },
+    {
+      "q": "TCP/IP modelining Network Access qavati OSI ning qaysi qavatlarini birlashtiradi?",
+      "options": ["Session va Presentation", "Network va Transport", "Application, Presentation va Session", "Data Link va Physical"],
+      "answer": 3
+    },
+    {
+      "q": "ping 8.8.8.8 ishlaydi, lekin kurs.uz ochilmaydi. Muammo qaysi qavatda?",
+      "options": ["1-qavat, kabel uzilgan", "3-qavat, gateway notoʻgʻri", "7-qavat, DNS", "2-qavat, switch porti oʻchiq"],
+      "answer": 2
+    }
+  ]
+}

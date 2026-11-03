@@ -1,0 +1,105 @@
+{
+  "lessonId": "dars10-amaliy-tarmoq",
+  "questions": [
+    {
+      "q": "Command Prompt qanday ochiladi?",
+      "options": [
+        "Win + R, cmd, Enter",
+        "Ctrl + C, cmd, Enter",
+        "Win + D, ping, Enter",
+        "Alt + F4, cmd, Enter"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "Kompyuterning IP, mask va gateway ini qaysi buyruq koʻrsatadi?",
+      "options": [
+        "ping",
+        "tracert",
+        "ipconfig",
+        "nslookup"
+      ],
+      "answer": 2
+    },
+    {
+      "q": "ipconfig /renew buyrugʻi nima qiladi?",
+      "options": [
+        "Joriy IP ni qaytarib beradi",
+        "DHCP dan yangi IP soʻraydi",
+        "DNS server manzilini koʻrsatadi",
+        "Router portini yoqadi"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "ping natijasida Request timed out chiqsa, bu nimani bildiradi?",
+      "options": [
+        "Aloqa bor, 0% yoʻqotish",
+        "Qurilma oʻchiq yoki yoʻlda muammo",
+        "DNS server javob berdi",
+        "IP APIPA dan olingan"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "tracert natijasida birinchi hop har doim nima boʻladi?",
+      "options": [
+        "DNS server",
+        "Manzilning oʻzi",
+        "Default gateway",
+        "8.8.8.8"
+      ],
+      "answer": 2
+    },
+    {
+      "q": "ping 8.8.8.8 ishlaydi, lekin nslookup javob bermaydi. Muammo qayerda?",
+      "options": [
+        "DHCP da",
+        "DNS da",
+        "Default gateway da",
+        "Router portida"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "Packet Tracer da router portini yoqish uchun qaysi buyruq kerak?",
+      "options": [
+        "enable",
+        "configure terminal",
+        "ip address",
+        "no shutdown"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "Packet Tracer da kompyuterga IP qayerda beriladi?",
+      "options": [
+        "Desktop → IP Configuration",
+        "Router CLI → enable",
+        "Switch → MAC jadvali",
+        "Command Prompt → tracert"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "Muammo izlashda birinchi qadam qaysi?",
+      "options": [
+        "ping 8.8.8.8",
+        "nslookup kurs.uz",
+        "ping gateway",
+        "ping 127.0.0.1"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "Windows \"IP address conflict\" deb ogohlantirsa, sabab nima?",
+      "options": [
+        "DHCP server javob bermagan",
+        "DNS server ishlamayapti",
+        "Ikki qurilmaga bir xil static IP",
+        "Default gateway notoʻgʻri"
+      ],
+      "answer": 2
+    }
+  ]
+}

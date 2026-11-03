@@ -1,0 +1,3364 @@
+[
+  {
+    "id": "access-point",
+    "term": "Access point",
+    "abbr": "",
+    "cat": "devices",
+    "names": {
+      "uz": "Kirish nuqtasi (access point)",
+      "ru": "Точка доступа",
+      "en": "Access point"
+    },
+    "def": {
+      "uz": "Simsiz qurilmalarni simli tarmoqqa ulaydigan qurilma. U Wi-Fi signalini tarqatadi va SSID nomi bilan ko‘rinadi; uy routerlari ichida ham odatda kirish nuqtasi o‘rnatilgan bo‘ladi.",
+      "ru": "Устройство, подключающее беспроводных клиентов к проводной сети. Оно раздаёт Wi-Fi-сигнал с определённым SSID; в домашних роутерах точка доступа обычно встроена.",
+      "en": "A device that connects wireless clients to a wired network. It broadcasts a Wi-Fi signal identified by an SSID; home routers usually have one built in."
+    },
+    "see": [
+      "wifi",
+      "ssid",
+      "wlan"
+    ]
+  },
+  {
+    "id": "acl",
+    "term": "ACL",
+    "abbr": "Access Control List",
+    "cat": "security",
+    "names": {
+      "uz": "Kirishni boshqarish ro‘yxati (ACL)",
+      "ru": "Список управления доступом (ACL)",
+      "en": "Access Control List"
+    },
+    "def": {
+      "uz": "Router yoki switch interfeysiga qo‘llanadigan, paketlarga ruxsat berish (permit) yoki rad etish (deny) qoidalari ro‘yxati. Qoidalar yuqoridan pastga tekshiriladi va birinchi mos kelgani bajariladi.",
+      "ru": "Список правил разрешения (permit) или запрета (deny) пакетов, применяемый к интерфейсу маршрутизатора или коммутатора. Правила проверяются сверху вниз, срабатывает первое совпавшее.",
+      "en": "A list of permit and deny rules applied to a router or switch interface to filter packets. Rules are checked from top to bottom and the first match is applied."
+    },
+    "see": [
+      "standard-acl",
+      "extended-acl",
+      "implicit-deny",
+      "firewall"
+    ]
+  },
+  {
+    "id": "administrative-distance",
+    "term": "Administrative distance",
+    "abbr": "",
+    "cat": "routing",
+    "names": {
+      "uz": "Ma’muriy masofa (AD)",
+      "ru": "Административное расстояние (AD)",
+      "en": "Administrative distance (AD)"
+    },
+    "def": {
+      "uz": "Marshrut manbasining ishonchliligini baholovchi son: qancha kichik bo‘lsa, shuncha ishonchli. Masalan: ulangan tarmoq 0, statik 1, EIGRP 90, OSPF 110, RIP 120; bir tarmoqqa ikki manbadan marshrut kelsa, AD kichigi tanlanadi.",
+      "ru": "Число, оценивающее надёжность источника маршрута: чем меньше, тем надёжнее. Например: подключённая сеть — 0, статический — 1, EIGRP — 90, OSPF — 110, RIP — 120; из двух маршрутов к одной сети выбирается с меньшим AD.",
+      "en": "A number that ranks how trustworthy a route source is; lower is better. For example: connected 0, static 1, EIGRP 90, OSPF 110, RIP 120. When two sources offer the same network, the lower AD wins."
+    },
+    "see": [
+      "metric",
+      "routing-table",
+      "static-route"
+    ]
+  },
+  {
+    "id": "apipa",
+    "term": "APIPA",
+    "abbr": "Automatic Private IP Addressing",
+    "cat": "addressing",
+    "names": {
+      "uz": "APIPA",
+      "ru": "APIPA",
+      "en": "Automatic Private IP Addressing"
+    },
+    "def": {
+      "uz": "DHCP serverdan manzil ololmagan Windows kompyuter o‘ziga avtomatik beradigan 169.254.0.0/16 diapazonidagi manzil. ipconfig 169.254.x.x ni ko‘rsatsa, demak DHCP bilan aloqa yo‘q va internet ishlamaydi.",
+      "ru": "Адрес из диапазона 169.254.0.0/16, который Windows-компьютер назначает себе сам, если не получил адрес от DHCP-сервера. Если ipconfig показывает 169.254.x.x, связи с DHCP нет и интернет работать не будет.",
+      "en": "An address in the 169.254.0.0/16 range that a Windows computer assigns itself when it cannot reach a DHCP server. Seeing 169.254.x.x in ipconfig means DHCP failed and the Internet will not work."
+    },
+    "see": [
+      "dhcp",
+      "link-local-address",
+      "private-ip-address"
+    ]
+  },
+  {
+    "id": "application-layer",
+    "term": "Application layer",
+    "abbr": "",
+    "cat": "models",
+    "names": {
+      "uz": "Ilova sathi (7-sath)",
+      "ru": "Прикладной уровень (уровень 7)",
+      "en": "Application layer (Layer 7)"
+    },
+    "def": {
+      "uz": "OSI modelining eng yuqori 7-sathi: foydalanuvchi dasturlariga tarmoq xizmatlarini taqdim etadi. HTTP, DNS, DHCP, FTP, SMTP va SSH kabi protokollar shu sathda ishlaydi.",
+      "ru": "Верхний, 7-й уровень модели OSI: предоставляет сетевые службы пользовательским программам. На нём работают протоколы HTTP, DNS, DHCP, FTP, SMTP и SSH.",
+      "en": "The top layer (Layer 7) of the OSI model. It provides network services to user programs; protocols such as HTTP, DNS, DHCP, FTP, SMTP and SSH work here."
+    },
+    "see": [
+      "osi-model",
+      "http",
+      "dns",
+      "tcp-ip-model"
+    ]
+  },
+  {
+    "id": "arp",
+    "term": "ARP",
+    "abbr": "Address Resolution Protocol",
+    "cat": "protocols",
+    "names": {
+      "uz": "ARP",
+      "ru": "ARP",
+      "en": "Address Resolution Protocol"
+    },
+    "def": {
+      "uz": "Ma’lum IPv4 manzil bo‘yicha shu qurilmaning MAC manzilini aniqlovchi protokol. Kompyuter broadcast so‘rov yuboradi: «192.168.1.1 kimda?», egasi o‘z MAC manzili bilan javob beradi va natija ARP keshida saqlanadi.",
+      "ru": "Протокол, определяющий MAC-адрес устройства по известному IPv4-адресу. Компьютер рассылает широковещательный запрос «у кого 192.168.1.1?», владелец отвечает своим MAC-адресом, и результат сохраняется в ARP-кэше.",
+      "en": "The protocol that finds a device's MAC address from its known IPv4 address. A computer broadcasts 'Who has 192.168.1.1?', the owner replies with its MAC address, and the result is stored in the ARP cache."
+    },
+    "see": [
+      "mac-address",
+      "broadcast",
+      "ipv4"
+    ]
+  },
+  {
+    "id": "auto-mdix",
+    "term": "Auto-MDIX",
+    "abbr": "Automatic Medium-Dependent Interface Crossover",
+    "cat": "media",
+    "names": {
+      "uz": "Auto-MDIX",
+      "ru": "Auto-MDIX",
+      "en": "Auto-MDIX"
+    },
+    "def": {
+      "uz": "Port ulangan kabel turini avtomatik aniqlab, uzatish va qabul qilish juftliklarini o‘zi moslashtiradigan funksiya. Shu sababli zamonaviy qurilmalarda straight-through yoki crossover kabel tanlash muhim emas.",
+      "ru": "Функция порта, которая автоматически определяет тип кабеля и сама меняет пары приёма и передачи. Благодаря ей на современных устройствах неважно, прямой кабель или перекрёстный.",
+      "en": "A port feature that detects the cable type and swaps the transmit and receive pairs automatically. Thanks to it, modern devices work with either a straight-through or a crossover cable."
+    },
+    "see": [
+      "straight-through-cable",
+      "crossover-cable"
+    ]
+  },
+  {
+    "id": "bandwidth",
+    "term": "Bandwidth",
+    "abbr": "",
+    "cat": "basics",
+    "names": {
+      "uz": "O‘tkazish qobiliyati (bandwidth)",
+      "ru": "Полоса пропускания",
+      "en": "Bandwidth"
+    },
+    "def": {
+      "uz": "Aloqa liniyasining nazariy jihatdan bir soniyada uzata oladigan maksimal ma’lumot hajmi. Bit/s bilan o‘lchanadi: masalan, Gigabit Ethernet portining bandwidth qiymati 1 Gbit/s.",
+      "ru": "Максимальный объём данных, который канал связи теоретически может передать за секунду. Измеряется в бит/с: например, у порта Gigabit Ethernet она равна 1 Гбит/с.",
+      "en": "The maximum amount of data a link can theoretically carry per second. It is measured in bits per second; for example, a Gigabit Ethernet port has a bandwidth of 1 Gbps."
+    },
+    "see": [
+      "throughput",
+      "latency",
+      "bit"
+    ]
+  },
+  {
+    "id": "binary",
+    "term": "Binary",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "Ikkilik sanoq tizimi",
+      "ru": "Двоичная система счисления",
+      "en": "Binary number system"
+    },
+    "def": {
+      "uz": "Faqat 0 va 1 raqamlaridan foydalanadigan sanoq tizimi; kompyuterlar barcha ma’lumotni shu ko‘rinishda saqlaydi. Oktetdagi bit o‘rinlarining qiymati 128, 64, 32, 16, 8, 4, 2, 1: masalan, 192 = 11000000.",
+      "ru": "Система счисления только из цифр 0 и 1, в которой компьютеры хранят все данные. Веса разрядов в октете — 128, 64, 32, 16, 8, 4, 2, 1: например, 192 = 11000000.",
+      "en": "A number system that uses only the digits 0 and 1, which is how computers store all data. Bit positions in an octet are worth 128, 64, 32, 16, 8, 4, 2 and 1; for example, 192 = 11000000."
+    },
+    "see": [
+      "bit",
+      "octet",
+      "subnet-mask"
+    ]
+  },
+  {
+    "id": "bit",
+    "term": "Bit",
+    "abbr": "Binary digit",
+    "cat": "models",
+    "names": {
+      "uz": "Bit",
+      "ru": "Бит",
+      "en": "Bit"
+    },
+    "def": {
+      "uz": "Ma’lumotning eng kichik birligi, faqat 0 yoki 1 qiymatini oladi. 8 bit bir baytni tashkil qiladi; fizik sathda bitlar signal ko‘rinishida uzatiladi, IPv4 manzil esa 32 bitdan iborat.",
+      "ru": "Наименьшая единица информации, принимающая значение 0 или 1. 8 бит составляют байт; на физическом уровне биты передаются в виде сигналов, а IPv4-адрес состоит из 32 бит.",
+      "en": "The smallest unit of data, with a value of either 0 or 1. Eight bits make a byte; bits travel as signals at the physical layer, and an IPv4 address is 32 bits long."
+    },
+    "see": [
+      "binary",
+      "octet",
+      "physical-layer"
+    ]
+  },
+  {
+    "id": "bridge",
+    "term": "Bridge",
+    "abbr": "",
+    "cat": "devices",
+    "names": {
+      "uz": "Ko‘prik (bridge)",
+      "ru": "Мост (bridge)",
+      "en": "Bridge"
+    },
+    "def": {
+      "uz": "Ikki LAN segmentini birlashtiradigan va MAC manzillarga qarab freymlarni filtrlaydigan 2-sath qurilmasi. To‘qnashuv domenlarini ajratadi; zamonaviy switch aslida ko‘p portli bridge hisoblanadi.",
+      "ru": "Устройство 2-го уровня, соединяющее два сегмента LAN и фильтрующее кадры по MAC-адресам. Разделяет домены коллизий; современный коммутатор по сути является многопортовым мостом.",
+      "en": "A Layer 2 device that joins two LAN segments and filters frames by MAC address. It splits collision domains; a modern switch is essentially a multiport bridge."
+    },
+    "see": [
+      "switch",
+      "collision-domain",
+      "mac-address"
+    ]
+  },
+  {
+    "id": "broadcast",
+    "term": "Broadcast",
+    "abbr": "",
+    "cat": "ethernet",
+    "names": {
+      "uz": "Broadcast (keng tarqatish)",
+      "ru": "Широковещательная передача (broadcast)",
+      "en": "Broadcast"
+    },
+    "def": {
+      "uz": "Bitta qurilmadan tarmoqdagi barcha qurilmalarga birdaniga yuboriladigan xabar. Qabul qiluvchi MAC manzil FF:FF:FF:FF:FF:FF bo‘ladi; ARP so‘rovi va DHCP Discover shunday yuboriladi. Routerlar broadcastni o‘tkazmaydi.",
+      "ru": "Сообщение, отправляемое одним устройством сразу всем узлам сети. MAC-адрес назначения — FF:FF:FF:FF:FF:FF; так рассылаются ARP-запросы и DHCP Discover. Маршрутизаторы широковещательные сообщения не пропускают.",
+      "en": "A message sent from one device to every device on the network at once. Its destination MAC is FF:FF:FF:FF:FF:FF; ARP requests and DHCP Discover use it. Routers do not forward broadcasts."
+    },
+    "see": [
+      "broadcast-domain",
+      "broadcast-address",
+      "unicast",
+      "arp"
+    ]
+  },
+  {
+    "id": "broadcast-address",
+    "term": "Broadcast address",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "Broadcast manzili",
+      "ru": "Широковещательный адрес",
+      "en": "Broadcast address"
+    },
+    "def": {
+      "uz": "Tarmoqdagi oxirgi manzil: xost qismidagi barcha bitlar 1 bo‘ladi. Unga yuborilgan paket tarmoqdagi barcha xostlarga yetadi; masalan, 192.168.1.0/24 tarmog‘ida broadcast 192.168.1.255.",
+      "ru": "Последний адрес сети: все биты хостовой части равны 1. Пакет на этот адрес получают все хосты сети; например, в сети 192.168.1.0/24 широковещательный адрес — 192.168.1.255.",
+      "en": "The last address in a network: all host bits are 1. A packet sent to it reaches every host on that network; in 192.168.1.0/24 the broadcast address is 192.168.1.255."
+    },
+    "see": [
+      "network-address",
+      "broadcast",
+      "host-address"
+    ]
+  },
+  {
+    "id": "broadcast-domain",
+    "term": "Broadcast domain",
+    "abbr": "",
+    "cat": "ethernet",
+    "names": {
+      "uz": "Broadcast domeni",
+      "ru": "Широковещательный домен",
+      "en": "Broadcast domain"
+    },
+    "def": {
+      "uz": "Bitta broadcast xabarni qabul qiladigan barcha qurilmalar guruhi. Switch broadcastni barcha portlariga tarqatadi, router esa uni to‘xtatadi; shuning uchun har bir router interfeysi yoki VLAN alohida broadcast domeni bo‘ladi.",
+      "ru": "Группа всех устройств, получающих одно и то же широковещательное сообщение. Коммутатор рассылает broadcast на все порты, а маршрутизатор его останавливает, поэтому каждый интерфейс маршрутизатора или VLAN — отдельный домен.",
+      "en": "The group of all devices that receive the same broadcast. A switch floods broadcasts to all ports while a router stops them, so each router interface or VLAN is a separate broadcast domain."
+    },
+    "see": [
+      "broadcast",
+      "collision-domain",
+      "vlan",
+      "router"
+    ]
+  },
+  {
+    "id": "bus-topology",
+    "term": "Bus topology",
+    "abbr": "",
+    "cat": "basics",
+    "names": {
+      "uz": "Shina topologiyasi",
+      "ru": "Топология «шина»",
+      "en": "Bus topology"
+    },
+    "def": {
+      "uz": "Barcha qurilmalar bitta umumiy kabelga (shinaga) ulanadigan eski sxema. Kabelning bir joyi uzilsa butun segment ishlamay qoladi va to‘qnashuvlar ko‘p bo‘ladi, shuning uchun bugun deyarli ishlatilmaydi.",
+      "ru": "Устаревшая схема, где все устройства подключены к одному общему кабелю (шине). Обрыв кабеля выводит из строя весь сегмент, а коллизии случаются часто, поэтому сегодня она почти не применяется.",
+      "en": "An older layout where all devices share one common cable (the bus). A single break takes down the whole segment and collisions are frequent, so it is rarely used today."
+    },
+    "see": [
+      "topology",
+      "collision-domain",
+      "star-topology"
+    ]
+  },
+  {
+    "id": "cidr",
+    "term": "CIDR",
+    "abbr": "Classless Inter-Domain Routing",
+    "cat": "addressing",
+    "names": {
+      "uz": "Sinfsiz manzillash (CIDR)",
+      "ru": "Бесклассовая адресация (CIDR)",
+      "en": "Classless Inter-Domain Routing"
+    },
+    "def": {
+      "uz": "IP manzillarni A, B, C sinflariga bog‘lamasdan, istalgan uzunlikdagi prefiks bilan taqsimlash usuli. Bu manzillarni tejaydi va marshrutlarni birlashtirishga imkon beradi; masalan, 10.0.0.0/22 yoki 172.16.5.0/27.",
+      "ru": "Способ распределения IP-адресов с префиксом любой длины, без привязки к классам A, B, C. Экономит адреса и позволяет объединять маршруты; например, 10.0.0.0/22 или 172.16.5.0/27.",
+      "en": "A way to allocate IP addresses with a prefix of any length instead of fixed classes A, B and C. It saves addresses and allows route aggregation, for example 10.0.0.0/22 or 172.16.5.0/27."
+    },
+    "see": [
+      "prefix-length",
+      "ip-classes",
+      "supernetting",
+      "vlsm"
+    ]
+  },
+  {
+    "id": "cisco-ios",
+    "term": "Cisco IOS",
+    "abbr": "Internetwork Operating System",
+    "cat": "cisco",
+    "names": {
+      "uz": "Cisco IOS",
+      "ru": "Cisco IOS",
+      "en": "Cisco IOS"
+    },
+    "def": {
+      "uz": "Cisco router va switchlarida ishlaydigan operatsion tizim. U qurilmaning barcha funksiyalarini boshqaradi va asosan buyruq qatori (CLI) orqali sozlanadi.",
+      "ru": "Операционная система маршрутизаторов и коммутаторов Cisco. Она управляет всеми функциями устройства и настраивается в основном через командную строку (CLI).",
+      "en": "The operating system that runs on Cisco routers and switches. It controls all device functions and is configured mainly through the command-line interface (CLI)."
+    },
+    "see": [
+      "cli",
+      "running-config",
+      "user-exec-mode"
+    ]
+  },
+  {
+    "id": "class-a",
+    "term": "Class A",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "A sinf",
+      "ru": "Класс A",
+      "en": "Class A"
+    },
+    "def": {
+      "uz": "Birinchi okteti 1–126 oralig‘idagi IPv4 manzillar, standart maskasi 255.0.0.0 (/8). Har bir tarmoqda 16 milliondan ortiq xost bo‘lishi mumkin; masalan, 10.0.0.0/8 xususiy tarmog‘i. 127 loopback uchun ajratilgan.",
+      "ru": "IPv4-адреса с первым октетом 1–126 и стандартной маской 255.0.0.0 (/8). В каждой сети может быть более 16 млн хостов; пример — частная сеть 10.0.0.0/8. Диапазон 127 зарезервирован под loopback.",
+      "en": "IPv4 addresses with a first octet of 1–126 and a default mask of 255.0.0.0 (/8). Each network can hold over 16 million hosts, for example the private 10.0.0.0/8 block; 127 is reserved for loopback."
+    },
+    "see": [
+      "ip-classes",
+      "class-b",
+      "private-ip-address",
+      "loopback-address"
+    ]
+  },
+  {
+    "id": "class-b",
+    "term": "Class B",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "B sinf",
+      "ru": "Класс B",
+      "en": "Class B"
+    },
+    "def": {
+      "uz": "Birinchi okteti 128–191 oralig‘idagi IPv4 manzillar, standart maskasi 255.255.0.0 (/16). Har bir tarmoqda 65 534 tagacha xost bo‘ladi; 172.16.0.0–172.31.255.255 xususiy diapazoni shu sinfga kiradi.",
+      "ru": "IPv4-адреса с первым октетом 128–191 и стандартной маской 255.255.0.0 (/16). В каждой сети до 65 534 хостов; к этому классу относится частный диапазон 172.16.0.0–172.31.255.255.",
+      "en": "IPv4 addresses with a first octet of 128–191 and a default mask of 255.255.0.0 (/16). Each network holds up to 65,534 hosts; the private range 172.16.0.0–172.31.255.255 falls in this class."
+    },
+    "see": [
+      "ip-classes",
+      "class-a",
+      "class-c",
+      "private-ip-address"
+    ]
+  },
+  {
+    "id": "class-c",
+    "term": "Class C",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "C sinf",
+      "ru": "Класс C",
+      "en": "Class C"
+    },
+    "def": {
+      "uz": "Birinchi okteti 192–223 oralig‘idagi IPv4 manzillar, standart maskasi 255.255.255.0 (/24). Har bir tarmoqda 254 tagacha xost bo‘ladi; uy tarmoqlaridagi 192.168.x.x manzillar shu sinfga tegishli.",
+      "ru": "IPv4-адреса с первым октетом 192–223 и стандартной маской 255.255.255.0 (/24). В каждой сети до 254 хостов; домашние адреса 192.168.x.x относятся к этому классу.",
+      "en": "IPv4 addresses with a first octet of 192–223 and a default mask of 255.255.255.0 (/24). Each network holds up to 254 hosts; home addresses like 192.168.x.x belong to this class."
+    },
+    "see": [
+      "ip-classes",
+      "class-b",
+      "class-d",
+      "private-ip-address"
+    ]
+  },
+  {
+    "id": "class-d",
+    "term": "Class D",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "D sinf",
+      "ru": "Класс D",
+      "en": "Class D"
+    },
+    "def": {
+      "uz": "Birinchi okteti 224–239 oralig‘idagi manzillar; ular qurilmalarga berilmaydi, multicast guruhlari uchun ishlatiladi. Masalan, RIPv2 routerlari marshrut yangilanishlarini 224.0.0.9 manziliga yuboradi.",
+      "ru": "Адреса с первым октетом 224–239; они не назначаются устройствам, а используются для групп multicast. Например, маршрутизаторы RIPv2 рассылают обновления маршрутов на 224.0.0.9.",
+      "en": "Addresses with a first octet of 224–239. They are not assigned to devices but identify multicast groups; for example, RIPv2 routers send updates to 224.0.0.9."
+    },
+    "see": [
+      "multicast",
+      "ip-classes",
+      "class-e",
+      "rip"
+    ]
+  },
+  {
+    "id": "class-e",
+    "term": "Class E",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "E sinf",
+      "ru": "Класс E",
+      "en": "Class E"
+    },
+    "def": {
+      "uz": "Birinchi okteti 240–255 oralig‘idagi, tajriba va kelajak uchun zaxiraga olingan manzillar. Ular oddiy tarmoqlarda ishlatilmaydi; 255.255.255.255 esa lokal tarmoqdagi umumiy broadcast manzili sifatida qo‘llanadi.",
+      "ru": "Адреса с первым октетом 240–255, зарезервированные для экспериментов и будущего использования. В обычных сетях не применяются; адрес 255.255.255.255 служит общим широковещательным адресом локальной сети.",
+      "en": "Addresses with a first octet of 240–255, reserved for experimental and future use. They are not used in ordinary networks; 255.255.255.255 serves as the limited broadcast address for the local network."
+    },
+    "see": [
+      "ip-classes",
+      "class-d",
+      "broadcast-address"
+    ]
+  },
+  {
+    "id": "cli",
+    "term": "CLI",
+    "abbr": "Command-Line Interface",
+    "cat": "cisco",
+    "names": {
+      "uz": "Buyruq qatori interfeysi (CLI)",
+      "ru": "Интерфейс командной строки (CLI)",
+      "en": "Command-Line Interface"
+    },
+    "def": {
+      "uz": "Qurilmani matnli buyruqlar yozish orqali boshqarish interfeysi. Cisco CLI da buyruqlarni qisqartirib yozish (conf t), Tab bilan to‘ldirish va ? belgisi orqali yordam olish mumkin.",
+      "ru": "Интерфейс управления устройством с помощью текстовых команд. В Cisco CLI команды можно сокращать (conf t), дополнять клавишей Tab и получать подсказку по знаку ?.",
+      "en": "An interface for controlling a device by typing text commands. In the Cisco CLI you can abbreviate commands (conf t), complete them with Tab and get help by typing ?."
+    },
+    "see": [
+      "cisco-ios",
+      "user-exec-mode",
+      "console-port",
+      "ssh"
+    ]
+  },
+  {
+    "id": "client",
+    "term": "Client",
+    "abbr": "",
+    "cat": "devices",
+    "names": {
+      "uz": "Klient (mijoz)",
+      "ru": "Клиент",
+      "en": "Client"
+    },
+    "def": {
+      "uz": "Serverdan xizmat yoki ma’lumot so‘raydigan qurilma yoki dastur. Masalan, brauzer veb-serverdan sahifani so‘raganda klient vazifasini bajaradi.",
+      "ru": "Устройство или программа, запрашивающая услугу или данные у сервера. Например, браузер выступает клиентом, когда запрашивает страницу у веб-сервера.",
+      "en": "A device or program that requests a service or data from a server. For example, a web browser acts as a client when it asks a web server for a page."
+    },
+    "see": [
+      "server",
+      "host",
+      "http"
+    ]
+  },
+  {
+    "id": "collision-domain",
+    "term": "Collision domain",
+    "abbr": "",
+    "cat": "ethernet",
+    "names": {
+      "uz": "To‘qnashuv domeni",
+      "ru": "Домен коллизий",
+      "en": "Collision domain"
+    },
+    "def": {
+      "uz": "Ikki qurilma bir vaqtda uzatsa signallari to‘qnashadigan tarmoq qismi. Hubning barcha portlari bitta to‘qnashuv domeni; switch esa har bir portni alohida domenga ajratadi, full-duplex rejimda esa to‘qnashuv umuman bo‘lmaydi.",
+      "ru": "Участок сети, где сигналы двух устройств, передающих одновременно, сталкиваются. Все порты концентратора — один домен коллизий; коммутатор выделяет каждому порту свой, а в полном дуплексе коллизий нет вовсе.",
+      "en": "The part of a network where signals collide if two devices transmit at the same time. All hub ports share one collision domain; a switch gives each port its own, and full-duplex links have no collisions at all."
+    },
+    "see": [
+      "broadcast-domain",
+      "csma-cd",
+      "hub",
+      "duplex"
+    ]
+  },
+  {
+    "id": "rollover-cable",
+    "term": "Console (rollover) cable",
+    "abbr": "",
+    "cat": "media",
+    "names": {
+      "uz": "Konsol kabeli (rollover)",
+      "ru": "Консольный кабель (rollover)",
+      "en": "Console (rollover) cable"
+    },
+    "def": {
+      "uz": "Kompyuterni Cisco router yoki switchning konsol portiga ulab, dastlabki sozlashni bajarish uchun ishlatiladigan maxsus kabel. Simlar tartibi bir uchdan ikkinchisiga teskari bo‘ladi; ko‘pincha USB adapter bilan ishlatiladi.",
+      "ru": "Специальный кабель для подключения компьютера к консольному порту маршрутизатора или коммутатора Cisco для начальной настройки. Порядок проводов на концах зеркальный; часто используется с USB-адаптером.",
+      "en": "A special cable that connects a computer to the console port of a Cisco router or switch for initial setup. The wire order is reversed end to end, and it is often used with a USB adapter."
+    },
+    "see": [
+      "console-port",
+      "cli",
+      "rj-45"
+    ]
+  },
+  {
+    "id": "console-port",
+    "term": "Console port",
+    "abbr": "",
+    "cat": "cisco",
+    "names": {
+      "uz": "Konsol porti",
+      "ru": "Консольный порт",
+      "en": "Console port"
+    },
+    "def": {
+      "uz": "Cisco qurilmasini tarmoq hali sozlanmagan bo‘lsa ham bevosita boshqarish uchun mo‘ljallangan maxsus port. Unga konsol kabeli orqali kompyuter ulanadi va PuTTY kabi terminal dasturi (9600 bod) bilan CLI ga kiriladi.",
+      "ru": "Специальный порт для прямого управления устройством Cisco, даже когда сеть ещё не настроена. К нему подключают компьютер консольным кабелем и входят в CLI через терминальную программу, например PuTTY (9600 бод).",
+      "en": "A dedicated port for managing a Cisco device directly, even before any networking is configured. You connect a computer with a console cable and open the CLI in a terminal program such as PuTTY at 9600 baud."
+    },
+    "see": [
+      "rollover-cable",
+      "cli",
+      "cisco-ios"
+    ]
+  },
+  {
+    "id": "crossover-cable",
+    "term": "Crossover cable",
+    "abbr": "",
+    "cat": "media",
+    "names": {
+      "uz": "Kross kabel (crossover)",
+      "ru": "Перекрёстный кабель (crossover)",
+      "en": "Crossover cable"
+    },
+    "def": {
+      "uz": "Bir uchi T568A, ikkinchi uchi T568B tartibida ulangan, uzatish va qabul qilish juftliklari almashtirilgan UTP kabel. An’anaviy ravishda bir xil qurilmalarni ulaydi: kompyuter–kompyuter, switch–switch, router–kompyuter.",
+      "ru": "Кабель UTP, обжатый по T568A с одной стороны и по T568B с другой, так что пары передачи и приёма меняются местами. Традиционно соединяет однотипные устройства: ПК–ПК, коммутатор–коммутатор, маршрутизатор–ПК.",
+      "en": "A UTP cable wired T568A on one end and T568B on the other, swapping the transmit and receive pairs. It traditionally connects like devices: PC to PC, switch to switch or router to PC."
+    },
+    "see": [
+      "straight-through-cable",
+      "auto-mdix",
+      "utp"
+    ]
+  },
+  {
+    "id": "csma-ca",
+    "term": "CSMA/CA",
+    "abbr": "Carrier Sense Multiple Access with Collision Avoidance",
+    "cat": "wireless",
+    "names": {
+      "uz": "CSMA/CA",
+      "ru": "CSMA/CA",
+      "en": "CSMA/CA"
+    },
+    "def": {
+      "uz": "Wi-Fi tarmoqlarida qo‘llanadigan muhitga kirish usuli. Simsiz qurilma to‘qnashuvni aniqlay olmagani uchun uning oldini olishga harakat qiladi: kanal bo‘shligini tekshiradi, tasodifiy vaqt kutadi va har bir freym uchun tasdiq (ACK) kutadi.",
+      "ru": "Метод доступа к среде, применяемый в Wi-Fi. Беспроводное устройство не может обнаружить коллизию, поэтому старается её избежать: проверяет, свободен ли канал, выжидает случайное время и ждёт подтверждения (ACK) каждого кадра.",
+      "en": "The media access method used by Wi-Fi. Because wireless devices cannot detect collisions, they try to avoid them: they check the channel is clear, wait a random time and expect an acknowledgment (ACK) for every frame."
+    },
+    "see": [
+      "csma-cd",
+      "wifi",
+      "wlan"
+    ]
+  },
+  {
+    "id": "csma-cd",
+    "term": "CSMA/CD",
+    "abbr": "Carrier Sense Multiple Access with Collision Detection",
+    "cat": "ethernet",
+    "names": {
+      "uz": "CSMA/CD",
+      "ru": "CSMA/CD",
+      "en": "CSMA/CD"
+    },
+    "def": {
+      "uz": "Half-duplex rejimdagi eski Ethernet tarmoqlarida ishlatilgan muhitga kirish usuli. Qurilma avval liniya bo‘shligini tinglaydi, so‘ng uzatadi; to‘qnashuv aniqlansa, tasodifiy vaqt kutib qayta urinadi.",
+      "ru": "Метод доступа к среде, применявшийся в старом полудуплексном Ethernet. Устройство сначала слушает, свободна ли линия, затем передаёт; при обнаружении коллизии ждёт случайное время и повторяет попытку.",
+      "en": "The media access method used by older half-duplex Ethernet. A device listens to check the line is free before sending; if it detects a collision, it waits a random time and tries again."
+    },
+    "see": [
+      "collision-domain",
+      "duplex",
+      "csma-ca",
+      "hub"
+    ]
+  },
+  {
+    "id": "data-link-layer",
+    "term": "Data link layer",
+    "abbr": "",
+    "cat": "models",
+    "names": {
+      "uz": "Kanal sathi (2-sath)",
+      "ru": "Канальный уровень (уровень 2)",
+      "en": "Data link layer (Layer 2)"
+    },
+    "def": {
+      "uz": "OSI modelining 2-sathi: bitta tarmoq ichidagi qo‘shni qurilmalar orasida freymlarni yetkazadi. MAC manzillar, Ethernet, xatolarni aniqlash (FCS) va switchlar shu sathda ishlaydi.",
+      "ru": "Уровень 2 модели OSI: доставляет кадры между соседними устройствами в пределах одной сети. Здесь работают MAC-адреса, Ethernet, обнаружение ошибок (FCS) и коммутаторы.",
+      "en": "Layer 2 of the OSI model. It delivers frames between neighboring devices on the same network; MAC addresses, Ethernet, error detection (FCS) and switches work here."
+    },
+    "see": [
+      "frame",
+      "mac-address",
+      "switch",
+      "physical-layer"
+    ]
+  },
+  {
+    "id": "default-gateway",
+    "term": "Default gateway",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "Asosiy shlyuz (default gateway)",
+      "ru": "Шлюз по умолчанию",
+      "en": "Default gateway"
+    },
+    "def": {
+      "uz": "Xost boshqa tarmoqqa paket yuborishda foydalanadigan router interfeysining IP manzili. U xost bilan bir tarmoqda bo‘lishi shart; masalan, 192.168.1.0/24 dagi kompyuterlar uchun shlyuz ko‘pincha 192.168.1.1.",
+      "ru": "IP-адрес интерфейса маршрутизатора, на который хост отправляет пакеты для других сетей. Он должен находиться в той же сети, что и хост; например, для компьютеров сети 192.168.1.0/24 это часто 192.168.1.1.",
+      "en": "The IP address of the router interface a host uses to reach other networks. It must be in the same subnet as the host; for computers in 192.168.1.0/24 it is often 192.168.1.1."
+    },
+    "see": [
+      "router",
+      "default-route",
+      "dhcp",
+      "host-address"
+    ]
+  },
+  {
+    "id": "default-route",
+    "term": "Default route",
+    "abbr": "",
+    "cat": "routing",
+    "names": {
+      "uz": "Standart marshrut (default route)",
+      "ru": "Маршрут по умолчанию",
+      "en": "Default route"
+    },
+    "def": {
+      "uz": "Jadvalda aniqroq mos yozuv topilmagan barcha paketlar yuboriladigan marshrut, 0.0.0.0/0 ko‘rinishida yoziladi. Odatda internet tomonga yo‘naltiriladi: ip route 0.0.0.0 0.0.0.0 203.0.113.1.",
+      "ru": "Маршрут для всех пакетов, для которых в таблице не нашлось более точной записи; записывается как 0.0.0.0/0. Обычно направлен в сторону интернета: ip route 0.0.0.0 0.0.0.0 203.0.113.1.",
+      "en": "The route used for any packet that matches no more specific entry, written as 0.0.0.0/0. It usually points toward the Internet, for example ip route 0.0.0.0 0.0.0.0 203.0.113.1."
+    },
+    "see": [
+      "static-route",
+      "default-gateway",
+      "longest-prefix-match"
+    ]
+  },
+  {
+    "id": "dhcp",
+    "term": "DHCP",
+    "abbr": "Dynamic Host Configuration Protocol",
+    "cat": "protocols",
+    "names": {
+      "uz": "DHCP",
+      "ru": "DHCP",
+      "en": "Dynamic Host Configuration Protocol"
+    },
+    "def": {
+      "uz": "Qurilmalarga IP manzil, tarmoq maskasi, asosiy shlyuz va DNS server manzillarini avtomatik beradigan protokol. Manzil ma’lum muddatga ijaraga (lease) beriladi; UDP ning 67 va 68-portlarida ishlaydi.",
+      "ru": "Протокол, автоматически выдающий устройствам IP-адрес, маску подсети, шлюз по умолчанию и адреса DNS-серверов. Адрес выдаётся в аренду (lease) на определённый срок; работает на портах UDP 67 и 68.",
+      "en": "The protocol that automatically gives devices an IP address, subnet mask, default gateway and DNS server addresses. Addresses are leased for a set time; it runs on UDP ports 67 and 68."
+    },
+    "see": [
+      "dora",
+      "apipa",
+      "default-gateway",
+      "dns"
+    ]
+  },
+  {
+    "id": "dns",
+    "term": "DNS",
+    "abbr": "Domain Name System",
+    "cat": "protocols",
+    "names": {
+      "uz": "DNS",
+      "ru": "DNS",
+      "en": "Domain Name System"
+    },
+    "def": {
+      "uz": "Domen nomlarini IP manzillarga aylantiruvchi tizim, internetning «telefon kitobi». Masalan, brauzerga google.com yozilganda kompyuter DNS serverdan uning IP manzilini so‘raydi; asosan UDP 53-portidan foydalanadi.",
+      "ru": "Система, преобразующая доменные имена в IP-адреса, — «телефонная книга» интернета. Например, при вводе google.com компьютер спрашивает у DNS-сервера его IP-адрес; в основном использует порт UDP 53.",
+      "en": "The system that translates domain names into IP addresses, the Internet's phone book. When you type google.com, your computer asks a DNS server for its IP address; it mainly uses UDP port 53."
+    },
+    "see": [
+      "dhcp",
+      "udp",
+      "server",
+      "port-number"
+    ]
+  },
+  {
+    "id": "dora",
+    "term": "DORA",
+    "abbr": "Discover, Offer, Request, Acknowledge",
+    "cat": "protocols",
+    "names": {
+      "uz": "DORA jarayoni",
+      "ru": "Процесс DORA",
+      "en": "DORA process"
+    },
+    "def": {
+      "uz": "DHCP orqali manzil olishning to‘rt bosqichi: Discover — klient serverni broadcast bilan qidiradi; Offer — server manzil taklif qiladi; Request — klient shu manzilni so‘raydi; Acknowledge — server uni tasdiqlaydi.",
+      "ru": "Четыре шага получения адреса по DHCP: Discover — клиент ищет сервер широковещательным запросом; Offer — сервер предлагает адрес; Request — клиент запрашивает его; Acknowledge — сервер подтверждает.",
+      "en": "The four steps of getting an address via DHCP: Discover (the client broadcasts to find a server), Offer (the server proposes an address), Request (the client asks for it) and Acknowledge (the server confirms)."
+    },
+    "see": [
+      "dhcp",
+      "broadcast"
+    ]
+  },
+  {
+    "id": "double-colon",
+    "term": "Double colon (::)",
+    "abbr": "",
+    "cat": "ipv6",
+    "names": {
+      "uz": "Qo‘sh ikki nuqta (::)",
+      "ru": "Двойное двоеточие (::)",
+      "en": "Double colon (::)"
+    },
+    "def": {
+      "uz": "IPv6 manzilda ketma-ket kelgan bir yoki bir nechta nol guruhlarni almashtiruvchi qisqartma. U manzilda faqat bir marta ishlatiladi: 2001:db8:0:0:0:0:0:1 → 2001:db8::1. Yolg‘iz :: esa barcha bitlari nol bo‘lgan manzil.",
+      "ru": "Сокращение в IPv6-адресе, заменяющее одну или несколько идущих подряд нулевых групп. Используется в адресе только один раз: 2001:db8:0:0:0:0:0:1 → 2001:db8::1. Само по себе :: — адрес из одних нулей.",
+      "en": "Shorthand in an IPv6 address that replaces one or more consecutive all-zero groups. It may appear only once per address: 2001:db8:0:0:0:0:0:1 becomes 2001:db8::1. On its own, :: means the all-zeros address."
+    },
+    "see": [
+      "ipv6-address-format",
+      "hextet"
+    ]
+  },
+  {
+    "id": "duplex",
+    "term": "Duplex",
+    "abbr": "",
+    "cat": "ethernet",
+    "names": {
+      "uz": "Dupleks (half / full)",
+      "ru": "Дуплекс (полу- и полный)",
+      "en": "Duplex (half / full)"
+    },
+    "def": {
+      "uz": "Port ma’lumotni qaysi yo‘nalishda uzatishini belgilaydi. Half-duplex rejimida bir vaqtda faqat yuborish yoki faqat qabul qilish mumkin, full-duplex rejimida esa ikkalasi birga bo‘ladi va to‘qnashuv yo‘qoladi.",
+      "ru": "Режим передачи данных порта. В полудуплексе в каждый момент можно либо передавать, либо принимать; в полном дуплексе — одновременно, и коллизий нет. Несовпадение режимов на концах линии замедляет сеть.",
+      "en": "Describes the direction of data flow on a link. Half duplex lets a port send or receive but not both at once; full duplex does both simultaneously with no collisions. A duplex mismatch slows the link."
+    },
+    "see": [
+      "csma-cd",
+      "collision-domain",
+      "switch"
+    ]
+  },
+  {
+    "id": "dynamic-routing",
+    "term": "Dynamic routing",
+    "abbr": "",
+    "cat": "routing",
+    "names": {
+      "uz": "Dinamik marshrutlash",
+      "ru": "Динамическая маршрутизация",
+      "en": "Dynamic routing"
+    },
+    "def": {
+      "uz": "Routerlar marshrutlash protokollari (RIP, OSPF, EIGRP) yordamida tarmoqlar haqida o‘zaro ma’lumot almashib, jadvallarini avtomatik to‘ldirishi. Liniya uzilsa, ular yangi yo‘lni o‘zlari topadi.",
+      "ru": "Маршрутизаторы обмениваются сведениями о сетях с помощью протоколов маршрутизации (RIP, OSPF, EIGRP) и автоматически заполняют свои таблицы. При обрыве линии они сами находят новый путь.",
+      "en": "Routers share information about networks using routing protocols such as RIP, OSPF and EIGRP and fill their tables automatically. If a link fails, they find a new path on their own."
+    },
+    "see": [
+      "rip",
+      "ospf",
+      "eigrp",
+      "static-route"
+    ]
+  },
+  {
+    "id": "eigrp",
+    "term": "EIGRP",
+    "abbr": "Enhanced Interior Gateway Routing Protocol",
+    "cat": "routing",
+    "names": {
+      "uz": "EIGRP",
+      "ru": "EIGRP",
+      "en": "Enhanced Interior Gateway Routing Protocol"
+    },
+    "def": {
+      "uz": "Cisco tomonidan yaratilgan, tarmoq o‘zgarishlariga juda tez moslashadigan ilg‘or distance-vector marshrutlash protokoli. Metrikasi asosan bandwidth va kechikishdan hisoblanadi; ichki marshrutlar uchun AD qiymati 90.",
+      "ru": "Усовершенствованный дистанционно-векторный протокол маршрутизации, созданный Cisco и очень быстро реагирующий на изменения сети. Метрика вычисляется в основном из полосы пропускания и задержки; AD внутренних маршрутов — 90.",
+      "en": "An advanced distance-vector routing protocol developed by Cisco that adapts to network changes very quickly. Its metric is calculated mainly from bandwidth and delay, and internal routes have an AD of 90."
+    },
+    "see": [
+      "dynamic-routing",
+      "ospf",
+      "metric",
+      "administrative-distance"
+    ]
+  },
+  {
+    "id": "encapsulation",
+    "term": "Encapsulation",
+    "abbr": "",
+    "cat": "models",
+    "names": {
+      "uz": "Inkapsulyatsiya",
+      "ru": "Инкапсуляция",
+      "en": "Encapsulation"
+    },
+    "def": {
+      "uz": "Ma’lumot yuborilayotganda har bir sath unga o‘z sarlavhasini qo‘shib borish jarayoni: ma’lumot → segment → paket → freym → bitlar. Qabul qiluvchi tomonda teskari jarayon — dekapsulyatsiya bajariladi.",
+      "ru": "Процесс, при котором каждый уровень при отправке добавляет к данным свой заголовок: данные → сегмент → пакет → кадр → биты. На стороне получателя выполняется обратный процесс — декапсуляция.",
+      "en": "The process in which each layer adds its own header as data is sent: data → segment → packet → frame → bits. The receiver reverses this, stripping the headers, which is called de-encapsulation."
+    },
+    "see": [
+      "pdu",
+      "segment",
+      "packet",
+      "frame"
+    ]
+  },
+  {
+    "id": "ethernet",
+    "term": "Ethernet",
+    "abbr": "",
+    "cat": "ethernet",
+    "names": {
+      "uz": "Ethernet",
+      "ru": "Ethernet",
+      "en": "Ethernet"
+    },
+    "def": {
+      "uz": "Simli lokal tarmoqlar uchun eng keng tarqalgan texnologiya, IEEE 802.3 standartlar oilasi. U freym formati, MAC manzillash va kabel turlarini belgilaydi; tezligi 10 Mbit/s dan 100 Gbit/s va undan yuqori.",
+      "ru": "Самая распространённая технология проводных локальных сетей, семейство стандартов IEEE 802.3. Определяет формат кадра, MAC-адресацию и типы кабелей; скорости — от 10 Мбит/с до 100 Гбит/с и выше.",
+      "en": "The most widely used technology for wired LANs, defined by the IEEE 802.3 family of standards. It specifies frame format, MAC addressing and cable types, with speeds from 10 Mbps to 100 Gbps and beyond."
+    },
+    "see": [
+      "ethernet-standards",
+      "frame",
+      "mac-address",
+      "utp"
+    ]
+  },
+  {
+    "id": "ethernet-standards",
+    "term": "Ethernet standards",
+    "abbr": "",
+    "cat": "ethernet",
+    "names": {
+      "uz": "Ethernet standartlari",
+      "ru": "Стандарты Ethernet",
+      "en": "Ethernet standards"
+    },
+    "def": {
+      "uz": "Ethernet turlari tezlik va muhit bo‘yicha nomlanadi: 100BASE-TX (100 Mbit/s, mis), 1000BASE-T (1 Gbit/s, mis), 1000BASE-SX (1 Gbit/s, optika), 10GBASE-T (10 Gbit/s). Raqam tezlikni, BASE esa baseband uzatishni bildiradi.",
+      "ru": "Варианты Ethernet называются по скорости и среде: 100BASE-TX (100 Мбит/с, медь), 1000BASE-T (1 Гбит/с, медь), 1000BASE-SX (1 Гбит/с, оптика), 10GBASE-T (10 Гбит/с). Число — скорость, BASE — передача в основной полосе.",
+      "en": "Ethernet variants are named by speed and medium: 100BASE-TX (100 Mbps, copper), 1000BASE-T (1 Gbps, copper), 1000BASE-SX (1 Gbps, fiber), 10GBASE-T (10 Gbps). The number is the speed; BASE means baseband."
+    },
+    "see": [
+      "ethernet",
+      "utp",
+      "fiber-optic",
+      "bandwidth"
+    ]
+  },
+  {
+    "id": "extended-acl",
+    "term": "Extended ACL",
+    "abbr": "",
+    "cat": "security",
+    "names": {
+      "uz": "Kengaytirilgan ACL",
+      "ru": "Расширенный ACL",
+      "en": "Extended ACL"
+    },
+    "def": {
+      "uz": "Manba va qabul qiluvchi IP manzil, protokol va port raqami bo‘yicha filtrlay oladigan ACL; Cisco qurilmalarida 100–199 va 2000–2699 raqamlari bilan belgilanadi. Masalan, HTTPS ni faqat bitta tarmoqqa ruxsat berish mumkin. Manbaga yaqin o‘rnatiladi.",
+      "ru": "ACL, который фильтрует по адресам отправителя и получателя, протоколу и номеру порта; в Cisco — номера 100–199 и 2000–2699. Например, можно разрешить HTTPS только одной сети. Размещается ближе к источнику.",
+      "en": "An ACL that can filter on source and destination IP, protocol and port number; Cisco numbers them 100–199 and 2000–2699. For example, it can permit HTTPS from only one network. It is placed close to the source."
+    },
+    "see": [
+      "acl",
+      "standard-acl",
+      "port-number"
+    ]
+  },
+  {
+    "id": "fiber-optic",
+    "term": "Fiber-optic cable",
+    "abbr": "",
+    "cat": "media",
+    "names": {
+      "uz": "Optik tolali kabel",
+      "ru": "Оптоволоконный кабель",
+      "en": "Fiber-optic cable"
+    },
+    "def": {
+      "uz": "Ma’lumotni yorug‘lik impulslari ko‘rinishida shisha yoki plastik tola orqali uzatuvchi kabel. Elektromagnit shovqinga chidamli va kilometrlab masofada ishlaydi; single-mode uzoq, multimode qisqa masofalar uchun.",
+      "ru": "Кабель, передающий данные световыми импульсами по стеклянному или пластиковому волокну. Не боится электромагнитных помех и работает на километры; одномодовый — для больших, многомодовый — для коротких расстояний.",
+      "en": "Cable that carries data as pulses of light through glass or plastic strands. It is immune to electromagnetic interference and spans kilometers; single-mode is for long distances, multimode for shorter runs."
+    },
+    "see": [
+      "utp",
+      "man",
+      "ethernet-standards"
+    ]
+  },
+  {
+    "id": "firewall",
+    "term": "Firewall",
+    "abbr": "",
+    "cat": "devices",
+    "names": {
+      "uz": "Firewall (tarmoqlararo ekran)",
+      "ru": "Межсетевой экран (firewall)",
+      "en": "Firewall"
+    },
+    "def": {
+      "uz": "Tarmoqlar orasidagi trafikni belgilangan qoidalar asosida tekshirib, ruxsat beradigan yoki bloklaydigan qurilma yoki dastur. Masalan, internetdan ichki serverga faqat 443-port orqali kirishga ruxsat berish mumkin.",
+      "ru": "Устройство или программа, проверяющие трафик между сетями и разрешающие или блокирующие его по заданным правилам. Например, из интернета можно разрешить доступ к внутреннему серверу только на порт 443.",
+      "en": "A device or software that inspects traffic between networks and permits or blocks it according to rules. For example, it can allow Internet users to reach an internal server only on port 443."
+    },
+    "see": [
+      "acl",
+      "port-number",
+      "intranet"
+    ]
+  },
+  {
+    "id": "flooding",
+    "term": "Flooding",
+    "abbr": "",
+    "cat": "ethernet",
+    "names": {
+      "uz": "Flooding (barcha portlarga tarqatish)",
+      "ru": "Лавинная рассылка (flooding)",
+      "en": "Flooding"
+    },
+    "def": {
+      "uz": "Switch qabul qiluvchi MAC manzilni jadvalida topmasa yoki freym broadcast bo‘lsa, uni kelgan portdan boshqa barcha portlarga yuborishi. Javob kelgach switch manzilni o‘rganadi va endi flooding qilmaydi.",
+      "ru": "Пересылка кадра коммутатором во все порты, кроме входящего, когда MAC-адреса получателя нет в таблице или кадр широковещательный. Получив ответ, коммутатор запоминает адрес и больше не рассылает лавиной.",
+      "en": "When a switch does not find the destination MAC in its table, or the frame is a broadcast, it sends the frame out every port except the one it came in on. Once the reply arrives, the switch learns the address."
+    },
+    "see": [
+      "mac-address-table",
+      "frame-filtering",
+      "broadcast"
+    ]
+  },
+  {
+    "id": "frame",
+    "term": "Frame",
+    "abbr": "",
+    "cat": "models",
+    "names": {
+      "uz": "Freym (kadr)",
+      "ru": "Кадр (фрейм)",
+      "en": "Frame"
+    },
+    "def": {
+      "uz": "Kanal sathining PDU si: paketga manba va qabul qiluvchi MAC manzillari bor sarlavha hamda oxiriga xatolarni tekshirish maydoni (FCS) qo‘shiladi. Switchlar aynan freymlar bilan ishlaydi.",
+      "ru": "PDU канального уровня: к пакету добавляются заголовок с MAC-адресами отправителя и получателя и концевое поле проверки ошибок (FCS). Коммутаторы работают именно с кадрами.",
+      "en": "The data link layer PDU. A header with source and destination MAC addresses is added to the packet, plus a trailer (FCS) for error checking. Switches work with frames."
+    },
+    "see": [
+      "data-link-layer",
+      "mac-address",
+      "packet",
+      "pdu"
+    ]
+  },
+  {
+    "id": "frame-filtering",
+    "term": "Frame filtering",
+    "abbr": "",
+    "cat": "ethernet",
+    "names": {
+      "uz": "Freymlarni filtrlash",
+      "ru": "Фильтрация кадров",
+      "en": "Frame filtering"
+    },
+    "def": {
+      "uz": "Switch qabul qiluvchi MAC manzil freym kelgan portning o‘zida joylashganini ko‘rsa, freymni hech qayerga yubormay tashlab yuborishi. Bu ortiqcha trafikning boshqa portlarga tarqalishining oldini oladi.",
+      "ru": "Действие коммутатора, когда он видит, что получатель находится за тем же портом, откуда пришёл кадр, и просто отбрасывает кадр. Это не даёт лишнему трафику расходиться по другим портам.",
+      "en": "What a switch does when the destination MAC is on the same port the frame arrived on: it drops the frame instead of forwarding it. This keeps unnecessary traffic off the other ports."
+    },
+    "see": [
+      "mac-address-table",
+      "flooding",
+      "switch"
+    ]
+  },
+  {
+    "id": "ftp",
+    "term": "FTP",
+    "abbr": "File Transfer Protocol",
+    "cat": "protocols",
+    "names": {
+      "uz": "FTP",
+      "ru": "FTP",
+      "en": "File Transfer Protocol"
+    },
+    "def": {
+      "uz": "Kompyuterlar o‘rtasida fayllarni yuklash va yuklab olish protokoli. TCP 21-portini buyruqlar uchun, faol rejimda 20-portini esa ma’lumot uchun ishlatadi; parol shifrlanmasdan uzatiladi.",
+      "ru": "Протокол для загрузки и скачивания файлов между компьютерами. Использует порт TCP 21 для команд и, в активном режиме, порт 20 для данных; пароль передаётся без шифрования.",
+      "en": "A protocol for uploading and downloading files between computers. It uses TCP port 21 for commands and, in active mode, port 20 for data; passwords travel unencrypted."
+    },
+    "see": [
+      "port-number",
+      "tcp",
+      "ssh"
+    ]
+  },
+  {
+    "id": "global-configuration-mode",
+    "term": "Global configuration mode",
+    "abbr": "",
+    "cat": "cisco",
+    "names": {
+      "uz": "Global konfiguratsiya rejimi",
+      "ru": "Режим глобальной конфигурации",
+      "en": "Global configuration mode"
+    },
+    "def": {
+      "uz": "Butun qurilmaga ta’sir qiluvchi sozlamalar (hostname, parollar, marshrutlar) kiritiladigan rejim. Privileged EXEC dan configure terminal buyrug‘i bilan o‘tiladi; taklif satri Router(config)#.",
+      "ru": "Режим, в котором вводятся настройки для всего устройства: имя, пароли, маршруты. Вход из Privileged EXEC командой configure terminal; приглашение — Router(config)#.",
+      "en": "The mode for settings that affect the whole device, such as hostname, passwords and routes. You enter it from privileged EXEC with configure terminal; the prompt is Router(config)#."
+    },
+    "see": [
+      "privileged-exec-mode",
+      "interface-configuration-mode",
+      "running-config"
+    ]
+  },
+  {
+    "id": "global-unicast-address",
+    "term": "Global unicast address",
+    "abbr": "",
+    "cat": "ipv6",
+    "names": {
+      "uz": "Global unicast manzil",
+      "ru": "Глобальный индивидуальный адрес",
+      "en": "Global unicast address"
+    },
+    "def": {
+      "uz": "Internetda noyob va marshrutlanadigan, IPv4 dagi ommaviy manzilga o‘xshash IPv6 manzil. Hozir 2000::/3 diapazonidan, ya’ni 2 yoki 3 bilan boshlanadigan manzillardan beriladi; masalan, 2001:db8:acad:1::10.",
+      "ru": "Уникальный маршрутизируемый в интернете IPv6-адрес, аналог публичного IPv4-адреса. Сейчас выдаётся из диапазона 2000::/3, то есть начинается с 2 или 3; например, 2001:db8:acad:1::10.",
+      "en": "An IPv6 address that is unique and routable on the Internet, like a public IPv4 address. Current allocations come from 2000::/3, so they begin with 2 or 3, for example 2001:db8:acad:1::10."
+    },
+    "see": [
+      "link-local-address",
+      "ipv6",
+      "public-ip-address",
+      "slaac"
+    ]
+  },
+  {
+    "id": "hextet",
+    "term": "Hextet",
+    "abbr": "",
+    "cat": "ipv6",
+    "names": {
+      "uz": "Hekstet",
+      "ru": "Хекстет",
+      "en": "Hextet"
+    },
+    "def": {
+      "uz": "IPv6 manzilning 4 ta o‘n oltilik raqam bilan yoziladigan 16 bitli bitta guruhi. Har bir hekstetdagi boshidagi nollarni tashlab yozish mumkin: 0db8 → db8, 0001 → 1.",
+      "ru": "Одна 16-битная группа IPv6-адреса из 4 шестнадцатеричных цифр. Ведущие нули в каждом хекстете можно опускать: 0db8 → db8, 0001 → 1.",
+      "en": "One 16-bit group of an IPv6 address, written as four hex digits. Leading zeros in each hextet may be dropped: 0db8 becomes db8 and 0001 becomes 1."
+    },
+    "see": [
+      "ipv6-address-format",
+      "double-colon",
+      "octet"
+    ]
+  },
+  {
+    "id": "host",
+    "term": "Host",
+    "abbr": "",
+    "cat": "devices",
+    "names": {
+      "uz": "Xost",
+      "ru": "Хост",
+      "en": "Host"
+    },
+    "def": {
+      "uz": "Tarmoqqa ulangan va IP manzilga ega bo‘lgan har qanday oxirgi qurilma: kompyuter, telefon, printer yoki server. Xostlar ma’lumotning manbai yoki oxirgi qabul qiluvchisi bo‘ladi.",
+      "ru": "Любое конечное устройство в сети, имеющее IP-адрес: компьютер, телефон, принтер или сервер. Хосты являются источником или конечным получателем данных.",
+      "en": "Any end device on a network that has an IP address, such as a computer, phone, printer or server. Hosts are the original source or final destination of data."
+    },
+    "see": [
+      "client",
+      "server",
+      "host-address",
+      "nic"
+    ]
+  },
+  {
+    "id": "host-address",
+    "term": "Host address",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "Xost manzili",
+      "ru": "Адрес хоста",
+      "en": "Host address"
+    },
+    "def": {
+      "uz": "Tarmoq manzili va broadcast manzili orasidagi, qurilmalarga beriladigan manzillar. Masalan, 192.168.1.0/24 tarmog‘ida 192.168.1.1 dan 192.168.1.254 gacha bo‘lgan manzillar xostlar uchun ishlatiladi.",
+      "ru": "Адреса между адресом сети и широковещательным, которые назначаются устройствам. Например, в сети 192.168.1.0/24 для хостов используются адреса от 192.168.1.1 до 192.168.1.254.",
+      "en": "The addresses between the network address and the broadcast address, which can be given to devices. In 192.168.1.0/24, hosts use 192.168.1.1 through 192.168.1.254."
+    },
+    "see": [
+      "usable-hosts-formula",
+      "network-address",
+      "broadcast-address",
+      "host"
+    ]
+  },
+  {
+    "id": "http",
+    "term": "HTTP",
+    "abbr": "Hypertext Transfer Protocol",
+    "cat": "protocols",
+    "names": {
+      "uz": "HTTP",
+      "ru": "HTTP",
+      "en": "Hypertext Transfer Protocol"
+    },
+    "def": {
+      "uz": "Brauzer va veb-server o‘rtasida veb-sahifalar va boshqa resurslarni uzatuvchi ilova sathi protokoli. Standart bo‘yicha TCP 80-portida ishlaydi; ma’lumot shifrlanmagan holda uzatiladi.",
+      "ru": "Протокол прикладного уровня для передачи веб-страниц и других ресурсов между браузером и веб-сервером. По умолчанию работает на порту TCP 80; данные передаются без шифрования.",
+      "en": "The application layer protocol that transfers web pages and other resources between a browser and a web server. It uses TCP port 80 by default and sends data unencrypted."
+    },
+    "see": [
+      "https",
+      "application-layer",
+      "tcp",
+      "port-number"
+    ]
+  },
+  {
+    "id": "https",
+    "term": "HTTPS",
+    "abbr": "Hypertext Transfer Protocol Secure",
+    "cat": "protocols",
+    "names": {
+      "uz": "HTTPS",
+      "ru": "HTTPS",
+      "en": "Hypertext Transfer Protocol Secure"
+    },
+    "def": {
+      "uz": "TLS yordamida shifrlangan HTTP. Ma’lumotni begonalar o‘qiy olmaydi, sayt haqiqiyligi esa sertifikat orqali tekshiriladi; TCP 443-portida ishlaydi. Brauzerdagi qulf belgisi HTTPS ishlayotganini bildiradi.",
+      "ru": "HTTP, зашифрованный с помощью TLS. Посторонние не могут прочитать данные, а подлинность сайта проверяется сертификатом; работает на порту TCP 443. Значок замка в браузере означает HTTPS.",
+      "en": "HTTP encrypted with TLS. Outsiders cannot read the data and the site's identity is checked with a certificate; it uses TCP port 443. The padlock icon in a browser means HTTPS is in use."
+    },
+    "see": [
+      "http",
+      "port-number",
+      "ssh"
+    ]
+  },
+  {
+    "id": "hub",
+    "term": "Hub",
+    "abbr": "",
+    "cat": "devices",
+    "names": {
+      "uz": "Hub (kontsentrator)",
+      "ru": "Концентратор (хаб)",
+      "en": "Hub"
+    },
+    "def": {
+      "uz": "Bir portga kelgan signalni boshqa barcha portlarga ko‘r-ko‘rona takrorlab yuboradigan eski 1-sath qurilmasi. Barcha portlari bitta to‘qnashuv domenida bo‘ladi, shuning uchun hozir uning o‘rniga switch ishlatiladi.",
+      "ru": "Устаревшее устройство 1-го уровня, которое просто повторяет сигнал с одного порта на все остальные. Все порты находятся в одном домене коллизий, поэтому сегодня вместо него используют коммутаторы.",
+      "en": "An outdated Layer 1 device that blindly repeats a signal arriving on one port out of every other port. All ports share one collision domain, so switches have replaced hubs."
+    },
+    "see": [
+      "switch",
+      "repeater",
+      "collision-domain",
+      "physical-layer"
+    ]
+  },
+  {
+    "id": "icmp",
+    "term": "ICMP",
+    "abbr": "Internet Control Message Protocol",
+    "cat": "protocols",
+    "names": {
+      "uz": "ICMP",
+      "ru": "ICMP",
+      "en": "Internet Control Message Protocol"
+    },
+    "def": {
+      "uz": "Tarmoq holati va xatolar haqida xabar beruvchi 3-sath protokoli. Ping va traceroute ICMP xabarlariga asoslanadi; masalan, manzilga yetib bo‘lmasa, router «Destination unreachable» xabarini qaytaradi.",
+      "ru": "Протокол 3-го уровня для сообщений о состоянии сети и ошибках. На его сообщениях работают ping и traceroute; например, если адрес недостижим, маршрутизатор возвращает «Destination unreachable».",
+      "en": "A Layer 3 protocol for reporting network status and errors. Ping and traceroute are built on ICMP messages; for example, a router returns 'Destination unreachable' when it cannot reach an address."
+    },
+    "see": [
+      "ping",
+      "traceroute",
+      "ttl",
+      "network-layer"
+    ]
+  },
+  {
+    "id": "implicit-deny",
+    "term": "Implicit deny",
+    "abbr": "",
+    "cat": "security",
+    "names": {
+      "uz": "Yashirin taqiq (implicit deny)",
+      "ru": "Неявный запрет (implicit deny)",
+      "en": "Implicit deny"
+    },
+    "def": {
+      "uz": "Har bir ACL oxirida ko‘rinmas holda turadigan «deny any» qoidasi. Hech bir qoidaga mos kelmagan paket avtomatik rad etiladi, shuning uchun ACL da kamida bitta permit qoidasi bo‘lishi kerak.",
+      "ru": "Невидимое правило «deny any» в конце каждого ACL. Пакет, не совпавший ни с одним правилом, автоматически отбрасывается, поэтому в ACL должно быть хотя бы одно правило permit.",
+      "en": "The invisible 'deny any' rule at the end of every ACL. A packet that matches no rule is dropped automatically, so every ACL needs at least one permit statement."
+    },
+    "see": [
+      "acl",
+      "standard-acl",
+      "extended-acl"
+    ]
+  },
+  {
+    "id": "interface-configuration-mode",
+    "term": "Interface configuration mode",
+    "abbr": "",
+    "cat": "cisco",
+    "names": {
+      "uz": "Interfeys konfiguratsiya rejimi",
+      "ru": "Режим конфигурации интерфейса",
+      "en": "Interface configuration mode"
+    },
+    "def": {
+      "uz": "Muayyan port sozlamalari (IP manzil, tavsif, holat) kiritiladigan rejim. Global rejimdan interface buyrug‘i bilan kiriladi, masalan interface g0/0; taklif satri Router(config-if)#.",
+      "ru": "Режим настройки конкретного порта: IP-адрес, описание, состояние. Вход из глобального режима командой interface, например interface g0/0; приглашение — Router(config-if)#.",
+      "en": "The mode for configuring one specific port: IP address, description and state. You enter it from global configuration with the interface command, such as interface g0/0; the prompt is Router(config-if)#."
+    },
+    "see": [
+      "global-configuration-mode",
+      "interface-naming",
+      "no-shutdown"
+    ]
+  },
+  {
+    "id": "interface-naming",
+    "term": "Interface naming",
+    "abbr": "",
+    "cat": "cisco",
+    "names": {
+      "uz": "Interfeyslarni nomlash",
+      "ru": "Именование интерфейсов",
+      "en": "Interface naming"
+    },
+    "def": {
+      "uz": "Cisco interfeyslari tur va raqam bilan nomlanadi: FastEthernet0/1 (Fa0/1) — 100 Mbit/s, GigabitEthernet0/0 (Gi0/0) — 1 Gbit/s port. Birinchi son modul yoki slotni, ikkinchisi port raqamini bildiradi.",
+      "ru": "Интерфейсы Cisco называются по типу и номеру: FastEthernet0/1 (Fa0/1) — порт 100 Мбит/с, GigabitEthernet0/0 (Gi0/0) — 1 Гбит/с. Первое число обозначает модуль или слот, второе — номер порта.",
+      "en": "Cisco interfaces are named by type and number: FastEthernet0/1 (Fa0/1) is a 100 Mbps port and GigabitEthernet0/0 (Gi0/0) is a 1 Gbps port. The first number is the module or slot, the second the port."
+    },
+    "see": [
+      "interface-configuration-mode",
+      "ethernet-standards",
+      "show-ip-interface-brief"
+    ]
+  },
+  {
+    "id": "internet",
+    "term": "Internet",
+    "abbr": "",
+    "cat": "basics",
+    "names": {
+      "uz": "Internet",
+      "ru": "Интернет",
+      "en": "Internet"
+    },
+    "def": {
+      "uz": "Butun dunyodagi millionlab tarmoqlarni TCP/IP protokollari asosida birlashtirgan ommaviy global tarmoq. Unga internet provayder (ISP) orqali ulaniladi.",
+      "ru": "Общедоступная глобальная сеть, объединяющая миллионы сетей по всему миру на основе протоколов TCP/IP. Подключение к ней предоставляет интернет-провайдер (ISP).",
+      "en": "The public global network that joins millions of networks worldwide using the TCP/IP protocols. Access is provided by an Internet service provider (ISP)."
+    },
+    "see": [
+      "wan",
+      "tcp-ip-model",
+      "public-ip-address",
+      "intranet"
+    ]
+  },
+  {
+    "id": "internet-layer",
+    "term": "Internet layer",
+    "abbr": "",
+    "cat": "models",
+    "names": {
+      "uz": "Internet sathi (TCP/IP)",
+      "ru": "Межсетевой уровень (TCP/IP)",
+      "en": "Internet layer (TCP/IP)"
+    },
+    "def": {
+      "uz": "TCP/IP modelining paketlarni tarmoqlar orasida manzilga yetkazuvchi sathi. OSI dagi tarmoq sathiga mos keladi; asosiy protokollari IP (IPv4, IPv6) va ICMP.",
+      "ru": "Уровень модели TCP/IP, доставляющий пакеты между сетями до получателя. Соответствует сетевому уровню OSI; основные протоколы — IP (IPv4, IPv6) и ICMP.",
+      "en": "The TCP/IP layer that delivers packets across networks to their destination. It matches the OSI network layer; its key protocols are IP (IPv4 and IPv6) and ICMP."
+    },
+    "see": [
+      "tcp-ip-model",
+      "network-layer",
+      "ipv4",
+      "icmp"
+    ]
+  },
+  {
+    "id": "intranet",
+    "term": "Intranet",
+    "abbr": "",
+    "cat": "basics",
+    "names": {
+      "uz": "Intranet (ichki tarmoq)",
+      "ru": "Интранет",
+      "en": "Intranet"
+    },
+    "def": {
+      "uz": "Tashkilotning faqat o‘z xodimlari uchun ochiq bo‘lgan ichki tarmog‘i va xizmatlari. Internetdagi texnologiyalar (veb-sahifalar, pochta) ishlatiladi, lekin tashqaridan kirish cheklangan.",
+      "ru": "Внутренняя сеть организации и её сервисы, доступные только сотрудникам. Используются те же технологии, что и в интернете (веб-страницы, почта), но доступ извне ограничен.",
+      "en": "An organization's private internal network and services, available only to its staff. It uses Internet technologies such as web pages and email, but outside access is restricted."
+    },
+    "see": [
+      "internet",
+      "lan",
+      "firewall"
+    ]
+  },
+  {
+    "id": "ip-classes",
+    "term": "IP address classes",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "IP manzil sinflari",
+      "ru": "Классы IP-адресов",
+      "en": "IP address classes"
+    },
+    "def": {
+      "uz": "IPv4 manzillarining birinchi oktetiga qarab beshta sinfga bo‘linishi: A (1–126), B (128–191), C (192–223), D (224–239, multicast) va E (240–255, tajriba uchun). Bugun sinflar o‘rnini CIDR egallagan, lekin atamalar ishlatilaveradi.",
+      "ru": "Деление IPv4-адресов на пять классов по первому октету: A (1–126), B (128–191), C (192–223), D (224–239, multicast) и E (240–255, экспериментальный). Сегодня вместо классов используют CIDR, но термины остались.",
+      "en": "The original split of IPv4 addresses into five classes by first octet: A (1–126), B (128–191), C (192–223), D (224–239, multicast) and E (240–255, experimental). CIDR has replaced classes, but the terms remain."
+    },
+    "see": [
+      "class-a",
+      "class-b",
+      "class-c",
+      "cidr"
+    ]
+  },
+  {
+    "id": "ipv4",
+    "term": "IPv4",
+    "abbr": "Internet Protocol version 4",
+    "cat": "addressing",
+    "names": {
+      "uz": "IPv4",
+      "ru": "IPv4",
+      "en": "IPv4"
+    },
+    "def": {
+      "uz": "Internet protokolining 4-versiyasi bo‘lib, har bir qurilmaga 32 bitli mantiqiy manzil beradi. Manzil nuqta bilan ajratilgan 4 ta o‘nlik sondan iborat, masalan 192.168.1.10; jami taxminan 4,3 milliard manzil mavjud.",
+      "ru": "Четвёртая версия интернет-протокола, присваивающая устройствам 32-битный логический адрес. Адрес записывается четырьмя десятичными числами через точку, например 192.168.1.10; всего около 4,3 млрд адресов.",
+      "en": "Version 4 of the Internet Protocol, which gives each device a 32-bit logical address. It is written as four decimal numbers separated by dots, such as 192.168.1.10, giving about 4.3 billion addresses in total."
+    },
+    "see": [
+      "octet",
+      "subnet-mask",
+      "ipv6",
+      "binary"
+    ]
+  },
+  {
+    "id": "ipv6",
+    "term": "IPv6",
+    "abbr": "Internet Protocol version 6",
+    "cat": "ipv6",
+    "names": {
+      "uz": "IPv6",
+      "ru": "IPv6",
+      "en": "IPv6"
+    },
+    "def": {
+      "uz": "Internet protokolining 128 bitli manzillardan foydalanadigan yangi versiyasi. U IPv4 manzillar tugab qolishi muammosini hal qiladi: manzillar soni amalda cheksiz (3,4 × 10^38) va NAT ga ehtiyoj qolmaydi.",
+      "ru": "Новая версия интернет-протокола со 128-битными адресами. Решает проблему исчерпания IPv4: адресов практически неограниченное количество (3,4 × 10^38), и NAT больше не нужен.",
+      "en": "The newer version of the Internet Protocol, using 128-bit addresses. It solves IPv4 address exhaustion with a practically unlimited supply (3.4 × 10^38 addresses), removing the need for NAT."
+    },
+    "see": [
+      "ipv6-address-format",
+      "ipv4",
+      "global-unicast-address",
+      "link-local-address"
+    ]
+  },
+  {
+    "id": "ipv6-address-format",
+    "term": "IPv6 address format",
+    "abbr": "",
+    "cat": "ipv6",
+    "names": {
+      "uz": "IPv6 manzil formati",
+      "ru": "Формат IPv6-адреса",
+      "en": "IPv6 address format"
+    },
+    "def": {
+      "uz": "IPv6 manzil ikki nuqta bilan ajratilgan 8 ta guruhdan iborat, har bir guruh 4 ta o‘n oltilik raqam (16 bit). Masalan, 2001:0db8:0000:0000:0000:0000:0000:0001 qisqartirish qoidalari bilan 2001:db8::1 deb yoziladi.",
+      "ru": "IPv6-адрес состоит из 8 групп по 4 шестнадцатеричные цифры (16 бит), разделённых двоеточиями. Например, 2001:0db8:0000:0000:0000:0000:0000:0001 по правилам сокращения записывается как 2001:db8::1.",
+      "en": "An IPv6 address is eight groups of four hexadecimal digits (16 bits each) separated by colons. For example, 2001:0db8:0000:0000:0000:0000:0000:0001 can be shortened to 2001:db8::1."
+    },
+    "see": [
+      "hextet",
+      "double-colon",
+      "ipv6"
+    ]
+  },
+  {
+    "id": "lan",
+    "term": "LAN",
+    "abbr": "Local Area Network",
+    "cat": "basics",
+    "names": {
+      "uz": "Lokal tarmoq (LAN)",
+      "ru": "Локальная сеть (LAN)",
+      "en": "Local Area Network"
+    },
+    "def": {
+      "uz": "Bitta bino, ofis yoki uy kabi cheklangan hududdagi qurilmalarni birlashtiruvchi tarmoq. Odatda bitta tashkilotga tegishli bo‘ladi va switch hamda Wi-Fi yordamida quriladi.",
+      "ru": "Сеть, объединяющая устройства на ограниченной территории: в квартире, офисе или одном здании. Обычно принадлежит одной организации и строится на коммутаторах и Wi-Fi.",
+      "en": "A network that connects devices within a limited area such as a home, an office or a single building. It is usually owned by one organization and built with switches and Wi-Fi."
+    },
+    "see": [
+      "wan",
+      "man",
+      "switch",
+      "ethernet"
+    ]
+  },
+  {
+    "id": "latency",
+    "term": "Latency",
+    "abbr": "",
+    "cat": "basics",
+    "names": {
+      "uz": "Kechikish (latency)",
+      "ru": "Задержка",
+      "en": "Latency"
+    },
+    "def": {
+      "uz": "Ma’lumot paketining manbadan manzilga yetib borishi uchun ketadigan vaqt. Millisoniyalarda o‘lchanadi; masalan, ping natijasidagi time=25ms paketning borib-kelish vaqtini ko‘rsatadi.",
+      "ru": "Время, за которое пакет доходит от отправителя до получателя. Измеряется в миллисекундах; например, time=25ms в выводе ping показывает задержку туда и обратно.",
+      "en": "The time it takes for a packet to travel from source to destination. It is measured in milliseconds; for example, time=25ms in ping output is the round-trip delay."
+    },
+    "see": [
+      "bandwidth",
+      "throughput",
+      "ping"
+    ]
+  },
+  {
+    "id": "link-local-address",
+    "term": "Link-local address",
+    "abbr": "",
+    "cat": "ipv6",
+    "names": {
+      "uz": "Link-local manzil",
+      "ru": "Локальный адрес канала (link-local)",
+      "en": "Link-local address"
+    },
+    "def": {
+      "uz": "Faqat bitta segment (link) ichida amal qiladigan va router orqali o‘tmaydigan, FE80::/10 bilan boshlanadigan IPv6 manzil. Har bir IPv6 interfeysi uni avtomatik oladi; qo‘shni qurilmalar va routerlar o‘zaro shu manzil bilan gaplashadi.",
+      "ru": "IPv6-адрес, действующий только в пределах одного сегмента (канала) и не проходящий через маршрутизатор; начинается с FE80::/10. Каждый IPv6-интерфейс получает его автоматически, через него общаются соседи и маршрутизаторы.",
+      "en": "An IPv6 address valid only on one link (segment) and never routed; it starts with FE80::/10. Every IPv6 interface creates one automatically, and neighbors and routers use it to talk to each other."
+    },
+    "see": [
+      "global-unicast-address",
+      "ipv6",
+      "apipa",
+      "slaac"
+    ]
+  },
+  {
+    "id": "longest-prefix-match",
+    "term": "Longest prefix match",
+    "abbr": "",
+    "cat": "routing",
+    "names": {
+      "uz": "Eng uzun prefiks mosligi",
+      "ru": "Наибольшее совпадение префикса",
+      "en": "Longest prefix match"
+    },
+    "def": {
+      "uz": "Router manzilga mos keladigan bir nechta yozuvdan eng uzun prefikslisini tanlash qoidasi. Masalan, 10.1.1.5 uchun jadvalda 10.0.0.0/8 va 10.1.1.0/24 bo‘lsa, aniqroq bo‘lgan /24 marshrut ishlatiladi.",
+      "ru": "Правило, по которому маршрутизатор из всех подходящих записей выбирает запись с самым длинным префиксом. Например, если для 10.1.1.5 в таблице есть 10.0.0.0/8 и 10.1.1.0/24, используется более точный маршрут /24.",
+      "en": "The rule a router follows when several entries match: it uses the one with the longest prefix. For 10.1.1.5, if the table has 10.0.0.0/8 and 10.1.1.0/24, the more specific /24 route is chosen."
+    },
+    "see": [
+      "routing-table",
+      "prefix-length",
+      "default-route"
+    ]
+  },
+  {
+    "id": "loopback-address",
+    "term": "Loopback address",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "Loopback manzil",
+      "ru": "Петлевой адрес (loopback)",
+      "en": "Loopback address"
+    },
+    "def": {
+      "uz": "Qurilmaning o‘z-o‘ziga murojaat qilishi uchun ajratilgan manzil, paket tarmoqqa chiqmaydi. IPv4 da 127.0.0.0/8 (odatda 127.0.0.1), IPv6 da ::1. ping 127.0.0.1 buyrug‘i TCP/IP steki to‘g‘ri ishlashini tekshiradi.",
+      "ru": "Адрес, по которому устройство обращается само к себе; пакет не выходит в сеть. В IPv4 это 127.0.0.0/8 (обычно 127.0.0.1), в IPv6 — ::1. Команда ping 127.0.0.1 проверяет работу стека TCP/IP.",
+      "en": "An address a device uses to talk to itself; packets never leave the device. IPv4 reserves 127.0.0.0/8 (usually 127.0.0.1) and IPv6 uses ::1. Running ping 127.0.0.1 checks that the TCP/IP stack works."
+    },
+    "see": [
+      "ping",
+      "class-a",
+      "ipv6"
+    ]
+  },
+  {
+    "id": "mac-address",
+    "term": "MAC address",
+    "abbr": "Media Access Control address",
+    "cat": "ethernet",
+    "names": {
+      "uz": "MAC manzil",
+      "ru": "MAC-адрес",
+      "en": "MAC address"
+    },
+    "def": {
+      "uz": "Tarmoq kartasining 48 bitli jismoniy manzili, odatda 12 ta o‘n oltilik raqam bilan yoziladi, masalan 00:1A:2B:3C:4D:5E. U lokal tarmoq ichida freymni aniq qurilmaga yetkazish uchun ishlatiladi.",
+      "ru": "48-битный физический адрес сетевой карты, обычно записывается 12 шестнадцатеричными цифрами, например 00:1A:2B:3C:4D:5E. Используется для доставки кадра конкретному устройству в пределах локальной сети.",
+      "en": "The 48-bit physical address of a network card, usually written as 12 hexadecimal digits such as 00:1A:2B:3C:4D:5E. It is used to deliver a frame to a specific device within the local network."
+    },
+    "see": [
+      "oui",
+      "nic",
+      "arp",
+      "mac-address-table"
+    ]
+  },
+  {
+    "id": "mac-address-table",
+    "term": "MAC address table",
+    "abbr": "",
+    "cat": "ethernet",
+    "names": {
+      "uz": "MAC manzillar jadvali",
+      "ru": "Таблица MAC-адресов",
+      "en": "MAC address table"
+    },
+    "def": {
+      "uz": "Switch xotirasidagi qaysi MAC manzil qaysi portda joylashganini ko‘rsatuvchi jadval (CAM jadvali). Switch kelgan freymning manba MAC manzilini yozib oladi va keyingi freymlarni shu jadval asosida yo‘naltiradi.",
+      "ru": "Таблица в памяти коммутатора (CAM), показывающая, за каким портом находится каждый MAC-адрес. Коммутатор запоминает MAC-адрес отправителя входящего кадра и по этой таблице пересылает последующие кадры.",
+      "en": "A table in a switch's memory (the CAM table) that records which MAC address is reachable on which port. The switch learns the source MAC of each incoming frame and uses the table to forward later frames."
+    },
+    "see": [
+      "switch",
+      "flooding",
+      "frame-filtering",
+      "mac-address"
+    ]
+  },
+  {
+    "id": "man",
+    "term": "MAN",
+    "abbr": "Metropolitan Area Network",
+    "cat": "basics",
+    "names": {
+      "uz": "Shahar tarmog‘i (MAN)",
+      "ru": "Городская сеть (MAN)",
+      "en": "Metropolitan Area Network"
+    },
+    "def": {
+      "uz": "Bitta shahar yoki katta kampus hududini qamrab oluvchi tarmoq. Hajmi bo‘yicha LAN dan katta, WAN dan kichik; masalan, shahardagi barcha maktablarni optik kabel bilan bog‘lagan tarmoq.",
+      "ru": "Сеть масштаба города или крупного кампуса. По размеру больше LAN, но меньше WAN; например, сеть, соединяющая все школы города оптическим кабелем.",
+      "en": "A network covering a city or a large campus. It is bigger than a LAN but smaller than a WAN, for example a fiber network linking all the schools in a city."
+    },
+    "see": [
+      "lan",
+      "wan",
+      "fiber-optic"
+    ]
+  },
+  {
+    "id": "mesh-topology",
+    "term": "Mesh topology",
+    "abbr": "",
+    "cat": "basics",
+    "names": {
+      "uz": "To‘rsimon (mesh) topologiya",
+      "ru": "Ячеистая топология (mesh)",
+      "en": "Mesh topology"
+    },
+    "def": {
+      "uz": "Qurilmalar bir-biriga bir nechta yo‘l orqali ulanadigan sxema. To‘liq mesh variantida har bir qurilma qolganlarining hammasiga ulangan, liniya uzilsa ma’lumot boshqa yo‘ldan o‘tadi. Qimmat, lekin juda ishonchli.",
+      "ru": "Схема, в которой устройства соединены несколькими путями. В полной ячеистой сети каждый узел связан со всеми остальными, поэтому при обрыве линии данные идут в обход. Дорого, но очень надёжно.",
+      "en": "A layout where devices are interconnected by multiple paths. In a full mesh every device links to every other, so traffic can reroute when a link fails. Expensive but highly reliable."
+    },
+    "see": [
+      "topology",
+      "star-topology",
+      "router"
+    ]
+  },
+  {
+    "id": "metric",
+    "term": "Metric",
+    "abbr": "",
+    "cat": "routing",
+    "names": {
+      "uz": "Metrika",
+      "ru": "Метрика",
+      "en": "Metric"
+    },
+    "def": {
+      "uz": "Marshrutlash protokoli bir tarmoqqa olib boruvchi yo‘llarni solishtirish uchun ishlatadigan qiymat; metrika qancha kichik bo‘lsa, yo‘l shuncha yaxshi. RIP hop sonini, OSPF cost qiymatini, EIGRP esa bandwidth va kechikishni hisobga oladi.",
+      "ru": "Значение, по которому протокол маршрутизации сравнивает пути к одной и той же сети; меньшая метрика означает лучший путь. RIP считает число переходов, OSPF — стоимость, EIGRP — полосу и задержку.",
+      "en": "The value a routing protocol uses to compare paths to the same network; a lower metric means a better path. RIP counts hops, OSPF uses cost and EIGRP combines bandwidth and delay."
+    },
+    "see": [
+      "administrative-distance",
+      "rip",
+      "ospf",
+      "eigrp"
+    ]
+  },
+  {
+    "id": "modem",
+    "term": "Modem",
+    "abbr": "Modulator-demodulator",
+    "cat": "devices",
+    "names": {
+      "uz": "Modem",
+      "ru": "Модем",
+      "en": "Modem"
+    },
+    "def": {
+      "uz": "Raqamli ma’lumotni telefon liniyasi, kabel yoki optika orqali uzatish uchun signalga aylantiradigan va qabul qilishda qayta raqamga o‘giradigan qurilma. Provayder liniyasini uy tarmog‘iga ulaydi.",
+      "ru": "Устройство, преобразующее цифровые данные в сигнал для передачи по телефонной линии, кабелю или оптике и обратно при приёме. Соединяет линию провайдера с домашней сетью.",
+      "en": "A device that converts digital data into a signal suitable for a phone line, cable or fiber link, and back again on receipt. It connects the provider's line to a home network."
+    },
+    "see": [
+      "router",
+      "wan",
+      "internet"
+    ]
+  },
+  {
+    "id": "multicast",
+    "term": "Multicast",
+    "abbr": "",
+    "cat": "ethernet",
+    "names": {
+      "uz": "Multicast (guruhli uzatish)",
+      "ru": "Многоадресная передача (multicast)",
+      "en": "Multicast"
+    },
+    "def": {
+      "uz": "Bitta manbadan faqat ma’lum guruhga a’zo qurilmalarga yuboriladigan uzatish. IPv4 da 224.0.0.0–239.255.255.255 (D sinf) manzillari ishlatiladi; masalan, OSPF routerlari 224.0.0.5 manziliga xabar yuboradi.",
+      "ru": "Передача от одного источника только устройствам, входящим в определённую группу. В IPv4 для этого используются адреса 224.0.0.0–239.255.255.255 (класс D); например, маршрутизаторы OSPF отправляют сообщения на 224.0.0.5.",
+      "en": "Traffic sent from one source only to devices that have joined a group. IPv4 uses the 224.0.0.0–239.255.255.255 range (Class D); for example, OSPF routers send to 224.0.0.5."
+    },
+    "see": [
+      "unicast",
+      "broadcast",
+      "class-d",
+      "ospf"
+    ]
+  },
+  {
+    "id": "nat",
+    "term": "NAT",
+    "abbr": "Network Address Translation",
+    "cat": "addressing",
+    "names": {
+      "uz": "Manzillarni o‘zgartirish (NAT)",
+      "ru": "Трансляция сетевых адресов (NAT)",
+      "en": "Network Address Translation"
+    },
+    "def": {
+      "uz": "Router paketlardagi xususiy IP manzillarni ommaviy manzilga (yoki aksincha) almashtiradigan texnologiya. U ichki tarmoqdagi qurilmalarga internetga chiqish imkonini beradi va IPv4 manzillar tanqisligini yumshatadi.",
+      "ru": "Технология, при которой маршрутизатор заменяет частные IP-адреса в пакетах на публичные (и обратно). Позволяет устройствам внутренней сети выходить в интернет и смягчает нехватку IPv4-адресов.",
+      "en": "A technique where a router replaces private IP addresses in packets with public ones, and back again. It lets internal devices reach the Internet and eases the shortage of IPv4 addresses."
+    },
+    "see": [
+      "pat",
+      "private-ip-address",
+      "public-ip-address",
+      "router"
+    ]
+  },
+  {
+    "id": "network",
+    "term": "Network",
+    "abbr": "",
+    "cat": "basics",
+    "names": {
+      "uz": "Tarmoq",
+      "ru": "Сеть",
+      "en": "Network"
+    },
+    "def": {
+      "uz": "Ma’lumot almashish uchun o‘zaro bog‘langan ikki yoki undan ortiq qurilmalar majmuasi. Masalan, uydagi Wi-Fi router orqali ulangan telefon, noutbuk va televizor kichik tarmoq hosil qiladi.",
+      "ru": "Совокупность двух или более устройств, соединённых между собой для обмена данными. Например, телефон, ноутбук и телевизор, подключённые к домашнему Wi-Fi роутеру, образуют небольшую сеть.",
+      "en": "Two or more devices linked together so they can exchange data. For example, a phone, a laptop and a TV connected to a home Wi-Fi router form a small network."
+    },
+    "see": [
+      "lan",
+      "wan",
+      "host",
+      "protocol"
+    ]
+  },
+  {
+    "id": "network-access-layer",
+    "term": "Network access layer",
+    "abbr": "",
+    "cat": "models",
+    "names": {
+      "uz": "Tarmoqqa kirish sathi (TCP/IP)",
+      "ru": "Уровень сетевого доступа (TCP/IP)",
+      "en": "Network access layer (TCP/IP)"
+    },
+    "def": {
+      "uz": "TCP/IP modelining eng pastki sathi: ma’lumotni aniq fizik muhit (kabel yoki radio) orqali qo‘shni qurilmaga uzatadi. OSI ning fizik va kanal sathlariga mos keladi; Ethernet va Wi-Fi shu yerda ishlaydi.",
+      "ru": "Нижний уровень модели TCP/IP: передаёт данные соседнему устройству через конкретную среду (кабель или радио). Соответствует физическому и канальному уровням OSI; здесь работают Ethernet и Wi-Fi.",
+      "en": "The bottom TCP/IP layer. It passes data to the next device over a specific medium, cable or radio; it matches the OSI physical and data link layers, and Ethernet and Wi-Fi operate here."
+    },
+    "see": [
+      "tcp-ip-model",
+      "data-link-layer",
+      "physical-layer",
+      "ethernet"
+    ]
+  },
+  {
+    "id": "network-address",
+    "term": "Network address",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "Tarmoq manzili",
+      "ru": "Адрес сети",
+      "en": "Network address"
+    },
+    "def": {
+      "uz": "Tarmoqning o‘zini ifodalovchi birinchi manzil: xost qismidagi barcha bitlar 0 bo‘ladi. Uni qurilmaga berib bo‘lmaydi; masalan, 192.168.1.0/24 tarmog‘ida tarmoq manzili 192.168.1.0.",
+      "ru": "Первый адрес, обозначающий саму сеть: все биты хостовой части равны 0. Его нельзя назначить устройству; например, в сети 192.168.1.0/24 адрес сети — 192.168.1.0.",
+      "en": "The first address, which identifies the network itself: all host bits are 0. It cannot be assigned to a device; in 192.168.1.0/24 the network address is 192.168.1.0."
+    },
+    "see": [
+      "broadcast-address",
+      "host-address",
+      "subnet-mask"
+    ]
+  },
+  {
+    "id": "network-layer",
+    "term": "Network layer",
+    "abbr": "",
+    "cat": "models",
+    "names": {
+      "uz": "Tarmoq sathi (3-sath)",
+      "ru": "Сетевой уровень (уровень 3)",
+      "en": "Network layer (Layer 3)"
+    },
+    "def": {
+      "uz": "OSI modelining 3-sathi: paketlarni turli tarmoqlar orqali manbadan manzilgacha yetkazadi. IP manzillash va marshrutlash shu yerda bajariladi; IPv4, IPv6, ICMP va routerlar shu sathga tegishli.",
+      "ru": "Уровень 3 модели OSI: доставляет пакеты от источника к получателю через разные сети. Здесь выполняются IP-адресация и маршрутизация; к нему относятся IPv4, IPv6, ICMP и маршрутизаторы.",
+      "en": "Layer 3 of the OSI model. It moves packets from source to destination across different networks using IP addressing and routing; IPv4, IPv6, ICMP and routers live here."
+    },
+    "see": [
+      "packet",
+      "ipv4",
+      "router",
+      "internet-layer"
+    ]
+  },
+  {
+    "id": "next-hop",
+    "term": "Next hop",
+    "abbr": "",
+    "cat": "routing",
+    "names": {
+      "uz": "Keyingi hop (next hop)",
+      "ru": "Следующий переход (next hop)",
+      "en": "Next hop"
+    },
+    "def": {
+      "uz": "Paket manzilga yetishi uchun navbatdagi uzatiladigan qo‘shni routerning IP manzili. Marshrutlash jadvalidagi har bir yozuv keyingi hop yoki chiqish interfeysini ko‘rsatadi.",
+      "ru": "IP-адрес соседнего маршрутизатора, которому пакет передаётся следующим на пути к получателю. Каждая запись в таблице маршрутизации указывает следующий переход или выходной интерфейс.",
+      "en": "The IP address of the neighboring router that a packet is handed to next on its way to the destination. Every routing table entry lists a next hop or an exit interface."
+    },
+    "see": [
+      "routing-table",
+      "static-route",
+      "router"
+    ]
+  },
+  {
+    "id": "nic",
+    "term": "NIC",
+    "abbr": "Network Interface Card",
+    "cat": "devices",
+    "names": {
+      "uz": "Tarmoq kartasi (NIC)",
+      "ru": "Сетевая карта (NIC)",
+      "en": "Network Interface Card"
+    },
+    "def": {
+      "uz": "Qurilmani tarmoqqa ulash imkonini beruvchi apparat qism: simli (Ethernet porti) yoki simsiz (Wi-Fi adapter). Har bir NIC ishlab chiqaruvchi tomonidan yozilgan noyob MAC manzilga ega.",
+      "ru": "Аппаратный компонент, подключающий устройство к сети: проводной (порт Ethernet) или беспроводной (Wi-Fi-адаптер). У каждой сетевой карты есть уникальный MAC-адрес, записанный производителем.",
+      "en": "The hardware that connects a device to a network, either wired (an Ethernet port) or wireless (a Wi-Fi adapter). Every NIC has a unique MAC address burned in by the manufacturer."
+    },
+    "see": [
+      "mac-address",
+      "host",
+      "ethernet"
+    ]
+  },
+  {
+    "id": "no-shutdown",
+    "term": "no shutdown",
+    "abbr": "",
+    "cat": "cisco",
+    "names": {
+      "uz": "no shutdown buyrug‘i",
+      "ru": "Команда no shutdown",
+      "en": "no shutdown command"
+    },
+    "def": {
+      "uz": "Interfeysni yoqish buyrug‘i. Cisco router interfeyslari standart holatda o‘chirilgan (administratively down) bo‘ladi, shuning uchun IP manzil berilgandan keyin interfeys rejimida no shutdown yozish kerak.",
+      "ru": "Команда включения интерфейса. Интерфейсы маршрутизатора Cisco по умолчанию выключены (administratively down), поэтому после назначения IP-адреса нужно ввести no shutdown в режиме интерфейса.",
+      "en": "The command that enables an interface. Cisco router interfaces are administratively down by default, so after assigning an IP address you must enter no shutdown in interface configuration mode."
+    },
+    "see": [
+      "interface-configuration-mode",
+      "show-ip-interface-brief",
+      "interface-naming"
+    ]
+  },
+  {
+    "id": "octet",
+    "term": "Octet",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "Oktet",
+      "ru": "Октет",
+      "en": "Octet"
+    },
+    "def": {
+      "uz": "IPv4 manzilning 8 bitdan iborat bitta qismi. Har bir oktet 0 dan 255 gacha qiymat oladi: 192.168.1.10 manzilida 192, 168, 1 va 10 — to‘rtta oktet.",
+      "ru": "Одна 8-битная часть IPv4-адреса. Каждый октет принимает значение от 0 до 255: в адресе 192.168.1.10 четыре октета — 192, 168, 1 и 10.",
+      "en": "One 8-bit part of an IPv4 address. Each octet ranges from 0 to 255; the address 192.168.1.10 has four octets: 192, 168, 1 and 10."
+    },
+    "see": [
+      "ipv4",
+      "binary",
+      "bit"
+    ]
+  },
+  {
+    "id": "osi-model",
+    "term": "OSI model",
+    "abbr": "Open Systems Interconnection",
+    "cat": "models",
+    "names": {
+      "uz": "OSI modeli",
+      "ru": "Модель OSI",
+      "en": "OSI model"
+    },
+    "def": {
+      "uz": "Tarmoq aloqasini 7 sathga ajratib tushuntiradigan nazariy model: fizik, kanal, tarmoq, transport, seans, taqdimot va ilova. Har bir sath o‘z vazifasini bajaradi, bu esa nosozliklarni bosqichma-bosqich izlashni osonlashtiradi.",
+      "ru": "Теоретическая модель, делящая сетевое взаимодействие на 7 уровней: физический, канальный, сетевой, транспортный, сеансовый, представления и прикладной. Каждый уровень решает свою задачу, что упрощает поиск неисправностей.",
+      "en": "A reference model that splits network communication into seven layers: physical, data link, network, transport, session, presentation and application. Each layer has its own job, which makes step-by-step troubleshooting easier."
+    },
+    "see": [
+      "tcp-ip-model",
+      "encapsulation",
+      "physical-layer",
+      "application-layer"
+    ]
+  },
+  {
+    "id": "ospf",
+    "term": "OSPF",
+    "abbr": "Open Shortest Path First",
+    "cat": "routing",
+    "names": {
+      "uz": "OSPF",
+      "ru": "OSPF",
+      "en": "Open Shortest Path First"
+    },
+    "def": {
+      "uz": "Ochiq standartdagi link-state marshrutlash protokoli. Har bir router butun tarmoq xaritasini tuzib, eng qisqa yo‘lni hisoblaydi; metrikasi bandwidth asosidagi cost. Katta tarmoqlarda keng qo‘llanadi, AD qiymati 110.",
+      "ru": "Открытый стандартный протокол маршрутизации по состоянию каналов (link-state). Каждый маршрутизатор строит карту всей сети и вычисляет кратчайший путь; метрика — стоимость (cost) на основе полосы пропускания. AD равно 110.",
+      "en": "An open-standard link-state routing protocol. Each router builds a map of the whole network and calculates the shortest path; its metric is cost, based on bandwidth. It is common in large networks and has an AD of 110."
+    },
+    "see": [
+      "dynamic-routing",
+      "metric",
+      "eigrp",
+      "multicast"
+    ]
+  },
+  {
+    "id": "oui",
+    "term": "OUI",
+    "abbr": "Organizationally Unique Identifier",
+    "cat": "ethernet",
+    "names": {
+      "uz": "Ishlab chiqaruvchi identifikatori (OUI)",
+      "ru": "Идентификатор производителя (OUI)",
+      "en": "Organizationally Unique Identifier"
+    },
+    "def": {
+      "uz": "MAC manzilning IEEE tomonidan ishlab chiqaruvchiga beriladigan birinchi 24 biti (6 ta o‘n oltilik raqam). Masalan, 00:1A:2B:3C:4D:5E manzilida 00:1A:2B qismi kartani qaysi kompaniya ishlab chiqarganini bildiradi.",
+      "ru": "Первые 24 бита (6 шестнадцатеричных цифр) MAC-адреса, которые IEEE выделяет производителю. Например, в адресе 00:1A:2B:3C:4D:5E часть 00:1A:2B указывает на компанию-изготовителя карты.",
+      "en": "The first 24 bits (six hex digits) of a MAC address, assigned to a manufacturer by the IEEE. In 00:1A:2B:3C:4D:5E, the 00:1A:2B part identifies the company that made the card."
+    },
+    "see": [
+      "mac-address",
+      "nic"
+    ]
+  },
+  {
+    "id": "packet",
+    "term": "Packet",
+    "abbr": "",
+    "cat": "models",
+    "names": {
+      "uz": "Paket",
+      "ru": "Пакет",
+      "en": "Packet"
+    },
+    "def": {
+      "uz": "Tarmoq sathining PDU si: segmentga manba va qabul qiluvchi IP manzillari, TTL va boshqa maydonlar bor IP sarlavha qo‘shiladi. Routerlar paketdagi IP manzilga qarab yo‘l tanlaydi.",
+      "ru": "PDU сетевого уровня: к сегменту добавляется IP-заголовок с адресами отправителя и получателя, TTL и другими полями. Маршрутизаторы выбирают путь по IP-адресу пакета.",
+      "en": "The network layer PDU. An IP header holding the source and destination IP addresses, TTL and other fields is added to the segment. Routers choose a path based on the packet's IP address."
+    },
+    "see": [
+      "network-layer",
+      "ipv4",
+      "ttl",
+      "frame"
+    ]
+  },
+  {
+    "id": "pan",
+    "term": "PAN",
+    "abbr": "Personal Area Network",
+    "cat": "basics",
+    "names": {
+      "uz": "Shaxsiy tarmoq (PAN)",
+      "ru": "Персональная сеть (PAN)",
+      "en": "Personal Area Network"
+    },
+    "def": {
+      "uz": "Bir kishining atrofida bir necha metr masofadagi qurilmalarni bog‘lovchi juda kichik tarmoq. Masalan, telefonga Bluetooth orqali ulangan simsiz quloqchin va aqlli soat.",
+      "ru": "Очень маленькая сеть из устройств одного человека в радиусе нескольких метров. Например, беспроводные наушники и умные часы, подключённые к телефону по Bluetooth.",
+      "en": "A very small network of one person's devices within a few meters. For example, wireless earbuds and a smartwatch connected to a phone over Bluetooth."
+    },
+    "see": [
+      "lan",
+      "wifi"
+    ]
+  },
+  {
+    "id": "pat",
+    "term": "PAT",
+    "abbr": "Port Address Translation",
+    "cat": "addressing",
+    "names": {
+      "uz": "Port orqali manzil o‘zgartirish (PAT)",
+      "ru": "Трансляция с учётом портов (PAT)",
+      "en": "Port Address Translation"
+    },
+    "def": {
+      "uz": "NAT ning bir turi: ko‘plab ichki qurilmalar bitta ommaviy IP manzildan birga foydalanadi, router ularni port raqamlari orqali ajratadi. NAT overload deb ham ataladi; uy routerlari aynan PAT dan foydalanadi.",
+      "ru": "Разновидность NAT, при которой много внутренних устройств используют один публичный IP-адрес, а маршрутизатор различает их по номерам портов. Также называется NAT overload; домашние роутеры используют именно PAT.",
+      "en": "A form of NAT where many internal devices share one public IP address and the router tells them apart by port number. It is also called NAT overload, and it is what home routers use."
+    },
+    "see": [
+      "nat",
+      "port-number",
+      "public-ip-address"
+    ]
+  },
+  {
+    "id": "pdu",
+    "term": "PDU",
+    "abbr": "Protocol Data Unit",
+    "cat": "models",
+    "names": {
+      "uz": "Protokol ma’lumot birligi (PDU)",
+      "ru": "Протокольный блок данных (PDU)",
+      "en": "Protocol Data Unit"
+    },
+    "def": {
+      "uz": "Muayyan sathdagi ma’lumot bo‘lagining nomi. Transport sathida u segment, tarmoq sathida paket, kanal sathida freym, fizik sathda esa bitlar deb ataladi.",
+      "ru": "Название порции данных на конкретном уровне. На транспортном уровне это сегмент, на сетевом — пакет, на канальном — кадр, на физическом — биты.",
+      "en": "The name for a chunk of data at a particular layer: a segment at the transport layer, a packet at the network layer, a frame at the data link layer and bits at the physical layer."
+    },
+    "see": [
+      "encapsulation",
+      "segment",
+      "packet",
+      "frame"
+    ]
+  },
+  {
+    "id": "physical-layer",
+    "term": "Physical layer",
+    "abbr": "",
+    "cat": "models",
+    "names": {
+      "uz": "Fizik sath (1-sath)",
+      "ru": "Физический уровень (уровень 1)",
+      "en": "Physical layer (Layer 1)"
+    },
+    "def": {
+      "uz": "OSI modelining 1-sathi: bitlarni elektr, yorug‘lik yoki radio signallari ko‘rinishida muhit orqali uzatadi. Kabellar, ulagichlar, kuchlanish darajalari, hub va repiterlar shu sathga tegishli.",
+      "ru": "Уровень 1 модели OSI: передаёт биты в виде электрических, световых или радиосигналов через среду. К нему относятся кабели, разъёмы, уровни напряжения, концентраторы и повторители.",
+      "en": "Layer 1 of the OSI model. It sends bits as electrical, light or radio signals across the medium; cables, connectors, voltage levels, hubs and repeaters belong here."
+    },
+    "see": [
+      "osi-model",
+      "bit",
+      "data-link-layer",
+      "hub"
+    ]
+  },
+  {
+    "id": "ping",
+    "term": "Ping",
+    "abbr": "",
+    "cat": "protocols",
+    "names": {
+      "uz": "Ping",
+      "ru": "Ping",
+      "en": "Ping"
+    },
+    "def": {
+      "uz": "Boshqa qurilma bilan aloqa borligini tekshiruvchi buyruq. U ICMP Echo Request yuboradi, Echo Reply javobini kutadi va javob vaqtini ko‘rsatadi; masalan, ping 8.8.8.8 internetga chiqish borligini tekshiradi.",
+      "ru": "Команда для проверки связи с другим устройством. Отправляет ICMP Echo Request, ждёт Echo Reply и показывает время ответа; например, ping 8.8.8.8 проверяет выход в интернет.",
+      "en": "A command that tests whether another device is reachable. It sends an ICMP Echo Request, waits for an Echo Reply and shows the round-trip time; ping 8.8.8.8, for example, checks Internet access."
+    },
+    "see": [
+      "icmp",
+      "traceroute",
+      "latency",
+      "loopback-address"
+    ]
+  },
+  {
+    "id": "port-number",
+    "term": "Port number",
+    "abbr": "",
+    "cat": "protocols",
+    "names": {
+      "uz": "Port raqami",
+      "ru": "Номер порта",
+      "en": "Port number"
+    },
+    "def": {
+      "uz": "Qurilmadagi aniq ilova yoki xizmatni aniqlovchi 0–65535 oralig‘idagi son. 0–1023 — taniqli portlar: HTTP 80, HTTPS 443, SSH 22, DNS 53. IP manzil va port birgalikda soket deyiladi, masalan 192.168.1.5:443.",
+      "ru": "Число от 0 до 65535, определяющее конкретное приложение или службу на устройстве. 0–1023 — общеизвестные порты: HTTP 80, HTTPS 443, SSH 22, DNS 53. Пара IP-адрес и порт называется сокетом, например 192.168.1.5:443.",
+      "en": "A number from 0 to 65535 that identifies a specific application or service on a device. Ports 0–1023 are well-known: HTTP 80, HTTPS 443, SSH 22, DNS 53. An IP plus a port is a socket, e.g. 192.168.1.5:443."
+    },
+    "see": [
+      "tcp",
+      "udp",
+      "transport-layer",
+      "pat"
+    ]
+  },
+  {
+    "id": "port-security",
+    "term": "Port security",
+    "abbr": "",
+    "cat": "security",
+    "names": {
+      "uz": "Port xavfsizligi (port security)",
+      "ru": "Безопасность порта (port security)",
+      "en": "Port security"
+    },
+    "def": {
+      "uz": "Switch portiga faqat ruxsat etilgan MAC manzilli qurilmalarni ulash imkonini beruvchi funksiya. Begona qurilma ulansa, port o‘chirilishi (shutdown) yoki uning trafigi tashlab yuborilishi mumkin; masalan, portga faqat 1 ta MAC ruxsat beriladi.",
+      "ru": "Функция коммутатора, разрешающая подключать к порту только устройства с разрешёнными MAC-адресами. При подключении чужого устройства порт может отключиться (shutdown) или отбрасывать его трафик; например, на порту разрешён только 1 MAC.",
+      "en": "A switch feature that allows only approved MAC addresses on a port. If an unknown device connects, the port can shut down or drop its traffic; for example, a port may be limited to a single MAC address."
+    },
+    "see": [
+      "switch",
+      "mac-address",
+      "mac-address-table"
+    ]
+  },
+  {
+    "id": "prefix-length",
+    "term": "Prefix length",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "Prefiks uzunligi",
+      "ru": "Длина префикса",
+      "en": "Prefix length"
+    },
+    "def": {
+      "uz": "Tarmoq maskasini undagi 1 lar soni bilan qiya chiziqdan keyin yozishning qisqa usuli. Masalan, /24 = 255.255.255.0, /16 = 255.255.0.0, /26 = 255.255.255.192; 192.168.1.0/24 yozuvi shu tarzda o‘qiladi.",
+      "ru": "Краткая запись маски подсети через косую черту — число единиц в маске. Например, /24 = 255.255.255.0, /16 = 255.255.0.0, /26 = 255.255.255.192; так читается запись 192.168.1.0/24.",
+      "en": "A short way to write a subnet mask as a slash followed by the number of 1 bits. For example, /24 = 255.255.255.0, /16 = 255.255.0.0 and /26 = 255.255.255.192, as in 192.168.1.0/24."
+    },
+    "see": [
+      "subnet-mask",
+      "cidr",
+      "longest-prefix-match"
+    ]
+  },
+  {
+    "id": "presentation-layer",
+    "term": "Presentation layer",
+    "abbr": "",
+    "cat": "models",
+    "names": {
+      "uz": "Taqdimot sathi (6-sath)",
+      "ru": "Уровень представления (уровень 6)",
+      "en": "Presentation layer (Layer 6)"
+    },
+    "def": {
+      "uz": "OSI modelining 6-sathi: ma’lumotni ikkala tomon tushunadigan formatga keltiradi. Belgilarni kodlash (masalan, UTF-8), siqish (JPEG, MP3) va shifrlash shu sathga tegishli deb qaraladi.",
+      "ru": "Уровень 6 модели OSI: приводит данные к формату, понятному обеим сторонам. К нему относят кодирование символов (например, UTF-8), сжатие (JPEG, MP3) и шифрование.",
+      "en": "Layer 6 of the OSI model. It puts data into a format both sides understand; character encoding (such as UTF-8), compression (JPEG, MP3) and encryption are associated with this layer."
+    },
+    "see": [
+      "osi-model",
+      "session-layer",
+      "application-layer"
+    ]
+  },
+  {
+    "id": "private-ip-address",
+    "term": "Private IP address",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "Xususiy IP manzil",
+      "ru": "Частный IP-адрес",
+      "en": "Private IP address"
+    },
+    "def": {
+      "uz": "RFC 1918 da ichki tarmoqlar uchun ajratilgan, internetda marshrutlanmaydigan manzillar: 10.0.0.0/8, 172.16.0.0/12 va 192.168.0.0/16. Ularni har kim bepul ishlatishi mumkin, internetga esa NAT orqali chiqiladi.",
+      "ru": "Адреса, выделенные стандартом RFC 1918 для внутренних сетей и не маршрутизируемые в интернете: 10.0.0.0/8, 172.16.0.0/12 и 192.168.0.0/16. Их может свободно использовать любая организация, а выход в интернет идёт через NAT.",
+      "en": "Addresses reserved by RFC 1918 for internal networks and not routed on the Internet: 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16. Anyone may use them freely; Internet access goes through NAT."
+    },
+    "see": [
+      "public-ip-address",
+      "nat",
+      "pat",
+      "class-a"
+    ]
+  },
+  {
+    "id": "privileged-exec-mode",
+    "term": "Privileged EXEC mode",
+    "abbr": "",
+    "cat": "cisco",
+    "names": {
+      "uz": "Privileged EXEC rejimi",
+      "ru": "Привилегированный режим (Privileged EXEC)",
+      "en": "Privileged EXEC mode"
+    },
+    "def": {
+      "uz": "Barcha show buyruqlari, sozlamalarni saqlash va qayta yuklash kabi to‘liq boshqaruv imkonini beruvchi rejim. User EXEC dan enable buyrug‘i bilan o‘tiladi; taklif satri # bilan tugaydi: Router#.",
+      "ru": "Режим с полным доступом: все команды show, сохранение конфигурации, перезагрузка и т. д. Вход из User EXEC командой enable; приглашение заканчивается на #: Router#.",
+      "en": "The mode with full control: every show command, saving the configuration, reloading and more. You enter it from user EXEC with the enable command; the prompt ends with #, as in Router#."
+    },
+    "see": [
+      "user-exec-mode",
+      "global-configuration-mode",
+      "running-config"
+    ]
+  },
+  {
+    "id": "protocol",
+    "term": "Protocol",
+    "abbr": "",
+    "cat": "basics",
+    "names": {
+      "uz": "Protokol",
+      "ru": "Протокол",
+      "en": "Protocol"
+    },
+    "def": {
+      "uz": "Qurilmalar o‘zaro qanday ma’lumot almashishini belgilovchi qoidalar to‘plami: xabar formati, tartibi va xatolarga munosabat. Masalan, HTTP veb-sahifalar uchun, DHCP esa IP manzil berish uchun ishlatiladi.",
+      "ru": "Набор правил, определяющих, как устройства обмениваются данными: формат сообщений, их порядок и реакцию на ошибки. Например, HTTP — протокол для веб-страниц, DHCP — для выдачи IP-адресов.",
+      "en": "A set of rules that defines how devices exchange data: message format, order and error handling. For example, HTTP is the protocol for web pages and DHCP hands out IP addresses."
+    },
+    "see": [
+      "osi-model",
+      "tcp-ip-model",
+      "http",
+      "dhcp"
+    ]
+  },
+  {
+    "id": "public-ip-address",
+    "term": "Public IP address",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "Ommaviy (public) IP manzil",
+      "ru": "Публичный IP-адрес",
+      "en": "Public IP address"
+    },
+    "def": {
+      "uz": "Internetda noyob bo‘lgan va bevosita marshrutlanadigan IP manzil. Uni provayder beradi; uy tarmog‘idagi barcha qurilmalar odatda routerdagi bitta ommaviy manzil orqali internetga chiqadi.",
+      "ru": "Уникальный в интернете IP-адрес, который напрямую маршрутизируется. Его выдаёт провайдер; все устройства домашней сети обычно выходят в интернет через один публичный адрес на роутере.",
+      "en": "An IP address that is unique on the Internet and routed directly. It is assigned by the provider; all devices on a home network usually share the router's single public address."
+    },
+    "see": [
+      "private-ip-address",
+      "nat",
+      "internet"
+    ]
+  },
+  {
+    "id": "qos",
+    "term": "QoS",
+    "abbr": "Quality of Service",
+    "cat": "basics",
+    "names": {
+      "uz": "Xizmat sifati (QoS)",
+      "ru": "Качество обслуживания (QoS)",
+      "en": "Quality of Service"
+    },
+    "def": {
+      "uz": "Tarmoqda muhim trafikka ustuvorlik berish usullari to‘plami. Masalan, ovozli va video qo‘ng‘iroq paketlari fayl yuklashdan oldin uzatiladi, shunda kanal band bo‘lsa ham suhbat uzilmaydi.",
+      "ru": "Набор механизмов, дающих приоритет важному трафику в сети. Например, пакеты голосовых и видеозвонков передаются раньше загрузки файлов, чтобы разговор не прерывался при загруженном канале.",
+      "en": "A set of techniques that gives priority to important traffic. For example, voice and video call packets are sent ahead of file downloads so calls stay clear even when the link is busy."
+    },
+    "see": [
+      "bandwidth",
+      "latency",
+      "throughput"
+    ]
+  },
+  {
+    "id": "repeater",
+    "term": "Repeater",
+    "abbr": "",
+    "cat": "devices",
+    "names": {
+      "uz": "Repiter (takrorlagich)",
+      "ru": "Повторитель (репитер)",
+      "en": "Repeater"
+    },
+    "def": {
+      "uz": "Zaiflashgan signalni qabul qilib, uni tiklab qayta uzatadigan 1-sath qurilmasi. Kabel uzunligi yoki Wi-Fi qamrovini oshirish uchun ishlatiladi, lekin manzillarni tushunmaydi.",
+      "ru": "Устройство 1-го уровня, которое принимает ослабленный сигнал, восстанавливает и передаёт его дальше. Применяется для увеличения длины кабеля или зоны Wi-Fi, но адресов не понимает.",
+      "en": "A Layer 1 device that receives a weakened signal, regenerates it and sends it on. It extends cable length or Wi-Fi coverage but does not understand addresses."
+    },
+    "see": [
+      "hub",
+      "physical-layer"
+    ]
+  },
+  {
+    "id": "ring-topology",
+    "term": "Ring topology",
+    "abbr": "",
+    "cat": "basics",
+    "names": {
+      "uz": "Halqa topologiyasi",
+      "ru": "Топология «кольцо»",
+      "en": "Ring topology"
+    },
+    "def": {
+      "uz": "Har bir qurilma ikki qo‘shnisiga ulanib, yopiq halqa hosil qiladigan sxema. Ma’lumot halqa bo‘ylab qurilmadan qurilmaga uzatiladi; ikki halqali variantlar ishonchliroq.",
+      "ru": "Схема, в которой каждое устройство соединено с двумя соседями, образуя замкнутое кольцо. Данные передаются по кольцу от узла к узлу; варианты с двойным кольцом надёжнее.",
+      "en": "A layout where each device connects to two neighbors, forming a closed loop. Data travels around the ring from device to device; dual-ring designs add redundancy."
+    },
+    "see": [
+      "topology",
+      "bus-topology"
+    ]
+  },
+  {
+    "id": "rip",
+    "term": "RIP",
+    "abbr": "Routing Information Protocol",
+    "cat": "routing",
+    "names": {
+      "uz": "RIP",
+      "ru": "RIP",
+      "en": "Routing Information Protocol"
+    },
+    "def": {
+      "uz": "Eng oddiy dinamik marshrutlash protokollaridan biri (distance-vector turi). Metrika sifatida hop sonini, ya’ni o‘tiladigan routerlar sonini ishlatadi: maksimum 15 hop, 16 esa yetib bo‘lmaydigan degani. AD qiymati 120.",
+      "ru": "Один из простейших протоколов динамической маршрутизации (дистанционно-векторный). Метрика — число переходов (hop count): максимум 15, а 16 означает «недостижимо». AD равно 120.",
+      "en": "One of the simplest dynamic routing protocols, a distance-vector protocol. Its metric is hop count, the number of routers to cross; the maximum is 15, and 16 means unreachable. Its AD is 120."
+    },
+    "see": [
+      "dynamic-routing",
+      "metric",
+      "ospf",
+      "administrative-distance"
+    ]
+  },
+  {
+    "id": "rj-45",
+    "term": "RJ-45",
+    "abbr": "Registered Jack 45",
+    "cat": "media",
+    "names": {
+      "uz": "RJ-45 ulagichi",
+      "ru": "Разъём RJ-45",
+      "en": "RJ-45 connector"
+    },
+    "def": {
+      "uz": "UTP va STP kabellarining uchiga o‘rnatiladigan 8 kontaktli plastik ulagich. Kompyuter, switch va routerlarning Ethernet portlari aynan shu ulagich uchun mo‘ljallangan.",
+      "ru": "8-контактный пластиковый разъём, который обжимают на концах кабелей UTP и STP. Порты Ethernet компьютеров, коммутаторов и маршрутизаторов рассчитаны именно на него.",
+      "en": "The 8-pin plastic connector crimped onto the ends of UTP and STP cables. Ethernet ports on computers, switches and routers are built for this connector."
+    },
+    "see": [
+      "utp",
+      "ethernet",
+      "straight-through-cable"
+    ]
+  },
+  {
+    "id": "router",
+    "term": "Router",
+    "abbr": "",
+    "cat": "devices",
+    "names": {
+      "uz": "Router (marshrutizator)",
+      "ru": "Маршрутизатор (роутер)",
+      "en": "Router"
+    },
+    "def": {
+      "uz": "Turli IP tarmoqlarni bir-biriga bog‘laydigan 3-sath qurilmasi. U paketdagi qabul qiluvchi IP manzilni marshrutlash jadvali bilan solishtirib, eng yaxshi yo‘lni tanlaydi; broadcast xabarlarni boshqa tarmoqqa o‘tkazmaydi.",
+      "ru": "Устройство 3-го уровня, соединяющее разные IP-сети. Оно сравнивает IP-адрес назначения пакета с таблицей маршрутизации и выбирает лучший путь; широковещательные сообщения в другие сети не пропускает.",
+      "en": "A Layer 3 device that connects different IP networks. It compares a packet's destination IP with its routing table to choose the best path, and it does not forward broadcasts between networks."
+    },
+    "see": [
+      "routing-table",
+      "default-gateway",
+      "network-layer",
+      "routing"
+    ]
+  },
+  {
+    "id": "routing",
+    "term": "Routing",
+    "abbr": "",
+    "cat": "routing",
+    "names": {
+      "uz": "Marshrutlash",
+      "ru": "Маршрутизация",
+      "en": "Routing"
+    },
+    "def": {
+      "uz": "Paket uchun boshqa tarmoqdagi manzilgacha eng yaxshi yo‘lni tanlash va uni shu yo‘l bo‘yicha uzatish jarayoni. Uni routerlar marshrutlash jadvali asosida bajaradi.",
+      "ru": "Процесс выбора лучшего пути для пакета до получателя в другой сети и пересылки пакета по этому пути. Выполняется маршрутизаторами на основе таблицы маршрутизации.",
+      "en": "The process of choosing the best path for a packet to a destination on another network and forwarding it along that path. Routers do this using their routing tables."
+    },
+    "see": [
+      "router",
+      "routing-table",
+      "static-route",
+      "dynamic-routing"
+    ]
+  },
+  {
+    "id": "routing-table",
+    "term": "Routing table",
+    "abbr": "",
+    "cat": "routing",
+    "names": {
+      "uz": "Marshrutlash jadvali",
+      "ru": "Таблица маршрутизации",
+      "en": "Routing table"
+    },
+    "def": {
+      "uz": "Router xotirasidagi ma’lum tarmoqlar ro‘yxati: har bir yozuvda tarmoq prefiksi, keyingi hop yoki chiqish interfeysi va marshrut manbai ko‘rsatiladi. Cisco qurilmalarida show ip route buyrug‘i bilan ko‘riladi.",
+      "ru": "Список известных сетей в памяти маршрутизатора: для каждой указаны префикс, следующий переход или выходной интерфейс и источник маршрута. В Cisco просматривается командой show ip route.",
+      "en": "The list of known networks in a router's memory. Each entry shows the network prefix, next hop or exit interface, and route source; on Cisco devices you view it with show ip route."
+    },
+    "see": [
+      "router",
+      "next-hop",
+      "longest-prefix-match",
+      "administrative-distance"
+    ]
+  },
+  {
+    "id": "running-config",
+    "term": "running-config",
+    "abbr": "",
+    "cat": "cisco",
+    "names": {
+      "uz": "running-config (joriy konfiguratsiya)",
+      "ru": "running-config (текущая конфигурация)",
+      "en": "running-config"
+    },
+    "def": {
+      "uz": "Qurilmaning RAM xotirasida saqlanadigan va hozir amalda bo‘lgan konfiguratsiya. Kiritilgan har bir buyruq darhol shu yerga yoziladi, lekin elektr o‘chsa yo‘qoladi; show running-config bilan ko‘riladi.",
+      "ru": "Конфигурация, которая хранится в оперативной памяти (RAM) и действует прямо сейчас. Каждая введённая команда сразу попадает сюда, но при отключении питания всё теряется; просмотр — show running-config.",
+      "en": "The configuration currently in use, stored in RAM. Every command you enter takes effect here immediately, but it is lost if power goes off; view it with show running-config."
+    },
+    "see": [
+      "startup-config",
+      "cisco-ios",
+      "privileged-exec-mode"
+    ]
+  },
+  {
+    "id": "segment",
+    "term": "Segment",
+    "abbr": "",
+    "cat": "models",
+    "names": {
+      "uz": "Segment",
+      "ru": "Сегмент",
+      "en": "Segment"
+    },
+    "def": {
+      "uz": "Transport sathining PDU si: ilova ma’lumoti bo‘laklarga ajratilib, port raqamlari va tartib raqamlari bor TCP sarlavha qo‘shiladi. UDP da bu birlik ko‘pincha datagramma deb ataladi.",
+      "ru": "PDU транспортного уровня: данные приложения делятся на части, и к ним добавляется заголовок TCP с номерами портов и порядковыми номерами. В UDP такую единицу обычно называют датаграммой.",
+      "en": "The transport layer PDU. Application data is split into pieces and a TCP header with port numbers and sequence numbers is added. With UDP the unit is usually called a datagram."
+    },
+    "see": [
+      "transport-layer",
+      "tcp",
+      "udp",
+      "pdu"
+    ]
+  },
+  {
+    "id": "server",
+    "term": "Server",
+    "abbr": "",
+    "cat": "devices",
+    "names": {
+      "uz": "Server",
+      "ru": "Сервер",
+      "en": "Server"
+    },
+    "def": {
+      "uz": "Boshqa qurilmalarga (klientlarga) xizmat ko‘rsatadigan kompyuter yoki dastur. Masalan, DHCP server IP manzil beradi, DNS server domen nomini IP manzilga aylantiradi, veb-server sahifalarni yuboradi.",
+      "ru": "Компьютер или программа, предоставляющие услуги другим устройствам (клиентам). Например, DHCP-сервер выдаёт IP-адреса, DNS-сервер преобразует имена в адреса, веб-сервер отдаёт страницы.",
+      "en": "A computer or program that provides services to other devices (clients). For example, a DHCP server hands out IP addresses, a DNS server resolves names and a web server delivers pages."
+    },
+    "see": [
+      "client",
+      "host",
+      "dhcp",
+      "dns"
+    ]
+  },
+  {
+    "id": "session-layer",
+    "term": "Session layer",
+    "abbr": "",
+    "cat": "models",
+    "names": {
+      "uz": "Seans sathi (5-sath)",
+      "ru": "Сеансовый уровень (уровень 5)",
+      "en": "Session layer (Layer 5)"
+    },
+    "def": {
+      "uz": "OSI modelining 5-sathi: ikki ilova o‘rtasidagi muloqot seansini ochadi, boshqaradi va yopadi. Masalan, katta fayl uzatilishi uzilib qolsa, seans nazorat nuqtasidan davom ettirilishi mumkin.",
+      "ru": "Уровень 5 модели OSI: открывает, поддерживает и закрывает сеанс связи между двумя приложениями. Например, при обрыве передачи большого файла сеанс можно продолжить с контрольной точки.",
+      "en": "Layer 5 of the OSI model. It opens, manages and closes the conversation (session) between two applications; for example, an interrupted large transfer can resume from a checkpoint."
+    },
+    "see": [
+      "osi-model",
+      "presentation-layer",
+      "transport-layer"
+    ]
+  },
+  {
+    "id": "show-ip-interface-brief",
+    "term": "show ip interface brief",
+    "abbr": "",
+    "cat": "cisco",
+    "names": {
+      "uz": "show ip interface brief buyrug‘i",
+      "ru": "Команда show ip interface brief",
+      "en": "show ip interface brief command"
+    },
+    "def": {
+      "uz": "Barcha interfeyslarning IP manzili va holatini qisqa jadvalda ko‘rsatuvchi buyruq. Status va Protocol ustunlarida up/up bo‘lsa interfeys ishlayapti, administratively down esa no shutdown berilmaganini bildiradi.",
+      "ru": "Команда, выводящая краткую таблицу IP-адресов и состояния всех интерфейсов. Значение up/up в столбцах Status и Protocol означает, что интерфейс работает, а administratively down — что не введена команда no shutdown.",
+      "en": "A command that shows a short table of every interface's IP address and status. Up/up in the Status and Protocol columns means the interface works; administratively down means no shutdown has not been entered."
+    },
+    "see": [
+      "no-shutdown",
+      "interface-naming",
+      "privileged-exec-mode"
+    ]
+  },
+  {
+    "id": "slaac",
+    "term": "SLAAC",
+    "abbr": "Stateless Address Autoconfiguration",
+    "cat": "ipv6",
+    "names": {
+      "uz": "SLAAC",
+      "ru": "SLAAC",
+      "en": "Stateless Address Autoconfiguration"
+    },
+    "def": {
+      "uz": "IPv6 qurilmasining DHCP serversiz o‘ziga manzil yaratish usuli. U router e’lonidan (Router Advertisement) tarmoq prefiksini oladi va unga o‘zi yaratgan interfeys identifikatorini qo‘shib, to‘liq manzil hosil qiladi.",
+      "ru": "Способ, при котором IPv6-устройство само создаёт себе адрес без DHCP-сервера. Оно берёт префикс сети из объявления маршрутизатора (Router Advertisement) и добавляет к нему собственный идентификатор интерфейса.",
+      "en": "A way for an IPv6 device to build its own address without a DHCP server. It learns the network prefix from a Router Advertisement and appends an interface ID it generates itself."
+    },
+    "see": [
+      "ipv6",
+      "dhcp",
+      "global-unicast-address"
+    ]
+  },
+  {
+    "id": "smtp",
+    "term": "SMTP",
+    "abbr": "Simple Mail Transfer Protocol",
+    "cat": "protocols",
+    "names": {
+      "uz": "SMTP",
+      "ru": "SMTP",
+      "en": "Simple Mail Transfer Protocol"
+    },
+    "def": {
+      "uz": "Elektron pochta xatlarini yuborish va pochta serverlari o‘rtasida uzatish protokoli. TCP 25-portida (klientlar uchun ko‘pincha 587-port) ishlaydi; xatlarni o‘qish uchun esa POP3 yoki IMAP ishlatiladi.",
+      "ru": "Протокол отправки электронной почты и её передачи между почтовыми серверами. Работает на порту TCP 25 (для клиентов часто 587); для чтения писем используют POP3 или IMAP.",
+      "en": "The protocol for sending email and passing it between mail servers. It uses TCP port 25 (often 587 for client submission); reading mail is done with POP3 or IMAP."
+    },
+    "see": [
+      "port-number",
+      "tcp",
+      "application-layer"
+    ]
+  },
+  {
+    "id": "ssh",
+    "term": "SSH",
+    "abbr": "Secure Shell",
+    "cat": "protocols",
+    "names": {
+      "uz": "SSH",
+      "ru": "SSH",
+      "en": "Secure Shell"
+    },
+    "def": {
+      "uz": "Qurilmani tarmoq orqali masofadan xavfsiz boshqarish protokoli. Barcha trafik, jumladan parol ham shifrlanadi; TCP 22-portida ishlaydi. Cisco qurilmalarini masofadan sozlashda Telnet o‘rniga SSH tavsiya etiladi.",
+      "ru": "Протокол безопасного удалённого управления устройством по сети. Весь трафик, включая пароль, шифруется; работает на порту TCP 22. Для удалённой настройки устройств Cisco рекомендуется SSH вместо Telnet.",
+      "en": "A protocol for securely managing a device remotely over the network. All traffic, including the password, is encrypted; it uses TCP port 22. SSH is recommended over Telnet for configuring Cisco devices remotely."
+    },
+    "see": [
+      "telnet",
+      "cli",
+      "port-number"
+    ]
+  },
+  {
+    "id": "ssid",
+    "term": "SSID",
+    "abbr": "Service Set Identifier",
+    "cat": "wireless",
+    "names": {
+      "uz": "SSID (tarmoq nomi)",
+      "ru": "SSID (имя сети)",
+      "en": "Service Set Identifier"
+    },
+    "def": {
+      "uz": "Simsiz tarmoqning 32 belgigacha bo‘lgan nomi. Telefondagi Wi-Fi ro‘yxatida ko‘rinadigan «Home_WiFi» kabi nomlar SSID hisoblanadi; bitta kirish nuqtasi bir nechta SSID tarqatishi mumkin.",
+      "ru": "Имя беспроводной сети длиной до 32 символов. Названия вроде «Home_WiFi» в списке Wi-Fi на телефоне — это SSID; одна точка доступа может транслировать несколько SSID.",
+      "en": "The name of a wireless network, up to 32 characters long. Names like 'Home_WiFi' in a phone's Wi-Fi list are SSIDs, and one access point can broadcast several of them."
+    },
+    "see": [
+      "access-point",
+      "wifi",
+      "wlan",
+      "wpa2-wpa3"
+    ]
+  },
+  {
+    "id": "standard-acl",
+    "term": "Standard ACL",
+    "abbr": "",
+    "cat": "security",
+    "names": {
+      "uz": "Standart ACL",
+      "ru": "Стандартный ACL",
+      "en": "Standard ACL"
+    },
+    "def": {
+      "uz": "Faqat manba IP manziliga qarab filtrlaydigan ACL; Cisco qurilmalarida 1–99 va 1300–1999 raqamlari bilan belgilanadi. Uni qabul qiluvchiga iloji boricha yaqin joyga o‘rnatish tavsiya etiladi.",
+      "ru": "ACL, фильтрующий только по IP-адресу отправителя; в Cisco обозначается номерами 1–99 и 1300–1999. Его рекомендуется размещать как можно ближе к получателю.",
+      "en": "An ACL that filters only on the source IP address; on Cisco devices it uses numbers 1–99 and 1300–1999. It is best placed as close to the destination as possible."
+    },
+    "see": [
+      "acl",
+      "extended-acl",
+      "implicit-deny"
+    ]
+  },
+  {
+    "id": "star-topology",
+    "term": "Star topology",
+    "abbr": "",
+    "cat": "basics",
+    "names": {
+      "uz": "Yulduz topologiyasi",
+      "ru": "Топология «звезда»",
+      "en": "Star topology"
+    },
+    "def": {
+      "uz": "Barcha qurilmalar bitta markaziy qurilmaga (odatda switch) alohida kabel bilan ulanadigan sxema. Bitta kabel uzilsa faqat o‘sha qurilma uziladi, lekin markaziy qurilma buzilsa butun tarmoq to‘xtaydi.",
+      "ru": "Схема, в которой каждое устройство подключено отдельным кабелем к центральному узлу, обычно коммутатору. Обрыв одного кабеля отключает только одно устройство, но отказ центра останавливает всю сеть.",
+      "en": "A layout where every device has its own cable to a central device, usually a switch. A broken cable affects only one device, but if the central device fails the whole network stops."
+    },
+    "see": [
+      "topology",
+      "switch",
+      "mesh-topology"
+    ]
+  },
+  {
+    "id": "startup-config",
+    "term": "startup-config",
+    "abbr": "",
+    "cat": "cisco",
+    "names": {
+      "uz": "startup-config (boshlang‘ich konfiguratsiya)",
+      "ru": "startup-config (загрузочная конфигурация)",
+      "en": "startup-config"
+    },
+    "def": {
+      "uz": "NVRAM xotirasida saqlanadigan va qurilma yoqilganda yuklanadigan konfiguratsiya. O‘zgarishlar qayta yuklashdan keyin ham saqlanib qolishi uchun copy running-config startup-config (yoki write memory) buyrug‘ini bajarish kerak.",
+      "ru": "Конфигурация в NVRAM, которая загружается при включении устройства. Чтобы изменения сохранились после перезагрузки, нужно выполнить copy running-config startup-config (или write memory).",
+      "en": "The configuration stored in NVRAM and loaded when the device boots. To keep your changes after a reboot, run copy running-config startup-config (or write memory)."
+    },
+    "see": [
+      "running-config",
+      "privileged-exec-mode"
+    ]
+  },
+  {
+    "id": "static-route",
+    "term": "Static route",
+    "abbr": "",
+    "cat": "routing",
+    "names": {
+      "uz": "Statik marshrut",
+      "ru": "Статический маршрут",
+      "en": "Static route"
+    },
+    "def": {
+      "uz": "Administrator tomonidan qo‘lda kiritiladigan marshrut. Kichik tarmoqlarda qulay va xavfsiz, lekin topologiya o‘zgarsa o‘zi yangilanmaydi; masalan: ip route 10.2.0.0 255.255.0.0 192.168.1.2.",
+      "ru": "Маршрут, который администратор вводит вручную. Удобен и безопасен в небольших сетях, но сам не обновляется при изменении топологии; например: ip route 10.2.0.0 255.255.0.0 192.168.1.2.",
+      "en": "A route entered manually by an administrator. It is simple and secure in small networks but does not adapt when the topology changes; for example: ip route 10.2.0.0 255.255.0.0 192.168.1.2."
+    },
+    "see": [
+      "default-route",
+      "dynamic-routing",
+      "routing-table",
+      "administrative-distance"
+    ]
+  },
+  {
+    "id": "stp",
+    "term": "STP",
+    "abbr": "Spanning Tree Protocol",
+    "cat": "ethernet",
+    "names": {
+      "uz": "Spanning Tree protokoli (STP)",
+      "ru": "Протокол остовного дерева (STP)",
+      "en": "Spanning Tree Protocol"
+    },
+    "def": {
+      "uz": "Switchlar orasidagi zaxira ulanishlarda halqa (loop) paydo bo‘lishining oldini oluvchi 2-sath protokoli. U ba’zi portlarni bloklaydi va asosiy yo‘l uzilganda ularni avtomatik ochadi. Halqa bo‘lsa, broadcast bo‘roni tarmoqni to‘xtatadi.",
+      "ru": "Протокол 2-го уровня, предотвращающий петли при резервных соединениях между коммутаторами. Он блокирует часть портов и автоматически открывает их при обрыве основного пути. Без него петля вызывает широковещательный шторм.",
+      "en": "A Layer 2 protocol that prevents loops when switches have redundant links. It blocks some ports and unblocks them automatically if the main path fails; without it, a loop causes a broadcast storm."
+    },
+    "see": [
+      "switch",
+      "broadcast",
+      "bridge"
+    ]
+  },
+  {
+    "id": "stp-cable",
+    "term": "STP cable",
+    "abbr": "Shielded Twisted Pair",
+    "cat": "media",
+    "names": {
+      "uz": "Ekranlangan o‘ralgan juftlik (STP)",
+      "ru": "Экранированная витая пара (STP)",
+      "en": "Shielded Twisted Pair"
+    },
+    "def": {
+      "uz": "Elektromagnit shovqindan himoya qiluvchi folga yoki to‘r ekranli o‘ralgan juftlik kabeli. Kuchli shovqinli joylarda, masalan zavodlarda ishlatiladi; UTP ga nisbatan qimmatroq va qattiqroq.",
+      "ru": "Витая пара с экраном из фольги или оплётки, защищающим от электромагнитных помех. Применяется в местах с сильными помехами, например в цехах; дороже и жёстче, чем UTP.",
+      "en": "Twisted-pair cable with a foil or braided shield that protects against electromagnetic interference. It is used in noisy places such as factories; it costs more and is stiffer than UTP."
+    },
+    "see": [
+      "utp",
+      "rj-45"
+    ]
+  },
+  {
+    "id": "straight-through-cable",
+    "term": "Straight-through cable",
+    "abbr": "",
+    "cat": "media",
+    "names": {
+      "uz": "To‘g‘ri kabel (straight-through)",
+      "ru": "Прямой кабель (straight-through)",
+      "en": "Straight-through cable"
+    },
+    "def": {
+      "uz": "Ikkala uchida simlar bir xil tartibda (masalan, ikkalasi ham T568B) ulangan UTP kabel. An’anaviy ravishda har xil turdagi qurilmalarni ulaydi: kompyuter–switch, router–switch.",
+      "ru": "Кабель UTP, у которого провода на обоих концах обжаты в одинаковом порядке (например, оба по T568B). Традиционно соединяет разнотипные устройства: компьютер–коммутатор, маршрутизатор–коммутатор.",
+      "en": "A UTP cable with the wires in the same order on both ends (for example, T568B on each). It traditionally connects unlike devices: PC to switch or router to switch."
+    },
+    "see": [
+      "crossover-cable",
+      "utp",
+      "rj-45",
+      "auto-mdix"
+    ]
+  },
+  {
+    "id": "subnet-mask",
+    "term": "Subnet mask",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "Tarmoq maskasi",
+      "ru": "Маска подсети",
+      "en": "Subnet mask"
+    },
+    "def": {
+      "uz": "IP manzilning qaysi qismi tarmoqni, qaysi qismi xostni bildirishini ko‘rsatuvchi 32 bitli son. Ketma-ket 1 lar tarmoq qismini, 0 lar xost qismini belgilaydi: 255.255.255.0 maskasida birinchi 24 bit tarmoqqa tegishli.",
+      "ru": "32-битное число, показывающее, какая часть IP-адреса относится к сети, а какая — к хосту. Единицы подряд обозначают сетевую часть, нули — хостовую: в маске 255.255.255.0 первые 24 бита — сеть.",
+      "en": "A 32-bit number that shows which part of an IP address identifies the network and which part the host. Consecutive 1s mark the network part and 0s the host part; in 255.255.255.0 the first 24 bits are network."
+    },
+    "see": [
+      "prefix-length",
+      "network-address",
+      "subnetting",
+      "ipv4"
+    ]
+  },
+  {
+    "id": "subnetting",
+    "term": "Subnetting",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "Subnetting (tarmoqni bo‘lish)",
+      "ru": "Разбиение на подсети (subnetting)",
+      "en": "Subnetting"
+    },
+    "def": {
+      "uz": "Xost bitlaridan qarz olib, bitta katta tarmoqni bir nechta kichik tarmoqqa bo‘lish. Masalan, 192.168.1.0/24 ni /26 larga bo‘lsak, har birida 62 xostli 4 ta subnet hosil bo‘ladi: .0, .64, .128 va .192.",
+      "ru": "Деление одной большой сети на несколько меньших за счёт заимствования битов хостовой части. Например, разделив 192.168.1.0/24 на /26, получим 4 подсети по 62 хоста: .0, .64, .128 и .192.",
+      "en": "Splitting one large network into smaller ones by borrowing host bits. For example, dividing 192.168.1.0/24 into /26 networks gives four subnets of 62 hosts each: .0, .64, .128 and .192."
+    },
+    "see": [
+      "subnet-mask",
+      "vlsm",
+      "usable-hosts-formula",
+      "supernetting"
+    ]
+  },
+  {
+    "id": "supernetting",
+    "term": "Supernetting",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "Supernetting (tarmoqlarni birlashtirish)",
+      "ru": "Суперсети (суммирование маршрутов)",
+      "en": "Supernetting"
+    },
+    "def": {
+      "uz": "Bir nechta ketma-ket tarmoqni qisqaroq prefiksli bitta katta tarmoq sifatida ifodalash. Masalan, 192.168.0.0/24 dan 192.168.3.0/24 gacha to‘rtta tarmoq bitta 192.168.0.0/22 marshruti bilan e’lon qilinadi va jadval kichrayadi.",
+      "ru": "Представление нескольких смежных сетей одной большой сетью с более коротким префиксом. Например, четыре сети с 192.168.0.0/24 по 192.168.3.0/24 объявляются одним маршрутом 192.168.0.0/22, и таблица маршрутизации уменьшается.",
+      "en": "Representing several contiguous networks as one larger network with a shorter prefix. For example, the four networks 192.168.0.0/24 to 192.168.3.0/24 can be advertised as one 192.168.0.0/22 route, shrinking routing tables."
+    },
+    "see": [
+      "cidr",
+      "subnetting",
+      "routing-table"
+    ]
+  },
+  {
+    "id": "switch",
+    "term": "Switch",
+    "abbr": "",
+    "cat": "devices",
+    "names": {
+      "uz": "Switch (kommutator)",
+      "ru": "Коммутатор (switch)",
+      "en": "Switch"
+    },
+    "def": {
+      "uz": "LAN ichida qurilmalarni bog‘laydigan 2-sath qurilmasi. U MAC manzillar jadvalini o‘rganadi va freymni faqat kerakli portga yuboradi; har bir port alohida to‘qnashuv domeni bo‘ladi.",
+      "ru": "Устройство 2-го уровня, соединяющее узлы внутри LAN. Он изучает таблицу MAC-адресов и пересылает кадр только в нужный порт; каждый порт — отдельный домен коллизий.",
+      "en": "A Layer 2 device that connects devices within a LAN. It learns a MAC address table and forwards each frame only to the correct port; every port is its own collision domain."
+    },
+    "see": [
+      "mac-address-table",
+      "hub",
+      "vlan",
+      "data-link-layer"
+    ]
+  },
+  {
+    "id": "tcp",
+    "term": "TCP",
+    "abbr": "Transmission Control Protocol",
+    "cat": "protocols",
+    "names": {
+      "uz": "TCP",
+      "ru": "TCP",
+      "en": "Transmission Control Protocol"
+    },
+    "def": {
+      "uz": "Ishonchli, ulanishga asoslangan transport protokoli. U three-way handshake bilan ulanish o‘rnatadi, segmentlarni raqamlaydi, yetib kelganini tasdiqlaydi va yo‘qolganlarini qayta yuboradi; veb, pochta va SSH TCP dan foydalanadi.",
+      "ru": "Надёжный транспортный протокол с установлением соединения. Устанавливает соединение тройным рукопожатием, нумерует сегменты, подтверждает доставку и повторно отправляет потерянные; его используют веб, почта и SSH.",
+      "en": "A reliable, connection-oriented transport protocol. It sets up a connection with a three-way handshake, numbers segments, acknowledges delivery and resends anything lost; the web, email and SSH use TCP."
+    },
+    "see": [
+      "udp",
+      "three-way-handshake",
+      "transport-layer",
+      "port-number"
+    ]
+  },
+  {
+    "id": "tcp-ip-model",
+    "term": "TCP/IP model",
+    "abbr": "Transmission Control Protocol / Internet Protocol",
+    "cat": "models",
+    "names": {
+      "uz": "TCP/IP modeli",
+      "ru": "Модель TCP/IP",
+      "en": "TCP/IP model"
+    },
+    "def": {
+      "uz": "Internet amalda ishlaydigan 4 sathli model: tarmoqqa kirish, internet, transport va ilova sathlari. OSI ning yuqori uch sathi bu yerda bitta ilova sathiga, pastki ikki sathi esa tarmoqqa kirish sathiga birlashtirilgan.",
+      "ru": "Четырёхуровневая модель, на которой реально работает интернет: уровни сетевого доступа, межсетевой, транспортный и прикладной. Три верхних уровня OSI объединены в прикладной, два нижних — в уровень сетевого доступа.",
+      "en": "The four-layer model the Internet actually runs on: network access, internet, transport and application. OSI's top three layers merge into its application layer and the bottom two into network access."
+    },
+    "see": [
+      "osi-model",
+      "internet-layer",
+      "network-access-layer",
+      "transport-layer"
+    ]
+  },
+  {
+    "id": "telnet",
+    "term": "Telnet",
+    "abbr": "",
+    "cat": "protocols",
+    "names": {
+      "uz": "Telnet",
+      "ru": "Telnet",
+      "en": "Telnet"
+    },
+    "def": {
+      "uz": "Qurilmaning buyruq qatoriga tarmoq orqali masofadan ulanishning eski protokoli. U TCP 23-portida ishlaydi va barcha ma’lumotni, hatto parolni ham ochiq matn ko‘rinishida uzatadi, shuning uchun xavfsiz emas.",
+      "ru": "Устаревший протокол удалённого подключения к командной строке устройства по сети. Работает на порту TCP 23 и передаёт все данные, даже пароль, открытым текстом, поэтому небезопасен.",
+      "en": "An old protocol for remotely accessing a device's command line over the network. It uses TCP port 23 and sends everything, including passwords, in plain text, so it is not secure."
+    },
+    "see": [
+      "ssh",
+      "cli",
+      "port-number"
+    ]
+  },
+  {
+    "id": "three-way-handshake",
+    "term": "Three-way handshake",
+    "abbr": "",
+    "cat": "protocols",
+    "names": {
+      "uz": "Uch bosqichli qo‘l siqish",
+      "ru": "Тройное рукопожатие",
+      "en": "Three-way handshake"
+    },
+    "def": {
+      "uz": "TCP ulanishini o‘rnatishning uch qadami: klient SYN yuboradi, server SYN-ACK bilan javob qaytaradi, klient esa ACK bilan tasdiqlaydi. Shundan keyingina ma’lumot uzatish boshlanadi.",
+      "ru": "Три шага установления TCP-соединения: клиент отправляет SYN, сервер отвечает SYN-ACK, клиент подтверждает ACK. Только после этого начинается передача данных.",
+      "en": "The three steps that open a TCP connection: the client sends SYN, the server answers with SYN-ACK and the client confirms with ACK. Only then does data transfer begin."
+    },
+    "see": [
+      "tcp",
+      "segment"
+    ]
+  },
+  {
+    "id": "throughput",
+    "term": "Throughput",
+    "abbr": "",
+    "cat": "basics",
+    "names": {
+      "uz": "Haqiqiy uzatish tezligi (throughput)",
+      "ru": "Фактическая пропускная способность",
+      "en": "Throughput"
+    },
+    "def": {
+      "uz": "Ma’lum vaqt ichida amalda muvaffaqiyatli uzatilgan ma’lumot hajmi. U doimo bandwidth qiymatidan kam yoki teng bo‘ladi: masalan, 100 Mbit/s liniyada tirbandlik va xatolar sababli 70 Mbit/s olinishi mumkin.",
+      "ru": "Объём данных, фактически переданный за единицу времени. Он всегда не больше полосы пропускания: например, на линии 100 Мбит/с из-за загрузки и ошибок реально может получаться 70 Мбит/с.",
+      "en": "The amount of data actually delivered successfully per unit of time. It is always at most the bandwidth; a 100 Mbps link might deliver only 70 Mbps because of congestion and errors."
+    },
+    "see": [
+      "bandwidth",
+      "latency",
+      "qos"
+    ]
+  },
+  {
+    "id": "topology",
+    "term": "Topology",
+    "abbr": "",
+    "cat": "basics",
+    "names": {
+      "uz": "Tarmoq topologiyasi",
+      "ru": "Топология сети",
+      "en": "Network topology"
+    },
+    "def": {
+      "uz": "Tarmoqdagi qurilmalar va ularni bog‘lovchi aloqa liniyalarining joylashish sxemasi. Fizik topologiya kabellar qanday tortilganini, mantiqiy topologiya esa ma’lumot qanday harakatlanishini ko‘rsatadi.",
+      "ru": "Схема расположения устройств сети и линий связи между ними. Физическая топология показывает, как проложены кабели, а логическая — как движутся данные.",
+      "en": "The layout of devices in a network and the links between them. Physical topology shows how cables are actually run, while logical topology shows how data flows."
+    },
+    "see": [
+      "star-topology",
+      "bus-topology",
+      "ring-topology",
+      "mesh-topology"
+    ]
+  },
+  {
+    "id": "traceroute",
+    "term": "Traceroute",
+    "abbr": "",
+    "cat": "protocols",
+    "names": {
+      "uz": "Traceroute (tracert)",
+      "ru": "Traceroute (tracert)",
+      "en": "Traceroute (tracert)"
+    },
+    "def": {
+      "uz": "Paket manzilga yetguncha qaysi routerlardan o‘tishini ko‘rsatuvchi buyruq. U TTL qiymati 1, 2, 3… bo‘lgan paketlar yuborib, yo‘ldagi har bir routerdan javob oladi. Windows tizimida tracert, Linux va Cisco qurilmalarida traceroute deb yoziladi.",
+      "ru": "Команда, показывающая, через какие маршрутизаторы проходит пакет на пути к получателю. Она отправляет пакеты с TTL 1, 2, 3… и получает ответ от каждого маршрутизатора на пути. В Windows — tracert, в Linux и Cisco — traceroute.",
+      "en": "A command that shows which routers a packet passes through on the way to its destination. It sends packets with TTL 1, 2, 3… and each router along the path replies. On Windows the command is tracert."
+    },
+    "see": [
+      "ttl",
+      "icmp",
+      "ping",
+      "router"
+    ]
+  },
+  {
+    "id": "transport-layer",
+    "term": "Transport layer",
+    "abbr": "",
+    "cat": "models",
+    "names": {
+      "uz": "Transport sathi (4-sath)",
+      "ru": "Транспортный уровень (уровень 4)",
+      "en": "Transport layer (Layer 4)"
+    },
+    "def": {
+      "uz": "OSI modelining 4-sathi: ikki qurilmadagi ilovalar orasida ma’lumot yetkazilishini boshqaradi. Ma’lumotni segmentlarga bo‘ladi va ilovani port raqami bilan aniqlaydi; asosiy protokollari TCP va UDP.",
+      "ru": "Уровень 4 модели OSI: управляет доставкой данных между приложениями на двух устройствах. Делит данные на сегменты и определяет приложение по номеру порта; основные протоколы — TCP и UDP.",
+      "en": "Layer 4 of the OSI model. It manages delivery between applications on two devices, breaks data into segments and identifies applications by port number; its main protocols are TCP and UDP."
+    },
+    "see": [
+      "tcp",
+      "udp",
+      "port-number",
+      "segment"
+    ]
+  },
+  {
+    "id": "trunk",
+    "term": "Trunk",
+    "abbr": "",
+    "cat": "ethernet",
+    "names": {
+      "uz": "Trunk port",
+      "ru": "Транковый порт (trunk)",
+      "en": "Trunk"
+    },
+    "def": {
+      "uz": "Bir nechta VLAN trafigini bitta kabel orqali olib o‘tadigan switch porti yoki ulanish. Har bir freymga IEEE 802.1Q standarti bo‘yicha VLAN raqami yozilgan teg qo‘shiladi; teg qo‘yilmaydigan VLAN native VLAN deyiladi.",
+      "ru": "Порт или канал коммутатора, переносящий трафик нескольких VLAN по одному кабелю. Каждый кадр помечается тегом стандарта IEEE 802.1Q с номером VLAN; VLAN без тега называется native VLAN.",
+      "en": "A switch port or link that carries traffic for multiple VLANs over one cable. Each frame gets an IEEE 802.1Q tag with its VLAN number; the one VLAN sent untagged is the native VLAN."
+    },
+    "see": [
+      "vlan",
+      "switch",
+      "frame"
+    ]
+  },
+  {
+    "id": "ttl",
+    "term": "TTL",
+    "abbr": "Time To Live",
+    "cat": "protocols",
+    "names": {
+      "uz": "TTL (yashash vaqti)",
+      "ru": "TTL (время жизни)",
+      "en": "Time To Live"
+    },
+    "def": {
+      "uz": "IP paket sarlavhasidagi maydon bo‘lib, har bir router uni 1 ga kamaytiradi. TTL 0 ga yetsa paket yo‘q qilinadi; bu marshrutlash halqasida paketlarning cheksiz aylanib yurishining oldini oladi.",
+      "ru": "Поле в заголовке IP-пакета, которое каждый маршрутизатор уменьшает на 1. Когда TTL достигает 0, пакет уничтожается; так пакеты не кружат бесконечно при петле маршрутизации.",
+      "en": "A field in the IP header that every router decreases by 1. When TTL reaches 0 the packet is discarded, which stops packets from circling forever in a routing loop."
+    },
+    "see": [
+      "packet",
+      "traceroute",
+      "router"
+    ]
+  },
+  {
+    "id": "udp",
+    "term": "UDP",
+    "abbr": "User Datagram Protocol",
+    "cat": "protocols",
+    "names": {
+      "uz": "UDP",
+      "ru": "UDP",
+      "en": "User Datagram Protocol"
+    },
+    "def": {
+      "uz": "Ulanish o‘rnatmaydigan, tez va oddiy transport protokoli. U yetkazishni kafolatlamaydi va yo‘qolgan ma’lumotni qayta yubormaydi, lekin kechikish kam bo‘ladi; DNS, DHCP, video oqim va onlayn o‘yinlar UDP dan foydalanadi.",
+      "ru": "Простой и быстрый транспортный протокол без установления соединения. Он не гарантирует доставку и не пересылает потерянное, зато даёт минимальную задержку; его используют DNS, DHCP, потоковое видео и онлайн-игры.",
+      "en": "A simple, fast, connectionless transport protocol. It does not guarantee delivery or resend lost data, but it keeps delay low; DNS, DHCP, video streaming and online games use UDP."
+    },
+    "see": [
+      "tcp",
+      "transport-layer",
+      "dns",
+      "dhcp"
+    ]
+  },
+  {
+    "id": "unicast",
+    "term": "Unicast",
+    "abbr": "",
+    "cat": "ethernet",
+    "names": {
+      "uz": "Unicast (yakka uzatish)",
+      "ru": "Одноадресная передача (unicast)",
+      "en": "Unicast"
+    },
+    "def": {
+      "uz": "Bitta manbadan bitta aniq qabul qiluvchiga yuboriladigan uzatish turi. Tarmoqdagi trafikning katta qismi unicast: masalan, 192.168.1.10 kompyuterdan 192.168.1.20 printerga yuborilgan hujjat.",
+      "ru": "Тип передачи от одного отправителя одному конкретному получателю. Большая часть трафика — unicast: например, документ, отправленный с компьютера 192.168.1.10 на принтер 192.168.1.20.",
+      "en": "Traffic sent from one source to exactly one destination. Most network traffic is unicast, such as a document sent from PC 192.168.1.10 to printer 192.168.1.20."
+    },
+    "see": [
+      "broadcast",
+      "multicast",
+      "mac-address"
+    ]
+  },
+  {
+    "id": "usable-hosts-formula",
+    "term": "Usable hosts formula",
+    "abbr": "",
+    "cat": "addressing",
+    "names": {
+      "uz": "Foydalaniladigan xostlar formulasi",
+      "ru": "Формула числа хостов",
+      "en": "Usable hosts formula"
+    },
+    "def": {
+      "uz": "Bitta tarmoqdagi xostlar soni 2^h − 2 formulasi bilan topiladi, bu yerda h — xost bitlari soni. 2 ayiriladi, chunki tarmoq va broadcast manzillarini qurilmaga berib bo‘lmaydi: /24 da 254, /26 da 62 xost.",
+      "ru": "Число хостов в сети считается по формуле 2^h − 2, где h — количество битов хостовой части. Вычитаем 2, так как адрес сети и широковещательный адрес назначать нельзя: для /24 — 254, для /26 — 62 хоста.",
+      "en": "The number of hosts in a network is 2^h − 2, where h is the number of host bits. Two are subtracted because the network and broadcast addresses cannot be assigned: /24 gives 254 hosts and /26 gives 62."
+    },
+    "see": [
+      "host-address",
+      "subnetting",
+      "prefix-length"
+    ]
+  },
+  {
+    "id": "user-exec-mode",
+    "term": "User EXEC mode",
+    "abbr": "",
+    "cat": "cisco",
+    "names": {
+      "uz": "User EXEC rejimi",
+      "ru": "Пользовательский режим (User EXEC)",
+      "en": "User EXEC mode"
+    },
+    "def": {
+      "uz": "Cisco qurilmasiga ulanganda ochiladigan, faqat ko‘rish va oddiy tekshiruv buyruqlari (ping, ba’zi show) mavjud bo‘lgan boshlang‘ich rejim. Taklif satri > bilan tugaydi, masalan Router>.",
+      "ru": "Начальный режим после подключения к устройству Cisco, где доступны только команды просмотра и простой проверки (ping, часть show). Приглашение заканчивается символом >, например Router>.",
+      "en": "The starting mode after connecting to a Cisco device, with only basic monitoring commands such as ping and some show commands. Its prompt ends with >, as in Router>."
+    },
+    "see": [
+      "privileged-exec-mode",
+      "cli",
+      "global-configuration-mode"
+    ]
+  },
+  {
+    "id": "utp",
+    "term": "UTP",
+    "abbr": "Unshielded Twisted Pair",
+    "cat": "media",
+    "names": {
+      "uz": "Ekranlanmagan o‘ralgan juftlik (UTP)",
+      "ru": "Неэкранированная витая пара (UTP)",
+      "en": "Unshielded Twisted Pair"
+    },
+    "def": {
+      "uz": "Ichida 4 juft o‘zaro o‘ralgan mis simi bor, ekransiz va eng keng tarqalgan LAN kabeli. RJ-45 ulagichi bilan ishlatiladi; Cat5e va Cat6 toifalari 100 metrgacha masofada 1 Gbit/s va undan yuqori tezlik beradi.",
+      "ru": "Самый распространённый кабель для LAN: 4 пары скрученных медных проводов без экрана. Используется с разъёмом RJ-45; категории Cat5e и Cat6 обеспечивают 1 Гбит/с и выше на расстоянии до 100 м.",
+      "en": "The most common LAN cable: four twisted pairs of copper wire with no shielding. It uses RJ-45 connectors; Cat5e and Cat6 support 1 Gbps or more over distances up to 100 meters."
+    },
+    "see": [
+      "stp-cable",
+      "rj-45",
+      "straight-through-cable",
+      "ethernet-standards"
+    ]
+  },
+  {
+    "id": "vlan",
+    "term": "VLAN",
+    "abbr": "Virtual Local Area Network",
+    "cat": "ethernet",
+    "names": {
+      "uz": "Virtual lokal tarmoq (VLAN)",
+      "ru": "Виртуальная локальная сеть (VLAN)",
+      "en": "Virtual Local Area Network"
+    },
+    "def": {
+      "uz": "Bitta fizik switchni bir nechta mantiqiy tarmoqqa ajratish usuli. Har bir VLAN alohida broadcast domeni va odatda alohida IP tarmoq bo‘ladi, masalan VLAN 10 — buxgalteriya, VLAN 20 — o‘quvchilar. Ular orasidagi aloqa router orqali bo‘ladi.",
+      "ru": "Способ разделить один физический коммутатор на несколько логических сетей. Каждая VLAN — отдельный широковещательный домен и обычно отдельная IP-сеть: например, VLAN 10 — бухгалтерия, VLAN 20 — ученики. Между VLAN трафик идёт через маршрутизатор.",
+      "en": "A way to divide one physical switch into several logical networks. Each VLAN is its own broadcast domain and usually its own IP subnet, e.g. VLAN 10 for accounting and VLAN 20 for students; traffic between VLANs needs a router."
+    },
+    "see": [
+      "trunk",
+      "broadcast-domain",
+      "switch",
+      "subnetting"
+    ]
+  },
+  {
+    "id": "vlsm",
+    "term": "VLSM",
+    "abbr": "Variable Length Subnet Masking",
+    "cat": "addressing",
+    "names": {
+      "uz": "O‘zgaruvchan uzunlikdagi maska (VLSM)",
+      "ru": "Маски переменной длины (VLSM)",
+      "en": "Variable Length Subnet Masking"
+    },
+    "def": {
+      "uz": "Bitta tarmoqni har biriga kerakli miqdorda xost beriladigan, turli o‘lchamdagi subnetlarga bo‘lish usuli. Masalan, 100 kishilik bo‘limga /25, 20 kishilikka /27, ikki router orasidagi ulanishga /30 beriladi va manzillar tejaladi.",
+      "ru": "Деление сети на подсети разного размера, каждой — столько адресов, сколько нужно. Например, отделу на 100 человек — /25, на 20 человек — /27, а каналу между двумя маршрутизаторами — /30; так экономятся адреса.",
+      "en": "Dividing a network into subnets of different sizes so each gets just the hosts it needs. For example, a 100-person department gets a /25, a 20-person team a /27 and a router-to-router link a /30, saving addresses."
+    },
+    "see": [
+      "subnetting",
+      "cidr",
+      "subnet-mask"
+    ]
+  },
+  {
+    "id": "wan",
+    "term": "WAN",
+    "abbr": "Wide Area Network",
+    "cat": "basics",
+    "names": {
+      "uz": "Keng hududiy tarmoq (WAN)",
+      "ru": "Глобальная сеть (WAN)",
+      "en": "Wide Area Network"
+    },
+    "def": {
+      "uz": "Shaharlar, mamlakatlar yoki qit’alar bo‘ylab joylashgan LAN tarmoqlarni bir-biriga ulaydigan tarmoq. Odatda provayder kanallari orqali quriladi; Internet eng katta WAN hisoblanadi.",
+      "ru": "Сеть, связывающая локальные сети, расположенные в разных городах, странах или на разных континентах. Обычно строится на каналах провайдеров; интернет — крупнейшая WAN.",
+      "en": "A network that links LANs spread across cities, countries or continents. It usually runs over service-provider links; the Internet is the largest WAN."
+    },
+    "see": [
+      "lan",
+      "man",
+      "internet",
+      "router"
+    ]
+  },
+  {
+    "id": "wifi",
+    "term": "Wi-Fi",
+    "abbr": "",
+    "cat": "wireless",
+    "names": {
+      "uz": "Wi-Fi",
+      "ru": "Wi-Fi",
+      "en": "Wi-Fi"
+    },
+    "def": {
+      "uz": "IEEE 802.11 standartlariga asoslangan simsiz lokal tarmoq texnologiyasining tijorat nomi. Wi-Fi 4 (802.11n), Wi-Fi 5 (802.11ac) va Wi-Fi 6 (802.11ax) avlodlari tezlik va samaradorlik bilan farq qiladi.",
+      "ru": "Коммерческое название технологии беспроводных локальных сетей на основе стандартов IEEE 802.11. Поколения Wi-Fi 4 (802.11n), Wi-Fi 5 (802.11ac) и Wi-Fi 6 (802.11ax) различаются скоростью и эффективностью.",
+      "en": "The brand name for wireless LAN technology based on the IEEE 802.11 standards. Generations such as Wi-Fi 4 (802.11n), Wi-Fi 5 (802.11ac) and Wi-Fi 6 (802.11ax) differ in speed and efficiency."
+    },
+    "see": [
+      "wlan",
+      "access-point",
+      "wifi-frequency-bands",
+      "ssid"
+    ]
+  },
+  {
+    "id": "wifi-frequency-bands",
+    "term": "Wi-Fi frequency bands",
+    "abbr": "",
+    "cat": "wireless",
+    "names": {
+      "uz": "Wi-Fi chastota diapazonlari",
+      "ru": "Частотные диапазоны Wi-Fi",
+      "en": "Wi-Fi frequency bands"
+    },
+    "def": {
+      "uz": "Wi-Fi asosan 2,4 GHz va 5 GHz diapazonlarida ishlaydi, Wi-Fi 6E esa 6 GHz ni ham qo‘shadi. 2,4 GHz uzoqqa yetadi va devordan yaxshi o‘tadi, lekin sekinroq va gavjum; 5 GHz tezroq, ammo qamrovi kichikroq.",
+      "ru": "Wi-Fi работает в основном в диапазонах 2,4 ГГц и 5 ГГц, а Wi-Fi 6E добавляет 6 ГГц. 2,4 ГГц бьёт дальше и лучше проходит сквозь стены, но медленнее и перегружен; 5 ГГц быстрее, но с меньшим покрытием.",
+      "en": "Wi-Fi mainly uses the 2.4 GHz and 5 GHz bands, and Wi-Fi 6E adds 6 GHz. 2.4 GHz reaches farther and passes walls better but is slower and crowded; 5 GHz is faster but covers less area."
+    },
+    "see": [
+      "wifi",
+      "access-point",
+      "wlan"
+    ]
+  },
+  {
+    "id": "wlan",
+    "term": "WLAN",
+    "abbr": "Wireless Local Area Network",
+    "cat": "wireless",
+    "names": {
+      "uz": "Simsiz lokal tarmoq (WLAN)",
+      "ru": "Беспроводная локальная сеть (WLAN)",
+      "en": "Wireless Local Area Network"
+    },
+    "def": {
+      "uz": "Qurilmalar kabel o‘rniga radio to‘lqinlar orqali ulanadigan lokal tarmoq. Odatda simli LAN ga ulangan bir yoki bir nechta kirish nuqtasidan iborat bo‘ladi.",
+      "ru": "Локальная сеть, где устройства подключаются по радиоволнам вместо кабеля. Обычно состоит из одной или нескольких точек доступа, подключённых к проводной LAN.",
+      "en": "A local network where devices connect using radio waves instead of cables. It usually consists of one or more access points attached to the wired LAN."
+    },
+    "see": [
+      "wifi",
+      "access-point",
+      "lan",
+      "ssid"
+    ]
+  },
+  {
+    "id": "wpa2-wpa3",
+    "term": "WPA2 / WPA3",
+    "abbr": "Wi-Fi Protected Access 2 / 3",
+    "cat": "wireless",
+    "names": {
+      "uz": "WPA2 / WPA3",
+      "ru": "WPA2 / WPA3",
+      "en": "WPA2 / WPA3"
+    },
+    "def": {
+      "uz": "Wi-Fi trafigini shifrlaydigan va ulanishni himoyalaydigan xavfsizlik standartlari. WPA2 AES shifrlashdan foydalanadi, yangiroq WPA3 esa parolni taxmin qilish hujumlariga chidamliroq; eskirgan WEP ni ishlatmaslik kerak.",
+      "ru": "Стандарты безопасности, шифрующие трафик Wi-Fi и защищающие подключение. WPA2 использует шифрование AES, а более новый WPA3 лучше защищён от подбора пароля; устаревший WEP применять нельзя.",
+      "en": "Security standards that encrypt Wi-Fi traffic and protect access. WPA2 uses AES encryption, and the newer WPA3 better resists password-guessing attacks; the outdated WEP should never be used."
+    },
+    "see": [
+      "wifi",
+      "ssid",
+      "wlan"
+    ]
+  }
+]

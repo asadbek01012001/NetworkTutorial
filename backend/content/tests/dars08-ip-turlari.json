@@ -1,0 +1,105 @@
+{
+  "lessonId": "dars08-ip-turlari",
+  "questions": [
+    {
+      "q": "Mehmonxona oʻxshatmasida private IP nimaga mos keladi?",
+      "options": [
+        "Koʻcha manzili",
+        "Xona raqami",
+        "Qabulxona",
+        "Mehmonxona nomi"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "Public IP ni kim beradi?",
+      "options": [
+        "Switch",
+        "Printer",
+        "Windows oʻzi",
+        "Internet provayderi (ISP)"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "Ichki manzilni router public manzilga almashtirishi nima deyiladi?",
+      "options": [
+        "NAT",
+        "DNS",
+        "APIPA",
+        "Loopback"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "Qaysi oraliq RFC 1918 private oraliqlaridan biri?",
+      "options": [
+        "11.0.0.0/8",
+        "169.254.0.0/16",
+        "172.16.0.0/12",
+        "127.0.0.0/8"
+      ],
+      "answer": 2
+    },
+    {
+      "q": "Quyidagilardan qaysi biri private IP?",
+      "options": [
+        "172.32.0.1",
+        "192.169.1.1",
+        "172.20.5.1",
+        "11.0.0.1"
+      ],
+      "answer": 2
+    },
+    {
+      "q": "Printerga qanday IP berish maʼqul?",
+      "options": [
+        "Static",
+        "Dynamic",
+        "APIPA",
+        "Loopback"
+      ],
+      "answer": 0
+    },
+    {
+      "q": "Kompyuterda 169.254.33.7 manzili koʻrinyapti. Bu nimani bildiradi?",
+      "options": [
+        "Bu public IP",
+        "Bu loopback manzili",
+        "Bu multicast manzili",
+        "DHCP serverdan manzil olinmagan"
+      ],
+      "answer": 3
+    },
+    {
+      "q": "Dynamic IP ni qurilmaga qaysi xizmat beradi?",
+      "options": [
+        "DNS",
+        "DHCP",
+        "NAT",
+        "Loopback"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "ping 127.0.0.1 buyrugʻi nimani tekshiradi?",
+      "options": [
+        "Internetga ulanishni",
+        "Kompyuterdagi tarmoq dasturini",
+        "DNS serverni",
+        "Qoʻshni kompyuterni"
+      ],
+      "answer": 1
+    },
+    {
+      "q": "224.0.0.5 manzili qaysi turga kiradi?",
+      "options": [
+        "Private",
+        "APIPA",
+        "Public",
+        "Multicast"
+      ],
+      "answer": 3
+    }
+  ]
+}

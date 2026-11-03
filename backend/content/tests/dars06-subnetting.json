@@ -1,0 +1,15 @@
+{
+  "lessonId": "dars06-subnetting",
+  "questions": [
+    { "q": "Subnetting nima?", "options": ["Tarmoqni kichik subnetlarga boʻlish", "Tarmoqlarni bittaga birlashtirish", "IP addressni binaryga oʻtkazish", "Broadcastni butunlay oʻchirish"], "answer": 0 },
+    { "q": "/25 prefiksining subnet maski qaysi?", "options": ["255.255.255.0", "255.255.255.128", "255.255.255.192", "255.255.128.0"], "answer": 1 },
+    { "q": "Host qismidan yana bitta bit qarzga olinsa nima boʻladi?", "options": ["Hostlar soni 2 baravar ortadi", "Subnetlar soni 2 baravar ortadi", "Subnetlar soni oʻzgarmaydi", "Hostlar soni 2 taga kamayadi"], "answer": 1 },
+    { "q": "/24 tarmoq /26 ga boʻlinsa, nechta subnet va har birida nechta host boʻladi?", "options": ["2 subnet, 126 host", "8 subnet, 30 host", "4 subnet, 64 host", "4 subnet, 62 host"], "answer": 3 },
+    { "q": "10.0.0.50/28 ning network addressi qaysi?", "options": ["10.0.0.32", "10.0.0.0", "10.0.0.48", "10.0.0.50"], "answer": 2 },
+    { "q": "192.168.1.77/27 qaysi subnetda joylashgan (network address)?", "options": ["192.168.1.64", "192.168.1.32", "192.168.1.77", "192.168.1.96"], "answer": 0 },
+    { "q": "192.168.1.200/28 ning broadcast addressi qaysi?", "options": ["192.168.1.208", "192.168.1.206", "192.168.1.255", "192.168.1.207"], "answer": 3 },
+    { "q": "/30 subnet (2 ta host) qaysi holat uchun juda qulay?", "options": ["Mehmonlar Wi-Fi tarmogʻiga", "Ikki router orasidagi ulanishga", "100 ta kompyuterli boʻlimga", "Butun kompaniya tarmogʻiga"], "answer": 1 },
+    { "q": "172.16.0.0/16 dan kamida 50 ta subnet kerak. Eng kam bit qarzga olinsa, yangi prefiks?", "options": ["/21", "/20", "/22", "/23"], "answer": 2 },
+    { "q": "192.168.10.0/24 ni 4 boʻlimga boʻlamiz, har birida 60 tagacha PC. Qaysi mask?", "options": ["255.255.255.224", "255.255.255.128", "255.255.255.240", "255.255.255.192"], "answer": 3 }
+  ]
+}

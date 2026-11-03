@@ -1,0 +1,15 @@
+{
+  "lessonId": "dars07-vlsm",
+  "questions": [
+    { "q": "FLSM nima?", "options": ["Hamma subnet bir xil oʻlchamda", "Har subnet har xil oʻlchamda", "Faqat /30 subnetlardan iborat tarmoq", "Subnetlarga boʻlinmagan tarmoq"], "answer": 0 },
+    { "q": "VLSM da har bir subnetga qanday oʻlcham beriladi?", "options": ["Hammasiga bir xil /26", "Ehtiyojiga mos oʻlcham", "Hammasiga eng katta /25", "Hammasiga /30"], "answer": 1 },
+    { "q": "Darsda VLSM nimaga oʻxshatildi?", "options": ["Pitsaga", "Koʻcha nomiga", "Avtoturargohga", "Maktab karnayiga"], "answer": 2 },
+    { "q": "VLSM da talablarni qanday tartibda joylashtiramiz?", "options": ["Kichikdan kattaga", "Boʻlim nomi boʻyicha alifbo tartibida", "Tasodifiy tartibda", "Kattadan kichikka"], "answer": 3 },
+    { "q": "Sotuv boʻlimiga 100 ta host kerak. Eng kichik mos prefiks qaysi?", "options": ["/26", "/25", "/24", "/27"], "answer": 1 },
+    { "q": "25 ta host uchun eng mos prefiks qaysi?", "options": ["/27", "/28", "/26", "/29"], "answer": 0 },
+    { "q": "192.168.10.0/24: Sotuv .0/25 dan keyin IT /26 joylashdi. IT broadcasti qaysi?", "options": ["192.168.10.127", "192.168.10.255", "192.168.10.191", "192.168.10.190"], "answer": 2 },
+    { "q": "Oldingi subnet 172.16.1.0/26 boʻlsa, keyingi subnet qaysi manzildan boshlanadi?", "options": ["172.16.1.63", "172.16.1.32", "172.16.1.128", "172.16.1.64"], "answer": 3 },
+    { "q": "Avval /28 subnet .0 – .15 ga qoʻyildi. Endi /25 qaysi manzildan boshlana oladi?", "options": [".16", ".128", ".64", ".32"], "answer": 1 },
+    { "q": "10.0.0.0/24: A 60, B 28, C 12 host va router ulanishi. Router /30 networki qaysi?", "options": ["10.0.0.112", "10.0.0.116", "10.0.0.96", "10.0.0.108"], "answer": 0 }
+  ]
+}

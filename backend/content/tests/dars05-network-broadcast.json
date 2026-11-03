@@ -1,0 +1,15 @@
+{
+  "lessonId": "dars05-network-broadcast",
+  "questions": [
+    { "q": "Network address hosil boʻlishi uchun host bitlari qanday boʻlishi kerak?", "options": ["Hammasi 0", "Hammasi 1", "Faqat birinchisi 1", "Faqat oxirgisi 1"], "answer": 0 },
+    { "q": "Darsda network address nimaga oʻxshatildi?", "options": ["Maktab karnayiga", "Ketma-ket ulangan kalitlarga", "Koʻcha nomiga", "Pitsa boʻlagiga"], "answer": 2 },
+    { "q": "Broadcast addressga yuborilgan paket kimga yetib boradi?", "options": ["Faqat routerga", "Tarmoqdagi barcha qurilmalarga", "Faqat first hostga", "Faqat bitta tasodifiy qurilmaga"], "answer": 1 },
+    { "q": "192.168.1.10/24 tarmogʻining last hosti qaysi?", "options": ["192.168.1.255", "192.168.1.1", "192.168.1.10", "192.168.1.254"], "answer": 3 },
+    { "q": "Host bitlari soni h boʻlsa, foydalaniladigan hostlar soni qancha?", "options": ["2ʰ", "2ʰ − 2", "2ʰ + 2", "h − 2"], "answer": 1 },
+    { "q": "AND amalida natija qachon 1 boʻladi?", "options": ["Ikkala bit ham 1 boʻlsa", "Bitlardan biri 1 boʻlsa", "Ikkala bit ham 0 boʻlsa", "Bitlar har xil boʻlsa"], "answer": 0 },
+    { "q": "10.0.5.77/24 ning broadcast addressi qaysi?", "options": ["10.0.5.0", "10.0.5.254", "10.0.5.255", "10.0.255.255"], "answer": 2 },
+    { "q": "172.16.45.200/16 ning network addressi qaysi?", "options": ["172.16.45.0", "172.0.0.0", "172.16.45.200", "172.16.0.0"], "answer": 3 },
+    { "q": "10.20.30.40/8 tarmogʻida nechta foydalaniladigan host bor?", "options": ["16 777 214", "65 534", "16 777 216", "254"], "answer": 0 },
+    { "q": "10.1.2.3/16 ning broadcast addressi qaysi?", "options": ["10.1.2.255", "10.255.255.255", "10.1.255.255", "10.1.0.0"], "answer": 2 }
+  ]
+}

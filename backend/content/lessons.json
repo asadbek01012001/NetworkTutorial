@@ -1,0 +1,13 @@
+[
+  {"id": "dars01-ip-address", "title": "IP address bilan tanishuv", "titles": {"ru": "Знакомство с IP-адресом", "en": "Getting to know the IP address"}, "duration": 725.4},
+  {"id": "dars02-ikkilik-sanoq", "title": "Ikkilik sanoq tizimi", "titles": {"ru": "Двоичная система счисления", "en": "The binary number system"}, "duration": 766.5},
+  {"id": "dars03-ipv4-tuzilishi", "title": "IPv4 tuzilishi", "titles": {"ru": "Структура IPv4", "en": "IPv4 structure"}, "duration": 696.2},
+  {"id": "dars04-subnet-mask", "title": "Subnet mask", "titles": {"ru": "Маска подсети", "en": "Subnet mask"}, "duration": 770.7},
+  {"id": "dars05-network-broadcast", "title": "Network address va Broadcast", "titles": {"ru": "Адрес сети и широковещательный адрес", "en": "Network address and Broadcast"}, "duration": 760.7},
+  {"id": "dars06-subnetting", "title": "Subnetting", "titles": {"ru": "Разбиение на подсети (Subnetting)", "en": "Subnetting"}, "duration": 1016.6},
+  {"id": "dars07-vlsm", "title": "VLSM", "titles": {"ru": "VLSM", "en": "VLSM"}, "duration": 701.5},
+  {"id": "dars08-ip-turlari", "title": "IP address turlari", "titles": {"ru": "Типы IP-адресов", "en": "Types of IP addresses"}, "duration": 686.2},
+  {"id": "dars09-tarmoq-asoslari", "title": "Tarmoq asoslari", "titles": {"ru": "Основы сетей", "en": "Networking fundamentals"}, "duration": 688.6},
+  {"id": "dars10-amaliy-tarmoq", "title": "Amaliy tarmoq", "titles": {"ru": "Сети на практике", "en": "Practical networking"}, "duration": 732},
+  {"id": "dars11-osi-modeli", "title": "OSI modeli", "titles": {"ru": "Модель OSI", "en": "The OSI model"}, "duration": 699.8}
+]
