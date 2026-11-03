@@ -197,7 +197,7 @@ function SwitchView({ task, ports, statements, onPort, onStatement, result }: Sw
             ))}
           </div>
         </div>
-        <SwitchDiagram task={task} />
+        <SwitchDiagram task={task} sendTo={correct?.ports} />
       </div>
 
       <h3>{t.q1}</h3>
@@ -243,8 +243,13 @@ function SwitchView({ task, ports, statements, onPort, onStatement, result }: Sw
   )
 }
 
-/** The switch, its 12 ports and what is plugged in; the envelope marks the sender. */
-function SwitchDiagram({ task }: { task: SwitchTask }) {
+/**
+ * The switch, its 12 ports and what is plugged in. An envelope (the frame)
+ * keeps travelling from the sender into the switch; once the answer is
+ * checked it goes on to the ports the switch really sends it to (none = the
+ * frame is dropped and stays red in the switch).
+ */
+function SwitchDiagram({ task, sendTo }: { task: SwitchTask; sendTo?: string[] }) {
   const { t } = useI18n()
   const px = (i: number) => 70 + i * 62 + (i >= 8 ? 20 : 0)
   const hubIndex = task.ports.findIndex((p) => p.device === 'hub')
@@ -269,11 +274,37 @@ function SwitchDiagram({ task }: { task: SwitchTask }) {
       </g>
     )
   }
+  // Frame route: sender -> its switch port -> along the switch -> out of each port the switch uses.
+  const BUS = 97
+  const srcPort = task.ports.findIndex((p) => p.device === task.src)
+  const fromHub = srcPort < 0
   const src = hostXY(task.src)
+  const up = fromHub ? `M${src.x} 406 V372 H${hubBox} V288 H${hubX} V${BUS}` : `M${src.x} 216 V${BUS}`
+  const routes: string[] = []
+  for (const name of sendTo ?? []) {
+    const i = task.ports.findIndex((p) => p.name === name)
+    if (i < 0) continue
+    const across = `${up} H${px(i)}`
+    if (task.ports[i].device === 'hub') {
+      for (const h of task.hubHosts) routes.push(`${across} V288 H${hubBox} V372 H${hostXY(h).x} V406`)
+    } else {
+      routes.push(`${across} V216`)
+    }
+  }
+  const checked = sendTo !== undefined
+  const dropped = checked && routes.length === 0
+  const dur = checked ? 3.2 : 1.6
+  const envelope = (path: string, key: string) => (
+    <g key={key} className={`sd-env moving${dropped ? ' dropped' : ''}`}>
+      <rect x={-15} y={-10} width={30} height={20} rx={3} />
+      <path d="M-15 -10 L0 2 L15 -10" />
+      <animateMotion path={path} dur={`${dur}s`} repeatCount="indefinite" calcMode="linear" keyPoints="0;1;1" keyTimes="0;0.8;1" />
+    </g>
+  )
   return (
     <svg className="sw-diagram" viewBox={`0 0 900 ${hubIndex >= 0 ? 480 : 300}`} aria-hidden>
       <rect x={30} y={20} width={840} height={110} rx={10} className="sd-switch" />
-      <text x={50} y={50} className="sd-title">
+      <text x={44} y={40} className="sd-title">
         Switch
       </text>
       {task.ports.map((p, i) => (
@@ -301,10 +332,11 @@ function SwitchDiagram({ task }: { task: SwitchTask }) {
       )}
       {task.ports.filter((p) => p.device && p.device !== 'hub').map((p) => pc(p.device!))}
       {task.hubHosts.map(pc)}
-      <g transform={`translate(${src.x + 30},${src.y - 46})`} className="sd-env">
+      <g transform={`translate(${src.x + 30},${src.y - 46})`} className="sd-env sender">
         <rect x={-20} y={-13} width={40} height={26} rx={3} />
         <path d="M-20 -13 L0 3 L20 -13" />
       </g>
+      {routes.length ? routes.map((r, i) => envelope(r, `r${i}-${r}`)) : envelope(up, `up-${checked}`)}
     </svg>
   )
 }
