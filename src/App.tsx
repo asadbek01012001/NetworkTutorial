@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { AuthScreen } from './components/AuthScreen'
 import { Exam } from './components/Exam'
 import { Layout } from './components/Layout'
@@ -25,9 +25,20 @@ export default function App() {
   const openGlossary = useCallback(() => setGlossOpen(true), [])
   const closeGlossary = useCallback(() => setGlossOpen(false), [])
 
-  const [adminOpen, setAdminOpen] = useState(false)
-  const openAdmin = useCallback(() => setAdminOpen(true), [])
-  const closeAdmin = useCallback(() => setAdminOpen(false), [])
+  // The admin panel is opened by the address (#admin/...), so reload and Back work.
+  const [adminOpen, setAdminOpen] = useState(() => window.location.hash.startsWith('#admin'))
+  useEffect(() => {
+    const onHash = () => setAdminOpen(window.location.hash.startsWith('#admin'))
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
+  const openAdmin = useCallback(() => {
+    window.location.hash = 'admin/stats'
+  }, [])
+  const closeAdmin = useCallback(() => {
+    history.pushState(null, '', window.location.pathname + window.location.search)
+    setAdminOpen(false)
+  }, [])
 
   const [examOpen, setExamOpen] = useState(false)
   const openExam = useCallback(() => setExamOpen(true), [])
@@ -58,7 +69,7 @@ export default function App() {
       )}
       {adminOpen && course?.isAdmin && (
         <Suspense fallback={null}>
-          <AdminPanel onClose={closeAdmin} />
+          <AdminPanel username={course.username} onClose={closeAdmin} />
         </Suspense>
       )}
       {labOpen && course && (

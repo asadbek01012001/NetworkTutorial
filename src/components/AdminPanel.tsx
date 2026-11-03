@@ -14,12 +14,24 @@ import {
 // practice view: overview, accounts, test-question analysis and the action log.
 
 type Tab = 'stats' | 'users' | 'questions' | 'log'
-const TABS: { id: Tab; label: string }[] = [
-  { id: 'stats', label: 'Umumiy' },
-  { id: 'users', label: 'Foydalanuvchilar' },
-  { id: 'questions', label: 'Test savollari' },
-  { id: 'log', label: 'Jurnal' },
+const PAGES: { id: Tab; label: string; icon: string }[] = [
+  { id: 'stats', label: 'Dashboard', icon: 'M4 13h6V4H4zM14 20h6v-9h-6zM14 4v4h6V4zM4 20h6v-4H4z' },
+  { id: 'users', label: 'Foydalanuvchilar', icon: 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M16 3.5a4 4 0 0 1 0 7.5M18 14.5a7 7 0 0 1 4 6.5' },
+  { id: 'questions', label: 'Test savollari', icon: 'M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z' },
+  { id: 'log', label: 'Jurnal', icon: 'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01' },
 ]
+
+// The open page lives in the address (#admin/<page>[/<user id>]) so a reload
+// or the browser's Back button keeps the admin where they were.
+function parseHash(): { tab: Tab; userId: number | null } {
+  const [, page, id] = window.location.hash.slice(1).split('/')
+  const tab = PAGES.some((p) => p.id === page) ? (page as Tab) : 'stats'
+  const n = Number(id)
+  return { tab, userId: tab === 'users' && n > 0 ? n : null }
+}
+const go = (tab: Tab, userId?: number | null) => {
+  window.location.hash = `admin/${tab}${userId ? `/${userId}` : ''}`
+}
 
 const STATE_LABEL: Record<LessonState, string> = {
   done: 'Tugatgan',
@@ -64,50 +76,72 @@ function useLoad<T>(load: () => Promise<T>, deps: unknown[]) {
   return { data, error, reload }
 }
 
-export function AdminPanel({ onClose }: { onClose: () => void }) {
-  const [tab, setTab] = useState<Tab>('stats')
-  const [userId, setUserId] = useState<number | null>(null)
+export function AdminPanel({ username, onClose }: { username: string; onClose: () => void }) {
+  const [{ tab, userId }, setRoute] = useState(parseHash)
+  const [reloadKey, setReloadKey] = useState(0)
 
   useEffect(() => {
-    const h = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    window.addEventListener('keydown', h)
+    const onHash = () => setRoute(parseHash())
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
+    window.addEventListener('hashchange', onHash)
+    window.addEventListener('keydown', onKey)
     document.body.style.overflow = 'hidden'
     return () => {
-      window.removeEventListener('keydown', h)
+      window.removeEventListener('hashchange', onHash)
+      window.removeEventListener('keydown', onKey)
       document.body.style.overflow = ''
     }
   }, [onClose])
 
+  const page = PAGES.find((p) => p.id === tab)!
   return (
-    <div className="practice adm" role="dialog" aria-label="Admin panel">
-      <header className="practice-bar">
-        <h1>Admin panel</h1>
-        <div className="practice-tabs" role="tablist">
-          {TABS.map((t) => (
-            <button
-              key={t.id}
-              role="tab"
-              aria-selected={tab === t.id}
-              className={tab === t.id ? 'active' : ''}
-              onClick={() => {
-                setTab(t.id)
-                setUserId(null)
-              }}
-            >
-              {t.label}
+    <div className="adm adm-shell" role="dialog" aria-label="Admin panel">
+      <aside className="adm-side">
+        <div className="adm-brand">
+          <span className="adm-brand-icon" aria-hidden>
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6z" />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+          </span>
+          <span>Admin panel</span>
+        </div>
+        <nav className="adm-nav">
+          {PAGES.map((p) => (
+            <button key={p.id} className={p.id === tab ? 'active' : ''} aria-current={p.id === tab ? 'page' : undefined} onClick={() => go(p.id)}>
+              <svg viewBox="0 0 24 24" aria-hidden>
+                <path d={p.icon} />
+              </svg>
+              <span>{p.label}</span>
             </button>
           ))}
+        </nav>
+        <div className="adm-side-foot">
+          <span className="adm-me">{username}</span>
+          <button className="adm-exit" onClick={onClose}>
+            <svg viewBox="0 0 24 24" aria-hidden>
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+            <span>Saytga qaytish</span>
+          </button>
         </div>
-        <button className="mbtn close" onClick={onClose} aria-label="Yopish">
-          ✕
-        </button>
-      </header>
-      <div className="practice-body">
-        {tab === 'stats' && <StatsTab />}
-        {tab === 'users' && (userId === null ? <UsersTab onOpen={setUserId} /> : <UserView id={userId} onBack={() => setUserId(null)} />)}
-        {tab === 'questions' && <QuestionsTab />}
-        {tab === 'log' && <LogTab />}
-      </div>
+      </aside>
+
+      <section className="adm-main">
+        <header className="adm-top">
+          <h1>{userId ? 'Foydalanuvchi' : page.label}</h1>
+          <button className="mbtn" onClick={() => setReloadKey((k) => k + 1)}>
+            ⟳ Yangilash
+          </button>
+        </header>
+        <div className="adm-body" key={`${tab}-${userId}-${reloadKey}`}>
+          {tab === 'stats' && <StatsTab />}
+          {tab === 'users' &&
+            (userId === null ? <UsersTab onOpen={(id) => go('users', id)} /> : <UserView id={userId} onBack={() => go('users')} />)}
+          {tab === 'questions' && <QuestionsTab />}
+          {tab === 'log' && <LogTab />}
+        </div>
+      </section>
     </div>
   )
 }
