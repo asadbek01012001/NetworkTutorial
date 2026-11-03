@@ -277,11 +277,9 @@ body.locked .app, body.locked .modal { display: none; }
 .guard-lock p { font-size: 22px; color: var(--muted); margin: 0; }
 
 /* ---------- Responsive ---------- */
-/* Header: labels give way to icons, then the bar splits into two rows. */
-@media (max-width: 1350px) {
-  .nav-lbl { display: none; }
-  .lab-btn { width: 52px; padding: 0; justify-content: center; }
-}
+/* Header: section buttons are icons only (name in the tooltip); the bar splits into two rows on phones. */
+.nav-lbl { display: none; }
+.topbar .lab-btn { width: 52px; padding: 0; justify-content: center; }
 @media (max-width: 760px) {
   .topbar { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'brand user' 'nav nav'; row-gap: 14px; padding-top: 14px; padding-bottom: 14px; }
   .topbar .brand { grid-area: brand; font-size: 21px; }
@@ -508,6 +506,7 @@ body.locked .app, body.locked .modal { display: none; }
 .adm-table-wrap { overflow-x: auto; border-radius: 18px; border: 1px solid var(--line); background: var(--panel); }
 .adm-table { width: 100%; border-collapse: collapse; font-size: 19px; }
 .adm-table th { text-align: left; padding: 14px 16px; font-size: 18px; color: var(--muted); border-bottom: 1px solid var(--line); white-space: nowrap; }
+.adm-table td:first-child { min-width: 220px; }
 .adm-table td { padding: 13px 16px; border-bottom: 1px solid rgb(34 225 255 / 7%); vertical-align: middle; }
 .adm-table tr:last-child td { border-bottom: 0; }
 .adm-click tbody tr { cursor: pointer; }
@@ -531,6 +530,14 @@ body.locked .app, body.locked .modal { display: none; }
 .adm-act { height: 56px; padding: 0 22px; font-size: 20px; }
 .adm-act.danger { border-color: rgb(255 92 122 / 45%); color: #ff8fa3; }
 .adm-act.danger:hover { border-color: #ff5c7a; }
+.icon-btn { display: inline-grid; place-items: center; flex: none; width: 52px; height: 52px; padding: 0; border-radius: 14px; border: 1px solid var(--line); background: var(--panel); color: var(--text); cursor: pointer; transition: border-color .15s, background .15s; }
+.icon-btn svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.icon-btn:hover:not(:disabled) { border-color: var(--cyan); background: var(--panel-hover); }
+.icon-btn:disabled { opacity: .4; cursor: default; }
+.icon-btn.accent { color: var(--cyan); border-color: rgb(34 225 255 / 45%); background: rgb(34 225 255 / 10%); }
+.icon-btn.danger { color: #ff8fa3; border-color: rgb(255 92 122 / 45%); }
+.icon-btn.danger:hover:not(:disabled) { border-color: #ff5c7a; background: rgb(255 92 122 / 12%); }
+.adm-wrap > .icon-btn { justify-self: start; }
 .adm-act.confirm { background: #ff5c7a; border-color: #ff5c7a; color: #1a0006; }
 .adm-ok { padding: 12px 16px; border-radius: 12px; background: rgb(61 255 160 / 12%); color: var(--green); font-size: 19px; font-weight: 700; }
 .adm-pw { display: flex; flex-wrap: wrap; gap: 10px 30px; padding: 18px 20px; border-radius: 16px; border: 2px solid var(--cyan); background: #0a101c; font-size: 22px; }

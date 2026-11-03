@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, type ButtonHTMLAttributes } from 'react'
 import {
   admin,
   type AccessMode,
@@ -146,9 +146,7 @@ export function AdminPanel({ username, onClose }: { username: string; onClose: (
       <section className="adm-main">
         <header className="adm-top">
           <h1>{userId ? 'Foydalanuvchi' : lessonId ? 'Dars ruxsatlari' : page.label}</h1>
-          <button className="mbtn" onClick={() => setReloadKey((k) => k + 1)}>
-            ⟳ Yangilash
-          </button>
+          <IconBtn icon="refresh" label="Yangilash" onClick={() => setReloadKey((k) => k + 1)} />
         </header>
         <div className="adm-body" key={`${tab}-${userId}-${lessonId}-${reloadKey}`}>
           {tab === 'stats' && <StatsTab />}
@@ -161,6 +159,27 @@ export function AdminPanel({ username, onClose }: { username: string; onClose: (
         </div>
       </section>
     </div>
+  )
+}
+
+// Icon buttons: the name is shown as a tooltip and read by screen readers.
+const ICON = {
+  users: 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M16 3.5a4 4 0 0 1 0 7.5M18 14.5a7 7 0 0 1 4 6.5',
+  refresh: 'M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7',
+  back: 'M15 18l-6-6 6-6',
+  key: 'M14 10a4 4 0 1 0-1.2 2.8L20 20M17 17l2-2M15 15l1.5-1.5',
+  ban: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM5.6 5.6l12.8 12.8',
+  unlock: 'M5 11h14v10H5zM8 11V7a4 4 0 0 1 7.6-1.7',
+  reset: 'M3 12a9 9 0 1 0 2.6-6.4M3 4v5h5',
+  trash: 'M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3',
+}
+function IconBtn({ icon, label, className = '', ...rest }: { icon: keyof typeof ICON; label: string } & ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button type="button" className={`icon-btn ${className}`} title={label} aria-label={label} {...rest}>
+      <svg viewBox="0 0 24 24" aria-hidden>
+        <path d={ICON[icon]} />
+      </svg>
+    </button>
   )
 }
 
@@ -291,9 +310,7 @@ function LessonsTab({ onOpen }: { onOpen: (id: string) => void }) {
                   )}
                 </td>
                 <td>
-                  <button className="tbtn adm-act" onClick={() => onOpen(l.id)}>
-                    Foydalanuvchilar
-                  </button>
+                  <IconBtn icon="users" label="Foydalanuvchilar va ruxsatlar" className="accent" onClick={() => onOpen(l.id)} />
                 </td>
               </tr>
             ))}
@@ -385,9 +402,7 @@ function LessonUsers({ id, onBack }: { id: string; onBack: () => void }) {
 
   return (
     <div className="adm-wrap">
-      <button className="mbtn" onClick={onBack}>
-        ← Darslarga qaytish
-      </button>
+      <IconBtn icon="back" label="Darslarga qaytish" onClick={onBack} />
       {error && <LoadError />}
       {!data && !error && <Loading />}
       {data && (
@@ -579,22 +594,26 @@ function UserView({ id, onBack }: { id: number; onBack: () => void }) {
     }
   }
 
-  const btn = (what: Exclude<Pending, null>, label: string, danger = false) => (
-    <button
-      className={`tbtn adm-act${danger ? ' danger' : ''}${confirm === what ? ' confirm' : ''}`}
-      disabled={busy || u.isAdmin}
-      onClick={() => run(what)}
-      onBlur={() => confirm === what && setConfirm(null)}
-    >
-      {confirm === what ? 'Tasdiqlang' : label}
-    </button>
-  )
+  // Icon only; the one waiting for confirmation shows the word so it can't be missed.
+  const btn = (what: Exclude<Pending, null>, icon: keyof typeof ICON, label: string, danger = false) =>
+    confirm === what ? (
+      <button
+        type="button"
+        className="tbtn adm-act confirm"
+        disabled={busy}
+        onClick={() => run(what)}
+        onBlur={() => setConfirm(null)}
+        autoFocus
+      >
+        {label}: tasdiqlang
+      </button>
+    ) : (
+      <IconBtn icon={icon} label={label} className={danger ? 'danger' : ''} disabled={busy || u.isAdmin} onClick={() => run(what)} />
+    )
 
   return (
     <div className="adm-wrap">
-      <button className="mbtn" onClick={onBack}>
-        ← Ro‘yxatga qaytish
-      </button>
+      <IconBtn icon="back" label="Ro‘yxatga qaytish" onClick={onBack} />
 
       <div className="adm-user-head">
         <h2>{u.username}</h2>
@@ -619,13 +638,13 @@ function UserView({ id, onBack }: { id: number; onBack: () => void }) {
         <p className="adm-muted">Admin akkauntini paneldan o‘zgartirib bo‘lmaydi.</p>
       ) : (
         <div className="adm-actions">
-          {btn('password', 'Yangi parol berish')}
-          {btn('block', u.blocked ? 'Blokdan chiqarish' : 'Bloklash', !u.blocked)}
-          {btn('reset', 'Progressni tozalash', true)}
-          {btn('delete', 'Akkauntni o‘chirish', true)}
+          {btn('password', 'key', 'Yangi parol berish')}
+          {u.blocked ? btn('block', 'unlock', 'Blokdan chiqarish') : btn('block', 'ban', 'Bloklash', true)}
+          {btn('reset', 'reset', 'Progressni tozalash', true)}
+          {btn('delete', 'trash', 'Akkauntni o‘chirish', true)}
         </div>
       )}
-      {confirm && <p className="adm-muted">Amalni bajarish uchun tugmani yana bir marta bosing.</p>}
+      {confirm && <p className="adm-muted">Amalni bajarish uchun qizil tugmani bosing.</p>}
       {msg && <div className={msg.ok ? 'adm-ok' : 'auth-error'}>{msg.text}</div>}
       {newPw && (
         <div className="adm-pw">
