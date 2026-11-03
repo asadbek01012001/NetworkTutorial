@@ -5,6 +5,7 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -26,6 +27,16 @@ func main() {
 		log.Fatalf("database: %v", err)
 	}
 	defer db.Close()
+
+	// `networktutorial make-admin <username>` creates/updates the admin account and exits.
+	if len(os.Args) == 3 && os.Args[1] == "make-admin" {
+		pw, err := makeAdmin(ctx, db, os.Args[2])
+		if err != nil {
+			log.Fatalf("make-admin: %v", err)
+		}
+		fmt.Printf("admin %s, password: %s\n", os.Args[2], pw)
+		return
+	}
 
 	course, err := loadCourse(cfg.ContentDir)
 	if err != nil {

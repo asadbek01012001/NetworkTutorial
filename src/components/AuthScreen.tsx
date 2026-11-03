@@ -42,7 +42,7 @@ export function AuthScreen({ onDone }: { onDone: () => void }) {
       }
     } catch (err) {
       const code = err instanceof ApiError ? err.code : ''
-      setError(code === 'too_many' ? t.tooMany : code === 'invalid' ? t.pwRules : t.wrongLogin)
+      setError(code === 'too_many' ? t.tooMany : code === 'invalid' ? t.pwRules : code === 'blocked' ? t.blockedLogin : t.wrongLogin)
     } finally {
       setBusy(false)
     }

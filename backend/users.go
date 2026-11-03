@@ -34,6 +34,7 @@ const (
 type User struct {
 	ID       int64
 	Username string
+	IsAdmin  bool
 }
 
 type identity struct {
@@ -156,9 +157,9 @@ func (id *identity) resolve(ctx context.Context, r *http.Request) (*User, error)
 	err = id.db.QueryRow(ctx,
 		`UPDATE sessions s SET last_seen = now(), expires_at = $2
 		 FROM users u
-		 WHERE s.token_hash = $1 AND s.expires_at > now() AND u.id = s.user_id
-		 RETURNING u.id, u.username`,
-		hashToken(c.Value), time.Now().Add(sessionIdleTTL)).Scan(&u.ID, &u.Username)
+		 WHERE s.token_hash = $1 AND s.expires_at > now() AND u.id = s.user_id AND NOT u.blocked
+		 RETURNING u.id, u.username, u.is_admin`,
+		hashToken(c.Value), time.Now().Add(sessionIdleTTL)).Scan(&u.ID, &u.Username, &u.IsAdmin)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return nil, errNoUser
 	}
@@ -287,8 +288,9 @@ func (s *Server) handleLogin(w http.ResponseWriter, r *http.Request) {
 	var userID int64
 	var name string
 	var hash *string
-	err := s.db.QueryRow(ctx, `SELECT id, username, password_hash FROM users WHERE lower(username) = lower($1)`,
-		strings.TrimSpace(c.Username)).Scan(&userID, &name, &hash)
+	var blocked bool
+	err := s.db.QueryRow(ctx, `SELECT id, username, password_hash, blocked FROM users WHERE lower(username) = lower($1)`,
+		strings.TrimSpace(c.Username)).Scan(&userID, &name, &hash, &blocked)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		s.internal(w, err)
 		return
@@ -296,6 +298,10 @@ func (s *Server) handleLogin(w http.ResponseWriter, r *http.Request) {
 	if err != nil || hash == nil || !checkPassword(*hash, c.Password) {
 		s.ids.limiter.failed(ip)
 		fail(w, http.StatusUnauthorized, "wrong")
+		return
+	}
+	if blocked {
+		fail(w, http.StatusForbidden, "blocked")
 		return
 	}
 	if err := s.ids.startSession(ctx, w, r, userID); err != nil {

@@ -10,6 +10,7 @@ import { Dashboard } from './pages/Dashboard'
 // The network lab is a large module; load it only when someone opens it.
 const Lab = lazy(() => import('./lab/Lab.tsx').then((m) => ({ default: m.Lab })))
 const Glossary = lazy(() => import('./components/Glossary'))
+const AdminPanel = lazy(() => import('./components/AdminPanel').then((m) => ({ default: m.AdminPanel })))
 
 export default function App() {
   const { t } = useI18n()
@@ -24,6 +25,10 @@ export default function App() {
   const openGlossary = useCallback(() => setGlossOpen(true), [])
   const closeGlossary = useCallback(() => setGlossOpen(false), [])
 
+  const [adminOpen, setAdminOpen] = useState(false)
+  const openAdmin = useCallback(() => setAdminOpen(true), [])
+  const closeAdmin = useCallback(() => setAdminOpen(false), [])
+
   const [examOpen, setExamOpen] = useState(false)
   const openExam = useCallback(() => setExamOpen(true), [])
   const closeExam = useCallback(() => setExamOpen(false), [])
@@ -31,7 +36,7 @@ export default function App() {
   if (needAuth) return <AuthScreen onDone={() => window.location.reload()} />
 
   return (
-    <Layout username={course?.username} onOpenLab={course ? openLab : undefined} onOpenPractice={course ? openPractice : undefined} onOpenGlossary={course ? openGlossary : undefined} onOpenExam={course ? openExam : undefined}>
+    <Layout username={course?.username} onOpenLab={course ? openLab : undefined} onOpenPractice={course ? openPractice : undefined} onOpenGlossary={course ? openGlossary : undefined} onOpenExam={course ? openExam : undefined} onOpenAdmin={course?.isAdmin ? openAdmin : undefined}>
       {course ? (
         <Dashboard course={course} refresh={refresh} />
       ) : (
@@ -49,6 +54,11 @@ export default function App() {
       {glossOpen && (
         <Suspense fallback={null}>
           <Glossary onClose={closeGlossary} />
+        </Suspense>
+      )}
+      {adminOpen && course?.isAdmin && (
+        <Suspense fallback={null}>
+          <AdminPanel onClose={closeAdmin} />
         </Suspense>
       )}
       {labOpen && course && (

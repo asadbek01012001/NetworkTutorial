@@ -30,6 +30,7 @@ export interface LessonView {
 
 export interface CourseView {
   username: string
+  isAdmin?: boolean
   passScore: number
   lessons: LessonView[]
 }
@@ -153,6 +154,93 @@ export interface PracticeStat {
   perfect: number
   points: number
   total: number
+}
+
+// ---- admin panel ----
+export interface AdminCounts {
+  accounts: number
+  oldAccounts: number
+  blocked: number
+  activeToday: number
+  active7d: number
+  newToday: number
+  new7d: number
+  tests: number
+  testsPassed: number
+  exams: number
+  examAvg: number
+  practice: number
+  finished: number
+}
+export interface AdminLessonStat {
+  index: number
+  title: string
+  started: number
+  videoDone: number
+  passed: number
+  attempts: number
+  avgScore: number
+}
+export interface AdminStats {
+  counts: AdminCounts
+  signups: { day: string; count: number }[]
+  lessons: AdminLessonStat[]
+  passScore: number
+}
+export interface AdminUser {
+  id: number
+  username: string
+  createdAt: string
+  lastSeen: string | null
+  ip: string
+  passed: number
+  score: number
+  tests: number
+  blocked: boolean
+  isAdmin: boolean
+  hasPassword: boolean
+}
+export interface AdminAttempt {
+  index: number
+  score: number
+  total: number
+  at: string
+}
+export interface AdminUserDetail {
+  user: AdminUser
+  lessons: { index: number; title: string; state: LessonState; watched: number; bestScore: number; attempts: number }[]
+  tests: AdminAttempt[]
+  exams: AdminAttempt[]
+  practice: { kind: PracticeKind; done: number; score: number; total: number }[]
+  sessions: { ip: string; userAgent: string; lastSeen: string }[]
+}
+export interface AdminQuestion {
+  n: number
+  q: string
+  options: string[]
+  answer: number
+  answered: number
+  wrong: number
+  picks: number[]
+}
+export interface AdminLogEntry {
+  admin: string
+  action: 'password' | 'block' | 'unblock' | 'reset' | 'delete'
+  target: string
+  ip: string
+  at: string
+}
+
+export const admin = {
+  stats: () => call<AdminStats>('GET', 'api/admin/stats'),
+  users: (q: string) => call<{ users: AdminUser[] }>('GET', `api/admin/users?q=${encodeURIComponent(q)}`),
+  user: (id: number) => call<AdminUserDetail>('GET', `api/admin/users/${id}`),
+  newPassword: (id: number) => call<{ username: string; password: string }>('POST', `api/admin/users/${id}/password`),
+  block: (id: number, blocked: boolean) => call<{ ok: boolean }>('POST', `api/admin/users/${id}/block`, { blocked }),
+  reset: (id: number) => call<{ ok: boolean }>('POST', `api/admin/users/${id}/reset`),
+  remove: (id: number) => call<{ ok: boolean }>('DELETE', `api/admin/users/${id}`),
+  questions: () => call<{ lessons: { index: number; title: string; questions: AdminQuestion[] }[] }>('GET', 'api/admin/questions'),
+  log: () => call<{ log: AdminLogEntry[] }>('GET', 'api/admin/log'),
 }
 
 export const api = {

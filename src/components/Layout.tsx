@@ -9,10 +9,11 @@ interface Props {
   onOpenPractice?: () => void
   onOpenGlossary?: () => void
   onOpenExam?: () => void
+  onOpenAdmin?: () => void
   children: ReactNode
 }
 
-export function Layout({ username, onOpenLab, onOpenPractice, onOpenGlossary, onOpenExam, children }: Props) {
+export function Layout({ username, onOpenLab, onOpenPractice, onOpenGlossary, onOpenExam, onOpenAdmin, children }: Props) {
   const { t, lang, setLang } = useI18n()
   const [profile, setProfile] = useState(false)
   const closeProfile = useCallback(() => setProfile(false), [])
@@ -66,6 +67,14 @@ export function Layout({ username, onOpenLab, onOpenPractice, onOpenGlossary, on
                 <path d="M5 17a3 3 0 0 1 3-3h11M9 8h6" />
               </svg>
               <span className="nav-lbl">{t.glossary}</span>
+            </button>
+          )}
+          {onOpenAdmin && (
+            <button type="button" className="lab-btn admin-btn" onClick={onOpenAdmin} title="Admin panel">
+              <svg viewBox="0 0 24 24" aria-hidden>
+                <path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
             </button>
           )}
           <div className="ui-lang" role="group" aria-label="Til / Язык / Language">

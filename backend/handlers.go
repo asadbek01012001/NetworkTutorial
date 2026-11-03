@@ -58,6 +58,7 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/practice/current/{kind}", s.handlePracticeCurrent)
 	mux.HandleFunc("POST /api/practice/new/{kind}", s.handlePracticeNew)
 	mux.HandleFunc("POST /api/practice/check/{id}", s.handlePracticeCheck)
+	s.adminRoutes(mux)
 	mux.HandleFunc("GET /media/{file}", s.handleMedia)
 	mux.Handle("/", s.static())
 	return mux
@@ -132,6 +133,7 @@ func (s *Server) handleCourse(w http.ResponseWriter, r *http.Request) {
 	}
 	writeJSON(w, http.StatusOK, map[string]any{
 		"username":  u.Username,
+		"isAdmin":   u.IsAdmin,
 		"passScore": passScore,
 		"lessons":   lessons,
 	})

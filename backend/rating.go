@@ -24,6 +24,7 @@ WITH s AS (
 	       (COUNT(*) FILTER (WHERE p.test_passed))::int AS passed,
 	       MAX(p.best_at) AS reached
 	FROM users u JOIN progress p ON p.user_id = u.id
+	WHERE NOT u.is_admin AND NOT u.blocked
 	GROUP BY u.id
 	HAVING SUM(p.best_score) > 0
 ), r AS (

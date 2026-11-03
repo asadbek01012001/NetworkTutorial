@@ -103,6 +103,21 @@ CREATE TABLE IF NOT EXISTS practice_tasks (
 CREATE INDEX IF NOT EXISTS practice_tasks_user_idx ON practice_tasks (user_id, kind);
 -- Number of the task in the fixed bank of its kind (older rows: NULL).
 ALTER TABLE practice_tasks ADD COLUMN IF NOT EXISTS num INT;
+
+-- Admin panel (2026-11-03): admins see everyone's data and manage accounts;
+-- blocked accounts can't log in. Every admin action is written to admin_log.
+ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS blocked BOOLEAN NOT NULL DEFAULT false;
+CREATE TABLE IF NOT EXISTS admin_log (
+	id          BIGSERIAL PRIMARY KEY,
+	admin_id    BIGINT REFERENCES users(id) ON DELETE SET NULL,
+	admin_name  TEXT NOT NULL,
+	action      TEXT NOT NULL,
+	target_id   BIGINT,
+	target_name TEXT NOT NULL DEFAULT '',
+	ip          TEXT NOT NULL DEFAULT '',
+	created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 `
 
 func openDB(ctx context.Context, url string) (*pgxpool.Pool, error) {
