@@ -199,6 +199,7 @@ export interface AdminUser {
   blocked: boolean
   role: Role
   hasPassword: boolean
+  email: string
 }
 export interface AdminAttempt {
   index: number
@@ -294,9 +295,10 @@ export const api = {
   rating: () => call<RatingView>('GET', 'api/rating'),
   history: () => call<{ attempts: HistoryItem[] }>('GET', 'api/history'),
   login: (username: string, password: string) => call<{ username: string }>('POST', 'api/auth/login', { username, password }),
-  register: (password: string) => call<{ username: string }>('POST', 'api/auth/register', { password }),
+  register: (credential: string, username: string, password: string) =>
+    call<{ username: string }>('POST', 'api/auth/register', { credential, username, password }),
+  authConfig: () => call<{ googleClientId: string }>('GET', 'api/auth/config'),
   logout: () => call<{ ok: boolean }>('POST', 'api/auth/logout'),
-  nextUsername: () => call<{ username: string }>('GET', 'api/auth/next'),
   practiceStats: () => call<{ stats: Record<PracticeKind, PracticeStat> }>('GET', 'api/practice'),
   practiceCurrent: (kind: PracticeKind) => call<PracticeTask>('GET', `api/practice/current/${kind}`),
   practiceNew: (kind: PracticeKind) => call<PracticeTask>('POST', `api/practice/new/${kind}`),

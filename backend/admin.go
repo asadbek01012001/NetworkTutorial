@@ -77,6 +77,7 @@ type adminUserRow struct {
 	Blocked     bool       `json:"blocked"`
 	Role        string     `json:"role"`
 	HasPassword bool       `json:"hasPassword"`
+	Email       string     `json:"email"`
 }
 
 const adminUsersSQL = `
@@ -86,13 +87,13 @@ SELECT u.id, u.username, u.created_at,
        COALESCE((SELECT count(*) FROM progress p WHERE p.user_id = u.id AND p.test_passed), 0)::int,
        COALESCE((SELECT sum(best_score) FROM progress p WHERE p.user_id = u.id), 0)::int,
        (SELECT count(*) FROM test_attempts t WHERE t.user_id = u.id)::int,
-       u.blocked, u.role, u.password_hash IS NOT NULL
+       u.blocked, u.role, u.password_hash IS NOT NULL, COALESCE(u.email, '')
 FROM users u`
 
 func scanAdminUser(row pgx.Row) (adminUserRow, error) {
 	var u adminUserRow
 	err := row.Scan(&u.ID, &u.Username, &u.CreatedAt, &u.LastSeen, &u.IP, &u.Passed, &u.Score, &u.Tests,
-		&u.Blocked, &u.Role, &u.HasPassword)
+		&u.Blocked, &u.Role, &u.HasPassword, &u.Email)
 	return u, err
 }
 
@@ -110,7 +111,7 @@ func (s *Server) handleAdminUsers(w http.ResponseWriter, r *http.Request) {
 		role = roleStudent
 	}
 	rows, err := s.db.Query(r.Context(), adminUsersSQL+`
-		WHERE ($1 = '' OR u.username ILIKE '%' || $1 || '%' OR u.ip LIKE $1 || '%') AND ($2 = '' OR u.role = $2)
+		WHERE ($1 = '' OR u.username ILIKE '%' || $1 || '%' OR u.email ILIKE '%' || $1 || '%' OR u.ip LIKE $1 || '%') AND ($2 = '' OR u.role = $2)
 		ORDER BY u.password_hash IS NULL, u.id DESC LIMIT 1000`, q, role)
 	if err != nil {
 		s.internal(w, err)

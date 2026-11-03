@@ -15,6 +15,9 @@ type Config struct {
 	// TrustProxy: take the client IP from X-Real-IP / X-Forwarded-For when
 	// the request comes from a local reverse proxy (nginx on the same host).
 	TrustProxy bool
+	// GoogleClientID: OAuth client id for "sign up with Google"; when empty,
+	// sign-up asks only for a username and a password.
+	GoogleClientID string
 }
 
 // loadEnvFile sets variables from a simple KEY=VALUE file without
@@ -52,11 +55,12 @@ func env(key, def string) string {
 func loadConfig() Config {
 	loadEnvFile(".env")
 	return Config{
-		Addr:        env("ADDR", "192.168.168.12:80"),
-		DatabaseURL: env("DATABASE_URL", ""),
-		StaticDir:   env("STATIC_DIR", "../dist"),
-		MediaDir:    env("MEDIA_DIR", "../media"),
-		ContentDir:  env("CONTENT_DIR", "content"),
-		TrustProxy:  env("TRUST_PROXY", "") == "true",
+		Addr:           env("ADDR", "192.168.168.12:80"),
+		DatabaseURL:    env("DATABASE_URL", ""),
+		StaticDir:      env("STATIC_DIR", "../dist"),
+		MediaDir:       env("MEDIA_DIR", "../media"),
+		ContentDir:     env("CONTENT_DIR", "content"),
+		TrustProxy:     env("TRUST_PROXY", "") == "true",
+		GoogleClientID: env("GOOGLE_CLIENT_ID", ""),
 	}
 }

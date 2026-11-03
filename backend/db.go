@@ -143,6 +143,12 @@ CREATE TABLE IF NOT EXISTS user_days (
 	day     DATE NOT NULL,
 	PRIMARY KEY (user_id, day)
 );
+-- Sign-up with Google (2026-11-03): one account per Google account / e-mail.
+ALTER TABLE users ADD COLUMN IF NOT EXISTS email TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS google_sub TEXT;
+CREATE UNIQUE INDEX IF NOT EXISTS users_email_lower ON users (lower(email)) WHERE email IS NOT NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS users_google_sub ON users (google_sub) WHERE google_sub IS NOT NULL;
+
 INSERT INTO user_days (user_id, day)
 SELECT user_id, d::date FROM (
 	SELECT id AS user_id, created_at AS d FROM users WHERE password_hash IS NOT NULL

@@ -244,51 +244,59 @@ type credentials struct {
 
 func validPassword(pw string) bool { return len(pw) >= 6 && len(pw) <= 72 }
 
-// Usernames are given by the site: Admin + users.id (Admin01, Admin02, ...).
-const autoNameSQL = `'Admin' || lpad(n.id::text, 2, '0')`
-
-// handleNextName shows the name the next sign-up will most likely get.
-func (s *Server) handleNextName(w http.ResponseWriter, r *http.Request) {
-	var name string
-	err := s.db.QueryRow(r.Context(),
-		`SELECT `+autoNameSQL+` FROM (SELECT CASE WHEN is_called THEN last_value + 1 ELSE last_value END AS id FROM users_id_seq) n`).Scan(&name)
-	if err != nil {
-		s.internal(w, err)
-		return
-	}
-	writeJSON(w, http.StatusOK, map[string]string{"username": name})
-}
-
-// handleRegister creates an account with a site-given name; only the password is chosen.
+// handleRegister creates an account: a Google ID token (when Google sign-up
+// is configured), a chosen username and a password. Later logins use only the
+// username and the password.
 func (s *Server) handleRegister(w http.ResponseWriter, r *http.Request) {
-	var c credentials
-	if err := decodeJSON(r, &c); err != nil {
+	var body struct {
+		Credential string `json:"credential"`
+		Username   string `json:"username"`
+		Password   string `json:"password"`
+	}
+	if err := decodeJSON(r, &body); err != nil {
 		fail(w, http.StatusBadRequest, "bad_json")
 		return
 	}
-	if !validPassword(c.Password) {
+	body.Username = strings.TrimSpace(body.Username)
+	if !usernameRe.MatchString(body.Username) {
+		fail(w, http.StatusBadRequest, "bad_username")
+		return
+	}
+	if !validPassword(body.Password) {
 		fail(w, http.StatusBadRequest, "invalid")
 		return
 	}
-	hash, err := hashPassword(c.Password)
+	ctx := r.Context()
+	var email, sub *string
+	if s.cfg.GoogleClientID != "" {
+		g, err := verifyGoogleToken(ctx, s.cfg.GoogleClientID, body.Credential)
+		if errors.Is(err, errGoogleToken) {
+			fail(w, http.StatusBadRequest, "google")
+			return
+		}
+		if err != nil {
+			s.internal(w, err)
+			return
+		}
+		email, sub = &g.Email, &g.Sub
+	}
+	hash, err := hashPassword(body.Password)
 	if err != nil {
 		s.internal(w, err)
 		return
 	}
-	ctx := r.Context()
 	var userID int64
-	var name string
-	// A clash is only possible with an old account of the same name; the next id is tried then.
-	for try := 0; try < 5; try++ {
-		err = s.db.QueryRow(ctx,
-			`INSERT INTO users (id, username, password_hash, ip, user_agent)
-			 SELECT n.id, `+autoNameSQL+`, $1, $2, $3 FROM (SELECT nextval('users_id_seq') AS id) n
-			 RETURNING id, username`,
-			hash, s.ids.clientIP(r), r.UserAgent()).Scan(&userID, &name)
-		var pgErr *pgconn.PgError
-		if !errors.As(err, &pgErr) || pgErr.Code != "23505" {
-			break
+	err = s.db.QueryRow(ctx,
+		`INSERT INTO users (username, password_hash, email, google_sub, ip, user_agent) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
+		body.Username, hash, email, sub, s.ids.clientIP(r), r.UserAgent()).Scan(&userID)
+	var pgErr *pgconn.PgError
+	if errors.As(err, &pgErr) && pgErr.Code == "23505" {
+		if strings.Contains(pgErr.ConstraintName, "email") || strings.Contains(pgErr.ConstraintName, "google") {
+			fail(w, http.StatusConflict, "email_taken")
+		} else {
+			fail(w, http.StatusConflict, "taken")
 		}
+		return
 	}
 	if err != nil {
 		s.internal(w, err)
@@ -298,7 +306,7 @@ func (s *Server) handleRegister(w http.ResponseWriter, r *http.Request) {
 		s.internal(w, err)
 		return
 	}
-	writeJSON(w, http.StatusOK, map[string]string{"username": name})
+	writeJSON(w, http.StatusOK, map[string]string{"username": body.Username})
 }
 
 func (s *Server) handleLogin(w http.ResponseWriter, r *http.Request) {

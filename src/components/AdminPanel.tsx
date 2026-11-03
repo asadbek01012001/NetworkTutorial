@@ -496,6 +496,7 @@ function UsersTab({ role, onOpen }: { role: Role; onOpen: (id: number) => void }
                 <tr key={u.id} tabIndex={0} onClick={() => onOpen(u.id)} onKeyDown={(e) => e.key === 'Enter' && onOpen(u.id)}>
                   <td>
                     <b>{u.username}</b>
+                    {u.email && <span className="adm-email">{u.email}</span>}
                   </td>
                   <td>
                     <RoleTag role={u.role} />
@@ -686,6 +687,11 @@ function UserView({ id, role, onBack }: { id: number; role: Role; onBack: () => 
         <span>
           Oxirgi faollik: <b>{fmtDate(u.lastSeen)}</b>
         </span>
+        {u.email && (
+          <span>
+            Gmail: <b>{u.email}</b>
+          </span>
+        )}
         <span>
           IP: <b>{u.ip}</b>
         </span>
