@@ -15,15 +15,17 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-// Admin panel API. Only accounts with users.is_admin may call it; admin
-// accounts are made on the server with `networktutorial make-admin <name>`.
-// Every change is written to admin_log. Admin accounts themselves can't be
-// blocked, reset or deleted from the panel.
+// Panel API for staff (roles.go): teachers see students and set their lesson
+// access; admins and superadmins also manage accounts. The first superadmin
+// is made on the server with `networktutorial make-admin <name>`. Every
+// change is written to admin_log.
 
 func (s *Server) adminRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("GET /api/admin/stats", s.handleAdminStats)
 	mux.HandleFunc("GET /api/admin/users", s.handleAdminUsers)
+	mux.HandleFunc("POST /api/admin/users", s.handleAdminCreate)
 	mux.HandleFunc("GET /api/admin/users/{id}", s.handleAdminUser)
+	mux.HandleFunc("POST /api/admin/users/{id}/role", s.handleAdminRole)
 	mux.HandleFunc("POST /api/admin/users/{id}/password", s.handleAdminPassword)
 	mux.HandleFunc("POST /api/admin/users/{id}/block", s.handleAdminBlock)
 	mux.HandleFunc("POST /api/admin/users/{id}/reset", s.handleAdminReset)
@@ -35,13 +37,19 @@ func (s *Server) adminRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("GET /api/admin/log", s.handleAdminLog)
 }
 
-// admin returns the logged-in admin or answers 401/403 itself.
+// admin returns the logged-in staff member (teacher or higher) or answers
+// 401/403 itself.
 func (s *Server) admin(w http.ResponseWriter, r *http.Request) *User {
+	return s.staff(w, r, roleTeacher)
+}
+
+// staff returns the logged-in user if their role is at least min.
+func (s *Server) staff(w http.ResponseWriter, r *http.Request, min string) *User {
 	u := s.user(w, r)
 	if u == nil {
 		return nil
 	}
-	if !u.IsAdmin {
+	if roleRank[u.Role] < roleRank[min] {
 		fail(w, http.StatusForbidden, "not_admin")
 		return nil
 	}
@@ -53,86 +61,6 @@ func (s *Server) logAdmin(ctx context.Context, r *http.Request, a *User, action 
 		`INSERT INTO admin_log (admin_id, admin_name, action, target_id, target_name, details, ip) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
 		a.ID, a.Username, action, targetID, targetName, details, s.ids.clientIP(r))
 	return err
-}
-
-// ---- overview ----
-
-func (s *Server) handleAdminStats(w http.ResponseWriter, r *http.Request) {
-	if s.admin(w, r) == nil {
-		return
-	}
-	ctx := r.Context()
-	type counts struct {
-		Accounts    int `json:"accounts"`    // can log in (have a password)
-		OldAccounts int `json:"oldAccounts"` // old AdminNN rows without a password
-		Blocked     int `json:"blocked"`
-		ActiveToday int `json:"activeToday"`
-		Active7d    int `json:"active7d"`
-		NewToday    int `json:"newToday"`
-		New7d       int `json:"new7d"`
-		Tests       int `json:"tests"`
-		TestsPassed int `json:"testsPassed"`
-		Exams       int `json:"exams"`
-		ExamAvg     int `json:"examAvg"` // percent
-		Practice    int `json:"practice"`
-		Finished    int `json:"finished"` // passed every lesson
-	}
-	var c counts
-	err := s.db.QueryRow(ctx, `
-		SELECT
-		 (SELECT count(*) FROM users WHERE password_hash IS NOT NULL AND NOT is_admin),
-		 (SELECT count(*) FROM users WHERE password_hash IS NULL),
-		 (SELECT count(*) FROM users WHERE blocked),
-		 (SELECT count(DISTINCT s.user_id) FROM sessions s JOIN users u ON u.id = s.user_id AND NOT u.is_admin WHERE s.last_seen >= date_trunc('day', now())),
-		 (SELECT count(DISTINCT s.user_id) FROM sessions s JOIN users u ON u.id = s.user_id AND NOT u.is_admin WHERE s.last_seen >= now() - interval '7 days'),
-		 (SELECT count(*) FROM users WHERE password_hash IS NOT NULL AND NOT is_admin AND created_at >= date_trunc('day', now())),
-		 (SELECT count(*) FROM users WHERE password_hash IS NOT NULL AND NOT is_admin AND created_at >= now() - interval '7 days'),
-		 (SELECT count(*) FROM test_attempts),
-		 (SELECT count(*) FROM test_attempts WHERE score >= $1),
-		 (SELECT count(*) FROM exam_attempts WHERE score IS NOT NULL),
-		 (SELECT COALESCE(round(100.0 * sum(score) / NULLIF(sum(total), 0)), 0)::int FROM exam_attempts WHERE score IS NOT NULL),
-		 (SELECT count(*) FROM practice_tasks WHERE checked_at IS NOT NULL),
-		 (SELECT count(*) FROM (SELECT user_id FROM progress WHERE test_passed GROUP BY user_id HAVING count(*) >= $2) f)`,
-		passScore, len(s.course.Lessons)).Scan(&c.Accounts, &c.OldAccounts, &c.Blocked, &c.ActiveToday, &c.Active7d,
-		&c.NewToday, &c.New7d, &c.Tests, &c.TestsPassed, &c.Exams, &c.ExamAvg, &c.Practice, &c.Finished)
-	if err != nil {
-		s.internal(w, err)
-		return
-	}
-
-	// Sign-ups per day for the last 30 days (days without sign-ups included).
-	type day struct {
-		Day   string `json:"day"`
-		Count int    `json:"count"`
-	}
-	signups := []day{}
-	rows, err := s.db.Query(ctx, `
-		SELECT to_char(d, 'YYYY-MM-DD'), count(u.id)::int
-		FROM generate_series(date_trunc('day', now()) - interval '29 days', date_trunc('day', now()), interval '1 day') d
-		LEFT JOIN users u ON u.password_hash IS NOT NULL AND NOT u.is_admin AND date_trunc('day', u.created_at) = d
-		GROUP BY d ORDER BY d`)
-	if err != nil {
-		s.internal(w, err)
-		return
-	}
-	for rows.Next() {
-		var d day
-		if err := rows.Scan(&d.Day, &d.Count); err != nil {
-			rows.Close()
-			s.internal(w, err)
-			return
-		}
-		signups = append(signups, d)
-	}
-	rows.Close()
-
-	lessons, err := s.lessonStats(ctx)
-	if err != nil {
-		s.internal(w, err)
-		return
-	}
-
-	writeJSON(w, http.StatusOK, map[string]any{"counts": c, "signups": signups, "lessons": lessons, "passScore": passScore})
 }
 
 // ---- users ----
@@ -147,7 +75,7 @@ type adminUserRow struct {
 	Score       int        `json:"score"`
 	Tests       int        `json:"tests"`
 	Blocked     bool       `json:"blocked"`
-	IsAdmin     bool       `json:"isAdmin"`
+	Role        string     `json:"role"`
 	HasPassword bool       `json:"hasPassword"`
 }
 
@@ -158,24 +86,32 @@ SELECT u.id, u.username, u.created_at,
        COALESCE((SELECT count(*) FROM progress p WHERE p.user_id = u.id AND p.test_passed), 0)::int,
        COALESCE((SELECT sum(best_score) FROM progress p WHERE p.user_id = u.id), 0)::int,
        (SELECT count(*) FROM test_attempts t WHERE t.user_id = u.id)::int,
-       u.blocked, u.is_admin, u.password_hash IS NOT NULL
+       u.blocked, u.role, u.password_hash IS NOT NULL
 FROM users u`
 
 func scanAdminUser(row pgx.Row) (adminUserRow, error) {
 	var u adminUserRow
 	err := row.Scan(&u.ID, &u.Username, &u.CreatedAt, &u.LastSeen, &u.IP, &u.Passed, &u.Score, &u.Tests,
-		&u.Blocked, &u.IsAdmin, &u.HasPassword)
+		&u.Blocked, &u.Role, &u.HasPassword)
 	return u, err
 }
 
 func (s *Server) handleAdminUsers(w http.ResponseWriter, r *http.Request) {
-	if s.admin(w, r) == nil {
+	a := s.admin(w, r)
+	if a == nil {
 		return
 	}
 	q := strings.TrimSpace(r.URL.Query().Get("q"))
+	role := r.URL.Query().Get("role")
+	if a.Role == roleTeacher || !validRole(role) {
+		role = "" // teachers only see students (below); unknown filter = everyone
+	}
+	if a.Role == roleTeacher {
+		role = roleStudent
+	}
 	rows, err := s.db.Query(r.Context(), adminUsersSQL+`
-		WHERE $1 = '' OR u.username ILIKE '%' || $1 || '%' OR u.ip LIKE $1 || '%'
-		ORDER BY u.password_hash IS NULL, u.id DESC LIMIT 1000`, q)
+		WHERE ($1 = '' OR u.username ILIKE '%' || $1 || '%' OR u.ip LIKE $1 || '%') AND ($2 = '' OR u.role = $2)
+		ORDER BY u.password_hash IS NULL, u.id DESC LIMIT 1000`, q, role)
 	if err != nil {
 		s.internal(w, err)
 		return
@@ -203,7 +139,8 @@ func pathUserID(r *http.Request) (int64, bool) {
 }
 
 func (s *Server) handleAdminUser(w http.ResponseWriter, r *http.Request) {
-	if s.admin(w, r) == nil {
+	a := s.admin(w, r)
+	if a == nil {
 		return
 	}
 	id, ok := pathUserID(r)
@@ -219,6 +156,10 @@ func (s *Server) handleAdminUser(w http.ResponseWriter, r *http.Request) {
 	}
 	if err != nil {
 		s.internal(w, err)
+		return
+	}
+	if a.Role == roleTeacher && u.Role != roleStudent {
+		fail(w, http.StatusForbidden, "forbidden")
 		return
 	}
 
@@ -352,19 +293,20 @@ func (s *Server) handleAdminUser(w http.ResponseWriter, r *http.Request) {
 
 	writeJSON(w, http.StatusOK, map[string]any{
 		"user": u, "lessons": lessons, "tests": tests, "exams": exams, "practice": practice, "sessions": sessions,
+		"canManage": canManage(a, u.ID, u.Role), "canAccess": canSetAccess(a, u.ID, u.Role),
 	})
 }
 
-// target loads the account an admin action is about; admin accounts are
-// off-limits. It writes the error response itself.
-func (s *Server) target(w http.ResponseWriter, r *http.Request) (id int64, name string, ok bool) {
+// target loads the account an action is about and checks that actor may
+// manage it (roles.go). It writes the error response itself.
+func (s *Server) target(w http.ResponseWriter, r *http.Request, actor *User) (id int64, name string, ok bool) {
 	id, ok = pathUserID(r)
 	if !ok {
 		fail(w, http.StatusNotFound, "not_found")
 		return 0, "", false
 	}
-	var isAdmin bool
-	err := s.db.QueryRow(r.Context(), `SELECT username, is_admin FROM users WHERE id = $1`, id).Scan(&name, &isAdmin)
+	var role string
+	err := s.db.QueryRow(r.Context(), `SELECT username, role FROM users WHERE id = $1`, id).Scan(&name, &role)
 	if errors.Is(err, pgx.ErrNoRows) {
 		fail(w, http.StatusNotFound, "not_found")
 		return 0, "", false
@@ -373,7 +315,7 @@ func (s *Server) target(w http.ResponseWriter, r *http.Request) (id int64, name 
 		s.internal(w, err)
 		return 0, "", false
 	}
-	if isAdmin {
+	if !canManage(actor, id, role) {
 		fail(w, http.StatusForbidden, "admin_target")
 		return 0, "", false
 	}
@@ -400,7 +342,7 @@ func (s *Server) handleAdminPassword(w http.ResponseWriter, r *http.Request) {
 	if a == nil {
 		return
 	}
-	id, name, ok := s.target(w, r)
+	id, name, ok := s.target(w, r, a)
 	if !ok {
 		return
 	}
@@ -431,7 +373,7 @@ func (s *Server) handleAdminBlock(w http.ResponseWriter, r *http.Request) {
 	if a == nil {
 		return
 	}
-	id, name, ok := s.target(w, r)
+	id, name, ok := s.target(w, r, a)
 	if !ok {
 		return
 	}
@@ -469,7 +411,7 @@ func (s *Server) handleAdminReset(w http.ResponseWriter, r *http.Request) {
 	if a == nil {
 		return
 	}
-	id, name, ok := s.target(w, r)
+	id, name, ok := s.target(w, r, a)
 	if !ok {
 		return
 	}
@@ -494,7 +436,7 @@ func (s *Server) handleAdminDelete(w http.ResponseWriter, r *http.Request) {
 	if a == nil {
 		return
 	}
-	id, name, ok := s.target(w, r)
+	id, name, ok := s.target(w, r, a)
 	if !ok {
 		return
 	}
@@ -582,7 +524,7 @@ func (s *Server) handleAdminQuestions(w http.ResponseWriter, r *http.Request) {
 // ---- log ----
 
 func (s *Server) handleAdminLog(w http.ResponseWriter, r *http.Request) {
-	if s.admin(w, r) == nil {
+	if s.staff(w, r, roleAdmin) == nil {
 		return
 	}
 	rows, err := s.db.Query(r.Context(),
@@ -618,8 +560,8 @@ func (s *Server) handleAdminLog(w http.ResponseWriter, r *http.Request) {
 
 // ---- command line ----
 
-// makeAdmin creates the admin account (or turns an existing account into
-// one) and gives it a new random password, which is printed once.
+// makeAdmin creates a superadmin account (or turns an existing account
+// into one) and gives it a new random password, which is printed once.
 func makeAdmin(ctx context.Context, db dbtx, name string) (string, error) {
 	name = strings.TrimSpace(name)
 	if name == "" {
@@ -631,13 +573,13 @@ func makeAdmin(ctx context.Context, db dbtx, name string) (string, error) {
 		return "", err
 	}
 	tag, err := db.Exec(ctx,
-		`UPDATE users SET is_admin = true, blocked = false, password_hash = $2 WHERE lower(username) = lower($1)`, name, hash)
+		`UPDATE users SET role = 'superadmin', blocked = false, password_hash = $2 WHERE lower(username) = lower($1)`, name, hash)
 	if err != nil {
 		return "", err
 	}
 	if tag.RowsAffected() == 0 {
 		if _, err := db.Exec(ctx,
-			`INSERT INTO users (username, password_hash, is_admin, ip) VALUES ($1, $2, true, 'cli')`, name, hash); err != nil {
+			`INSERT INTO users (username, password_hash, role, ip) VALUES ($1, $2, 'superadmin', 'cli')`, name, hash); err != nil {
 			return "", fmt.Errorf("create %s: %w", name, err)
 		}
 	}

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState, type ButtonHTMLAttributes } from 'react'
+import { AdminDashboard } from './AdminDashboard'
 import {
   admin,
   type AccessMode,
@@ -11,6 +12,7 @@ import {
   type AdminUser,
   type AdminUserDetail,
   type PracticeKind,
+  type Role,
 } from '../lib/api'
 
 // Admin panel (Uzbek only — it is for the site owner). Full screen like the
@@ -24,6 +26,18 @@ const PAGES: { id: Tab; label: string; icon: string }[] = [
   { id: 'questions', label: 'Test savollari', icon: 'M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z' },
   { id: 'log', label: 'Jurnal', icon: 'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01' },
 ]
+
+export const ROLE_LABEL: Record<Role, string> = {
+  student: 'Talaba',
+  teacher: 'O‘qituvchi',
+  admin: 'Admin',
+  superadmin: 'Super admin',
+}
+const RANK: Record<Role, number> = { student: 0, teacher: 1, admin: 2, superadmin: 3 }
+// Roles an account of this role may give (mirrors backend roles.go canGrant).
+const grantable = (r: Role): Role[] =>
+  r === 'superadmin' ? ['student', 'teacher', 'admin', 'superadmin'] : r === 'admin' ? ['student', 'teacher'] : []
+const pagesFor = (r: Role) => PAGES.filter((p) => p.id !== 'log' || RANK[r] >= RANK.admin)
 
 // The open page lives in the address (#admin/<page>[/<user id>]) so a reload
 // or the browser's Back button keeps the admin where they were.
@@ -60,6 +74,8 @@ const ACTION_LABEL: Record<AdminLogEntry['action'], string> = {
   access_open: 'Darsni ochdi',
   access_queue: 'Darsni navbatga qo‘ydi',
   access_hidden: 'Darsni yopdi',
+  create: 'Akkaunt yaratdi',
+  role: 'Rolini o‘zgartirdi',
 }
 
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -92,8 +108,9 @@ function useLoad<T>(load: () => Promise<T>, deps: unknown[]) {
   return { data, error, reload }
 }
 
-export function AdminPanel({ username, onClose }: { username: string; onClose: () => void }) {
+export function AdminPanel({ username, role, onClose }: { username: string; role: Role; onClose: () => void }) {
   const [{ tab, userId, lessonId }, setRoute] = useState(parseHash)
+  const pages = pagesFor(role)
   const [reloadKey, setReloadKey] = useState(0)
 
   useEffect(() => {
@@ -109,7 +126,7 @@ export function AdminPanel({ username, onClose }: { username: string; onClose: (
     }
   }, [onClose])
 
-  const page = PAGES.find((p) => p.id === tab)!
+  const page = pages.find((p) => p.id === tab) ?? pages[0]
   return (
     <div className="adm adm-shell" role="dialog" aria-label="Admin panel">
       <aside className="adm-side">
@@ -123,7 +140,7 @@ export function AdminPanel({ username, onClose }: { username: string; onClose: (
           <span>Admin panel</span>
         </div>
         <nav className="adm-nav">
-          {PAGES.map((p) => (
+          {pages.map((p) => (
             <button key={p.id} className={p.id === tab ? 'active' : ''} aria-current={p.id === tab ? 'page' : undefined} onClick={() => go(p.id)}>
               <svg viewBox="0 0 24 24" aria-hidden>
                 <path d={p.icon} />
@@ -133,7 +150,10 @@ export function AdminPanel({ username, onClose }: { username: string; onClose: (
           ))}
         </nav>
         <div className="adm-side-foot">
-          <span className="adm-me">{username}</span>
+          <span className="adm-me">
+            {username}
+            <small>{ROLE_LABEL[role]}</small>
+          </span>
           <button className="adm-exit" onClick={onClose}>
             <svg viewBox="0 0 24 24" aria-hidden>
               <path d="M15 18l-6-6 6-6" />
@@ -153,9 +173,13 @@ export function AdminPanel({ username, onClose }: { username: string; onClose: (
           {tab === 'lessons' &&
             (lessonId === null ? <LessonsTab onOpen={(id) => go('lessons', id)} /> : <LessonUsers id={lessonId} onBack={() => go('lessons')} />)}
           {tab === 'users' &&
-            (userId === null ? <UsersTab onOpen={(id) => go('users', id)} /> : <UserView id={userId} onBack={() => go('users')} />)}
+            (userId === null ? (
+              <UsersTab role={role} onOpen={(id) => go('users', id)} />
+            ) : (
+              <UserView id={userId} role={role} onBack={() => go('users')} />
+            ))}
           {tab === 'questions' && <QuestionsTab />}
-          {tab === 'log' && <LogTab />}
+          {tab === 'log' && page.id === 'log' && <LogTab />}
         </div>
       </section>
     </div>
@@ -192,78 +216,7 @@ function StatsTab() {
   const { data, error } = useLoad<AdminStats>(admin.stats, [])
   if (error) return <LoadError />
   if (!data) return <Loading />
-  const c = data.counts
-  const tiles: [string, string | number, string?][] = [
-    ['Akkauntlar', c.accounts, c.blocked ? `${c.blocked} ta bloklangan` : undefined],
-    ['Bugun faol', c.activeToday],
-    ['7 kunda faol', c.active7d],
-    ['Bugun yangi', c.newToday],
-    ['7 kunda yangi', c.new7d],
-    ['Kursni tugatgan', c.finished],
-    ['Dars testlari', c.tests, `${pct(c.testsPassed, c.tests)}% o‘tgan`],
-    ['Umumiy test', c.exams, c.exams ? `o‘rtacha ${c.examAvg}%` : undefined],
-    ['Mashqlar', c.practice],
-  ]
-  const max = Math.max(1, ...data.signups.map((d) => d.count))
-  const funnelMax = Math.max(1, ...data.lessons.map((l) => l.started))
-  return (
-    <div className="adm-wrap">
-      <div className="adm-tiles">
-        {tiles.map(([label, value, sub]) => (
-          <div key={label} className="adm-tile">
-            <span className="adm-tile-label">{label}</span>
-            <span className="adm-tile-value">{value}</span>
-            {sub && <span className="adm-tile-sub">{sub}</span>}
-          </div>
-        ))}
-      </div>
-
-      <h2 className="adm-h2">Ro‘yxatdan o‘tish — oxirgi 30 kun</h2>
-      <div className="adm-bars" role="img" aria-label="Kunlik ro‘yxatdan o‘tishlar">
-        {data.signups.map((d) => (
-          <div key={d.day} className="adm-bar" title={`${fmtDate(d.day, false)}: ${d.count}`}>
-            {d.count > 0 && <span className="adm-bar-n">{d.count}</span>}
-            <span className="adm-bar-fill" style={{ height: `${(d.count / max) * 100}%` }} />
-          </div>
-        ))}
-      </div>
-      <div className="adm-bars-axis">
-        <span>{fmtDate(data.signups[0]?.day, false)}</span>
-        <span>Bugun</span>
-      </div>
-
-      <h2 className="adm-h2">Darslar bo‘yicha o‘tish</h2>
-      <div className="adm-chart">
-        <div className="adm-legend">
-          <span>
-            <i className="started" /> Boshlagan
-          </span>
-          <span>
-            <i className="video" /> Videoni tugatgan
-          </span>
-          <span>
-            <i className="passed" /> Testdan o‘tgan
-          </span>
-        </div>
-        {data.lessons.map((l) => {
-          const w = (n: number) => `${(n / funnelMax) * 100}%`
-          return (
-            <div key={l.id} className="adm-funnel-row" title={`${l.index + 1}. ${l.title}`}>
-              <span className="adm-funnel-label">{l.index + 1}-dars</span>
-              <span className="adm-funnel-track">
-                <span className="started" style={{ width: w(l.started) }} />
-                <span className="video" style={{ width: w(l.videoDone) }} />
-                <span className="passed" style={{ width: w(l.passed) }} />
-              </span>
-              <span className="adm-funnel-nums">
-                {l.started} · {l.videoDone} · <b>{l.passed}</b>
-              </span>
-            </div>
-          )
-        })}
-      </div>
-    </div>
-  )
+  return <AdminDashboard data={data} />
 }
 
 // ---------- lessons (a list like a video studio) ----------
@@ -465,33 +418,63 @@ function LessonUsers({ id, onBack }: { id: string; onBack: () => void }) {
 
 // ---------- accounts ----------
 
+function RoleTag({ role }: { role: Role }) {
+  return <span className={`adm-tag role-${role}`}>{ROLE_LABEL[role]}</span>
+}
+
 function UserStatus({ u }: { u: AdminUser }) {
-  if (u.isAdmin) return <span className="adm-tag admin">Admin</span>
   if (u.blocked) return <span className="adm-tag bad">Bloklangan</span>
   if (!u.hasPassword) return <span className="adm-tag old">Eski</span>
   return <span className="adm-tag ok">Faol</span>
 }
 
-function UsersTab({ onOpen }: { onOpen: (id: number) => void }) {
+const ROLE_FILTERS: { id: '' | Role; label: string }[] = [
+  { id: '', label: 'Hammasi' },
+  { id: 'student', label: 'Talabalar' },
+  { id: 'teacher', label: 'O‘qituvchilar' },
+  { id: 'admin', label: 'Adminlar' },
+  { id: 'superadmin', label: 'Super adminlar' },
+]
+
+function UsersTab({ role, onOpen }: { role: Role; onOpen: (id: number) => void }) {
   const [q, setQ] = useState('')
   const [query, setQuery] = useState('')
+  const [filter, setFilter] = useState<'' | Role>('')
+  const [creating, setCreating] = useState(false)
   useEffect(() => {
     const t = setTimeout(() => setQuery(q.trim()), 250)
     return () => clearTimeout(t)
   }, [q])
-  const { data, error } = useLoad(() => admin.users(query), [query])
+  const { data, error, reload } = useLoad(() => admin.users(query, filter), [query, filter])
+  const canCreate = grantable(role).length > 0
   return (
     <div className="adm-wrap">
-      <div className="adm-search">
+      <div className="adm-toolbar">
         <input
+          className="adm-input"
           type="search"
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Login yoki IP bo‘yicha qidirish"
           aria-label="Qidirish"
         />
+        {role !== 'teacher' && (
+          <div className="adm-seg" role="tablist" aria-label="Rol">
+            {ROLE_FILTERS.map((f) => (
+              <button key={f.id} role="tab" aria-selected={filter === f.id} className={filter === f.id ? 'active' : ''} onClick={() => setFilter(f.id)}>
+                {f.label}
+              </button>
+            ))}
+          </div>
+        )}
         {data && <span className="adm-muted">{data.users.length} ta</span>}
+        {canCreate && (
+          <button className="tbtn primary adm-create" onClick={() => setCreating((v) => !v)}>
+            + Yangi akkaunt
+          </button>
+        )}
       </div>
+      {creating && <CreateUser role={role} onDone={reload} />}
       {error && <LoadError />}
       {!data && !error && <Loading />}
       {data && (
@@ -500,6 +483,7 @@ function UsersTab({ onOpen }: { onOpen: (id: number) => void }) {
             <thead>
               <tr>
                 <th>Login</th>
+                <th>Rol</th>
                 <th>Holat</th>
                 <th>Ro‘yxatdan o‘tgan</th>
                 <th>Oxirgi faollik</th>
@@ -514,6 +498,9 @@ function UsersTab({ onOpen }: { onOpen: (id: number) => void }) {
                     <b>{u.username}</b>
                   </td>
                   <td>
+                    <RoleTag role={u.role} />
+                  </td>
+                  <td>
                     <UserStatus u={u} />
                   </td>
                   <td>{fmtDate(u.createdAt, false)}</td>
@@ -524,7 +511,7 @@ function UsersTab({ onOpen }: { onOpen: (id: number) => void }) {
               ))}
               {data.users.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="adm-muted">
+                  <td colSpan={7} className="adm-muted">
                     Hech kim topilmadi
                   </td>
                 </tr>
@@ -537,9 +524,66 @@ function UsersTab({ onOpen }: { onOpen: (id: number) => void }) {
   )
 }
 
+function CreateUser({ role, onDone }: { role: Role; onDone: () => void }) {
+  const roles = grantable(role)
+  const [name, setName] = useState('')
+  const [newRole, setNewRole] = useState<Role>(roles.includes('teacher') ? 'teacher' : roles[0])
+  const [busy, setBusy] = useState(false)
+  const [err, setErr] = useState('')
+  const [made, setMade] = useState<{ username: string; password: string } | null>(null)
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setBusy(true)
+    setErr('')
+    try {
+      const r = await admin.createUser(name.trim(), newRole)
+      setMade(r)
+      setName('')
+      onDone()
+    } catch (x) {
+      const code = (x as { code?: string }).code
+      setErr(code === 'taken' ? 'Bu login band' : code === 'bad_username' ? 'Login 3–32 belgi: harf, raqam, _ . -' : 'Yaratib bo‘lmadi')
+    } finally {
+      setBusy(false)
+    }
+  }
+  return (
+    <form className="adm-create-form" onSubmit={submit}>
+      <label>
+        <span>Login</span>
+        <input className="adm-input" value={name} onChange={(e) => setName(e.target.value)} placeholder="masalan: teacher_ali" required />
+      </label>
+      <label>
+        <span>Rol</span>
+        <select className="adm-input" value={newRole} onChange={(e) => setNewRole(e.target.value as Role)}>
+          {roles.map((r) => (
+            <option key={r} value={r}>
+              {ROLE_LABEL[r]}
+            </option>
+          ))}
+        </select>
+      </label>
+      <button className="tbtn primary" disabled={busy || !name.trim()}>
+        Yaratish
+      </button>
+      {err && <div className="auth-error">{err}</div>}
+      {made && (
+        <div className="adm-pw">
+          <span>
+            Login: <b>{made.username}</b>
+          </span>
+          <span>
+            Parol: <b className="adm-pw-val">{made.password}</b>
+          </span>
+        </div>
+      )}
+    </form>
+  )
+}
+
 type Pending = 'password' | 'block' | 'reset' | 'delete' | null
 
-function UserView({ id, onBack }: { id: number; onBack: () => void }) {
+function UserView({ id, role, onBack }: { id: number; role: Role; onBack: () => void }) {
   const { data, error, reload } = useLoad<AdminUserDetail>(() => admin.user(id), [id])
   const [confirm, setConfirm] = useState<Pending>(null)
   const [busy, setBusy] = useState(false)
@@ -549,6 +593,21 @@ function UserView({ id, onBack }: { id: number; onBack: () => void }) {
   if (error) return <LoadError />
   if (!data) return <Loading />
   const u = data.user
+  const manage = data.canManage
+
+  const changeRole = async (r: Role) => {
+    setBusy(true)
+    setMsg(null)
+    try {
+      await admin.setRole(u.id, r)
+      setMsg({ ok: true, text: `Rol o‘zgardi: ${ROLE_LABEL[r]}. U qayta kirishi kerak.` })
+      reload()
+    } catch {
+      setMsg({ ok: false, text: 'Rolni o‘zgartirib bo‘lmadi' })
+    } finally {
+      setBusy(false)
+    }
+  }
 
   const run = async (what: Exclude<Pending, null>) => {
     if (confirm !== what) {
@@ -608,7 +667,7 @@ function UserView({ id, onBack }: { id: number; onBack: () => void }) {
         {label}: tasdiqlang
       </button>
     ) : (
-      <IconBtn icon={icon} label={label} className={danger ? 'danger' : ''} disabled={busy || u.isAdmin} onClick={() => run(what)} />
+      <IconBtn icon={icon} label={label} className={danger ? 'danger' : ''} disabled={busy} onClick={() => run(what)} />
     )
 
   return (
@@ -617,6 +676,7 @@ function UserView({ id, onBack }: { id: number; onBack: () => void }) {
 
       <div className="adm-user-head">
         <h2>{u.username}</h2>
+        <RoleTag role={u.role} />
         <UserStatus u={u} />
       </div>
       <div className="adm-facts">
@@ -634,10 +694,24 @@ function UserView({ id, onBack }: { id: number; onBack: () => void }) {
         </span>
       </div>
 
-      {u.isAdmin ? (
-        <p className="adm-muted">Admin akkauntini paneldan o‘zgartirib bo‘lmaydi.</p>
+      {!manage ? (
+        <p className="adm-muted">Bu akkauntni o‘zgartirishga ruxsatingiz yo‘q.</p>
       ) : (
         <div className="adm-actions">
+          <select
+            className="adm-input adm-role-select"
+            value={u.role}
+            disabled={busy}
+            onChange={(e) => changeRole(e.target.value as Role)}
+            aria-label="Rol"
+            title="Rol"
+          >
+            {[...new Set<Role>([u.role, ...grantable(role)])].map((r) => (
+              <option key={r} value={r}>
+                {ROLE_LABEL[r]}
+              </option>
+            ))}
+          </select>
           {btn('password', 'key', 'Yangi parol berish')}
           {u.blocked ? btn('block', 'unlock', 'Blokdan chiqarish') : btn('block', 'ban', 'Bloklash', true)}
           {btn('reset', 'reset', 'Progressni tozalash', true)}
@@ -683,7 +757,7 @@ function UserView({ id, onBack }: { id: number; onBack: () => void }) {
                 <td>{l.attempts ? `${l.bestScore} / 10` : '—'}</td>
                 <td>{l.attempts || '—'}</td>
                 <td>
-                  <AccessSwitch value={l.access} disabled={busy || u.isAdmin} onChange={(m) => setAccess(l.id, m)} />
+                  <AccessSwitch value={l.access} disabled={busy || !data.canAccess} onChange={(m) => setAccess(l.id, m)} />
                 </td>
               </tr>
             ))}
@@ -842,7 +916,7 @@ function LogTab() {
               <th>Admin</th>
               <th>Amal</th>
               <th>Kimga</th>
-              <th>Dars</th>
+              <th>Tafsilot</th>
               <th>IP</th>
             </tr>
           </thead>

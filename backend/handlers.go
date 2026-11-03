@@ -142,7 +142,8 @@ func (s *Server) handleCourse(w http.ResponseWriter, r *http.Request) {
 	}
 	writeJSON(w, http.StatusOK, map[string]any{
 		"username":  u.Username,
-		"isAdmin":   u.IsAdmin,
+		"role":      u.Role,
+		"staff":     isStaff(u.Role),
 		"passScore": passScore,
 		"lessons":   lessons,
 	})

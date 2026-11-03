@@ -34,13 +34,36 @@ const (
 type User struct {
 	ID       int64
 	Username string
-	IsAdmin  bool
+	Role     string
 }
 
 type identity struct {
 	db         dbtx
 	trustProxy bool
 	limiter    *loginLimiter
+	days       activeDays
+}
+
+// activeDays remembers who was already recorded as active today, so
+// user_days is written once per user and day, not on every request.
+type activeDays struct {
+	mu   sync.Mutex
+	day  string
+	seen map[int64]bool
+}
+
+func (a *activeDays) first(userID int64) bool {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	today := time.Now().Format("2006-01-02")
+	if a.day != today {
+		a.day, a.seen = today, map[int64]bool{}
+	}
+	if a.seen[userID] {
+		return false
+	}
+	a.seen[userID] = true
+	return true
 }
 
 var errNoUser = errors.New("not logged in")
@@ -158,13 +181,18 @@ func (id *identity) resolve(ctx context.Context, r *http.Request) (*User, error)
 		`UPDATE sessions s SET last_seen = now(), expires_at = $2
 		 FROM users u
 		 WHERE s.token_hash = $1 AND s.expires_at > now() AND u.id = s.user_id AND NOT u.blocked
-		 RETURNING u.id, u.username, u.is_admin`,
-		hashToken(c.Value), time.Now().Add(sessionIdleTTL)).Scan(&u.ID, &u.Username, &u.IsAdmin)
+		 RETURNING u.id, u.username, u.role`,
+		hashToken(c.Value), time.Now().Add(sessionIdleTTL)).Scan(&u.ID, &u.Username, &u.Role)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return nil, errNoUser
 	}
 	if err != nil {
 		return nil, err
+	}
+	if id.days.first(u.ID) {
+		if _, err := id.db.Exec(ctx, `INSERT INTO user_days (user_id, day) VALUES ($1, current_date) ON CONFLICT DO NOTHING`, u.ID); err != nil {
+			return nil, err
+		}
 	}
 	return u, nil
 }

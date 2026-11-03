@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// Admin "Lessons" page: every lesson with its numbers, and per lesson the
+// Panel "Lessons" page (teachers and up): every lesson with its numbers, and per lesson the
 // list of users with the lesson's state for them and its access mode, which
 // the admin can change (open right away / normal order / hidden).
 
@@ -67,7 +67,7 @@ func (s *Server) lessonStats(ctx context.Context) ([]lessonStat, error) {
 	}
 	err := scan(`
 		SELECT p.lesson_id, count(*)::int, (count(*) FILTER (WHERE p.video_done))::int, (count(*) FILTER (WHERE p.test_passed))::int, 0::float8
-		FROM progress p JOIN users u ON u.id = p.user_id AND NOT u.is_admin
+		FROM progress p JOIN users u ON u.id = p.user_id AND u.role = 'student'
 		GROUP BY p.lesson_id`,
 		func(l *lessonStat, started, done, passed int, _ float64) {
 			l.Started, l.VideoDone, l.Passed = started, done, passed
@@ -75,7 +75,7 @@ func (s *Server) lessonStats(ctx context.Context) ([]lessonStat, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = scan(`SELECT lesson_id, count(*)::int, 0, 0, COALESCE(avg(score), 0)::float8 FROM test_attempts GROUP BY lesson_id`,
+	err = scan(`SELECT t.lesson_id, count(*)::int, 0, 0, COALESCE(avg(t.score), 0)::float8 FROM test_attempts t JOIN users u ON u.id = t.user_id AND u.role = 'student' GROUP BY t.lesson_id`,
 		func(l *lessonStat, n, _, _ int, avg float64) { l.Attempts, l.AvgScore = n, float64(int(avg*10+0.5))/10 })
 	if err != nil {
 		return nil, err
@@ -109,7 +109,7 @@ func accessOf(access map[string]string, lessonID string) string {
 	return accessQueue
 }
 
-// handleAdminLessonUsers lists every non-admin account with this lesson's
+// handleAdminLessonUsers lists every student with this lesson's
 // state and access mode for them.
 func (s *Server) handleAdminLessonUsers(w http.ResponseWriter, r *http.Request) {
 	if s.admin(w, r) == nil {
@@ -141,7 +141,7 @@ func (s *Server) handleAdminLessonUsers(w http.ResponseWriter, r *http.Request) 
 		SELECT u.id, u.username, GREATEST(u.last_seen, (SELECT max(last_seen) FROM sessions s WHERE s.user_id = u.id)),
 		       u.blocked, u.password_hash IS NOT NULL
 		FROM users u
-		WHERE NOT u.is_admin AND ($1 = '' OR u.username ILIKE '%' || $1 || '%')
+		WHERE u.role = 'student' AND ($1 = '' OR u.username ILIKE '%' || $1 || '%')
 		ORDER BY u.password_hash IS NULL, u.id DESC`, strings.TrimSpace(r.URL.Query().Get("q")))
 	if err != nil {
 		s.internal(w, err)
@@ -269,13 +269,13 @@ func (s *Server) handleAdminLessonAccess(w http.ResponseWriter, r *http.Request)
 	}
 	ctx := r.Context()
 	var name string
-	var isAdmin bool
-	if err := s.db.QueryRow(ctx, `SELECT username, is_admin FROM users WHERE id = $1`, body.UserID).Scan(&name, &isAdmin); err != nil {
+	var role string
+	if err := s.db.QueryRow(ctx, `SELECT username, role FROM users WHERE id = $1`, body.UserID).Scan(&name, &role); err != nil {
 		fail(w, http.StatusNotFound, "not_found")
 		return
 	}
-	if isAdmin {
-		fail(w, http.StatusForbidden, "admin_target")
+	if !canSetAccess(a, body.UserID, role) {
+		fail(w, http.StatusForbidden, "forbidden")
 		return
 	}
 	var err error

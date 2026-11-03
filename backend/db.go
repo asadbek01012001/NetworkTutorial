@@ -130,6 +130,30 @@ CREATE TABLE IF NOT EXISTS lesson_access (
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 	PRIMARY KEY (user_id, lesson_id)
 );
+
+-- Roles (2026-11-03): student, teacher, admin, superadmin (see roles.go).
+-- The earlier is_admin flag becomes superadmin once and is then cleared.
+ALTER TABLE users ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'student';
+UPDATE users SET role = 'superadmin', is_admin = false WHERE is_admin;
+
+-- Days on which each user was active (for the dashboard's daily charts),
+-- filled on every request; earlier days are rebuilt from what is stored.
+CREATE TABLE IF NOT EXISTS user_days (
+	user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+	day     DATE NOT NULL,
+	PRIMARY KEY (user_id, day)
+);
+INSERT INTO user_days (user_id, day)
+SELECT user_id, d::date FROM (
+	SELECT id AS user_id, created_at AS d FROM users WHERE password_hash IS NOT NULL
+	UNION SELECT user_id, created_at FROM sessions
+	UNION SELECT user_id, last_seen FROM sessions
+	UNION SELECT user_id, created_at FROM test_attempts
+	UNION SELECT user_id, created_at FROM exam_attempts
+	UNION SELECT user_id, created_at FROM practice_tasks
+	UNION SELECT user_id, updated_at FROM progress
+) a
+ON CONFLICT DO NOTHING;
 `
 
 func openDB(ctx context.Context, url string) (*pgxpool.Pool, error) {

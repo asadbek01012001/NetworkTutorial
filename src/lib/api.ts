@@ -32,7 +32,9 @@ export interface LessonView {
 
 export interface CourseView {
   username: string
-  isAdmin?: boolean
+  role?: Role
+  /** Teacher or higher: may open the panel. */
+  staff?: boolean
   passScore: number
   lessons: LessonView[]
 }
@@ -159,8 +161,11 @@ export interface PracticeStat {
 }
 
 // ---- admin panel ----
+export type Role = 'student' | 'teacher' | 'admin' | 'superadmin'
 export interface AdminCounts {
-  accounts: number
+  students: number
+  teachers: number
+  admins: number
   oldAccounts: number
   blocked: number
   activeToday: number
@@ -169,6 +174,7 @@ export interface AdminCounts {
   new7d: number
   tests: number
   testsPassed: number
+  avgScore: number
   exams: number
   examAvg: number
   practice: number
@@ -176,7 +182,8 @@ export interface AdminCounts {
 }
 export interface AdminStats {
   counts: AdminCounts
-  signups: { day: string; count: number }[]
+  daily: { day: string; active: number; signups: number; passed: number; failed: number }[]
+  progress: { label: string; count: number }[]
   lessons: AdminLesson[]
   passScore: number
 }
@@ -190,7 +197,7 @@ export interface AdminUser {
   score: number
   tests: number
   blocked: boolean
-  isAdmin: boolean
+  role: Role
   hasPassword: boolean
 }
 export interface AdminAttempt {
@@ -236,6 +243,8 @@ export interface AdminUserDetail {
   exams: AdminAttempt[]
   practice: { kind: PracticeKind; done: number; score: number; total: number }[]
   sessions: { ip: string; userAgent: string; lastSeen: string }[]
+  canManage: boolean
+  canAccess: boolean
 }
 export interface AdminQuestion {
   n: number
@@ -248,7 +257,7 @@ export interface AdminQuestion {
 }
 export interface AdminLogEntry {
   admin: string
-  action: 'password' | 'block' | 'unblock' | 'reset' | 'delete' | 'access_open' | 'access_queue' | 'access_hidden'
+  action: 'password' | 'block' | 'unblock' | 'reset' | 'delete' | 'access_open' | 'access_queue' | 'access_hidden' | 'create' | 'role'
   target: string
   details: string
   ip: string
@@ -257,7 +266,9 @@ export interface AdminLogEntry {
 
 export const admin = {
   stats: () => call<AdminStats>('GET', 'api/admin/stats'),
-  users: (q: string) => call<{ users: AdminUser[] }>('GET', `api/admin/users?q=${encodeURIComponent(q)}`),
+  users: (q: string, role = '') => call<{ users: AdminUser[] }>('GET', `api/admin/users?q=${encodeURIComponent(q)}&role=${role}`),
+  createUser: (username: string, role: Role) => call<{ id: number; username: string; password: string }>('POST', 'api/admin/users', { username, role }),
+  setRole: (id: number, role: Role) => call<{ ok: boolean }>('POST', `api/admin/users/${id}/role`, { role }),
   user: (id: number) => call<AdminUserDetail>('GET', `api/admin/users/${id}`),
   newPassword: (id: number) => call<{ username: string; password: string }>('POST', `api/admin/users/${id}/password`),
   block: (id: number, blocked: boolean) => call<{ ok: boolean }>('POST', `api/admin/users/${id}/block`, { blocked }),

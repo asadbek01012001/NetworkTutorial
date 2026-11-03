@@ -47,7 +47,7 @@ export default function App() {
   if (needAuth) return <AuthScreen onDone={() => window.location.reload()} />
 
   return (
-    <Layout username={course?.username} onOpenLab={course ? openLab : undefined} onOpenPractice={course ? openPractice : undefined} onOpenGlossary={course ? openGlossary : undefined} onOpenExam={course ? openExam : undefined} onOpenAdmin={course?.isAdmin ? openAdmin : undefined}>
+    <Layout username={course?.username} onOpenLab={course ? openLab : undefined} onOpenPractice={course ? openPractice : undefined} onOpenGlossary={course ? openGlossary : undefined} onOpenExam={course ? openExam : undefined} onOpenAdmin={course?.staff ? openAdmin : undefined}>
       {course ? (
         <Dashboard course={course} refresh={refresh} />
       ) : (
@@ -67,9 +67,9 @@ export default function App() {
           <Glossary onClose={closeGlossary} />
         </Suspense>
       )}
-      {adminOpen && course?.isAdmin && (
+      {adminOpen && course?.staff && (
         <Suspense fallback={null}>
-          <AdminPanel username={course.username} onClose={closeAdmin} />
+          <AdminPanel username={course.username} role={course.role ?? 'student'} onClose={closeAdmin} />
         </Suspense>
       )}
       {labOpen && course && (
