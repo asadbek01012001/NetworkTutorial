@@ -69,7 +69,7 @@ function Tip({ active, payload, label, fmtLabel }: Partial<TooltipContentProps<n
 
 const axisProps = {
   stroke: C.axis,
-  tick: { fill: C.axis, fontSize: 12 },
+  tick: { fill: C.axis, fontSize: 14 },
   tickLine: false,
   axisLine: { stroke: C.grid },
 } as const
@@ -111,7 +111,7 @@ export function AdminDashboard({ data }: { data: AdminStats }) {
         <Kpi label="7 kunda yangi" value={c.new7d} sub={c.newToday ? `bugun +${c.newToday}` : undefined} tone="good" />
         <Kpi label="Kursni tugatgan" value={c.finished} />
         <Kpi label="Test o‘rtacha bali" value={c.tests ? `${c.avgScore}` : '—'} sub={`o‘tish bali ${data.passScore}`} />
-        <Kpi label="Testdan o‘tish" value={c.tests ? `${passRate}%` : '—'} sub={`${c.tests} ta urinish`} tone={passRate >= 50 ? 'good' : 'bad'} />
+        <Kpi label="Testdan o‘tish" value={c.tests ? `${passRate}%` : '—'} sub={`${c.tests} ta urinish`} tone={!c.tests ? undefined : passRate >= 50 ? 'good' : 'bad'} />
         <Kpi label="Umumiy test" value={c.exams ? `${c.examAvg}%` : '—'} sub={`${c.exams} ta topshirilgan`} />
       </div>
 
@@ -129,7 +129,7 @@ export function AdminDashboard({ data }: { data: AdminStats }) {
               <XAxis dataKey="day" tickFormatter={shortDay} interval="preserveStartEnd" minTickGap={24} {...axisProps} />
               <YAxis allowDecimals={false} {...axisProps} />
               <Tooltip content={<Tip fmtLabel={shortDay} />} cursor={{ stroke: C.axis, strokeDasharray: '3 3' }} />
-              <Legend iconType="circle" iconSize={8} itemSorter={null} wrapperStyle={{ fontSize: 13, color: C.axis }} />
+              <Legend iconType="circle" iconSize={8} itemSorter={null} wrapperStyle={{ fontSize: 15, color: C.axis }} />
               <Area type="monotone" dataKey="active" name="Faol talabalar" stroke={C.blue} strokeWidth={2} fill="url(#gActive)" activeDot={{ r: 4 }} />
               <Area type="monotone" dataKey="signups" name="Yangi ro‘yxatdan o‘tgan" stroke={C.orange} strokeWidth={2} fill="none" activeDot={{ r: 4 }} />
             </AreaChart>
@@ -171,7 +171,7 @@ export function AdminDashboard({ data }: { data: AdminStats }) {
               <XAxis dataKey="name" tickFormatter={(n) => `${n}-dars`} {...axisProps} />
               <YAxis allowDecimals={false} {...axisProps} />
               <Tooltip content={<Tip fmtLabel={lessonLabel} />} cursor={{ fill: 'rgb(255 255 255 / 4%)' }} />
-              <Legend iconType="circle" iconSize={8} itemSorter={null} wrapperStyle={{ fontSize: 13, color: C.axis }} />
+              <Legend iconType="circle" iconSize={8} itemSorter={null} wrapperStyle={{ fontSize: 15, color: C.axis }} />
               <Bar dataKey="started" name="Boshlagan" fill={C.ramp[1]} radius={[4, 4, 0, 0]} />
               <Bar dataKey="video" name="Videoni tugatgan" fill={C.ramp[2]} radius={[4, 4, 0, 0]} />
               <Bar dataKey="passed" name="Testdan o‘tgan" fill={C.ramp[4]} radius={[4, 4, 0, 0]} />
@@ -186,7 +186,7 @@ export function AdminDashboard({ data }: { data: AdminStats }) {
               <XAxis dataKey="day" tickFormatter={shortDay} interval="preserveStartEnd" minTickGap={24} {...axisProps} />
               <YAxis allowDecimals={false} {...axisProps} />
               <Tooltip content={<Tip fmtLabel={shortDay} />} cursor={{ fill: 'rgb(255 255 255 / 4%)' }} />
-              <Legend iconType="circle" iconSize={8} itemSorter={null} wrapperStyle={{ fontSize: 13, color: C.axis }} />
+              <Legend iconType="circle" iconSize={8} itemSorter={null} wrapperStyle={{ fontSize: 15, color: C.axis }} />
               <Bar dataKey="passed" name="O‘tgan" stackId="t" fill={C.good} />
               <Bar dataKey="failed" name="O‘tmagan" stackId="t" fill={C.bad} radius={[4, 4, 0, 0]} />
             </BarChart>
