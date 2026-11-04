@@ -565,12 +565,12 @@ body.locked .app, body.locked .modal { display: none; }
 .adm-attempt .adm-muted { margin-left: auto; }
 .adm-attempt-wrong { color: #ff8fa3; font-size: 15px; }
 .adm-attempt-modal { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; padding: clamp(10px, 3vw, 40px); background: rgb(2 4 9 / 80%); backdrop-filter: blur(6px); animation: fade .2s; }
-.adm-attempt-box { width: min(860px, 100%); max-height: 100%; display: flex; flex-direction: column; gap: 14px; padding: 20px 22px; border-radius: 20px; background: #0b1220; border: 1px solid var(--line); font-size: 18px; }
+.adm-attempt-box { width: min(860px, 100%); max-height: calc(100dvh - 2 * clamp(10px, 3vw, 40px)); min-height: 0; display: flex; flex-direction: column; gap: 14px; padding: 20px 22px; border-radius: 20px; background: #0b1220; border: 1px solid var(--line); font-size: 18px; }
 .adm-attempt-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
 .adm-attempt-head h2 { margin: 0 0 4px; font-size: 22px; }
 .adm-attempt-head p { margin: 0; }
 .adm-attempt-box > .adm-access { align-self: flex-start; }
-.adm-attempt-list { display: grid; gap: 12px; overflow-y: auto; padding-right: 4px; }
+.adm-attempt-list { flex: 1 1 auto; min-height: 0; display: grid; align-content: start; gap: 12px; overflow-y: auto; overscroll-behavior: contain; padding-right: 4px; }
 .adm-q.is-wrong { border-color: rgb(255 92 122 / 45%); }
 .adm-opts li.picked-wrong { outline: 2px solid rgb(255 92 122 / 70%); background: rgb(255 92 122 / 14%); }
 .adm-opts li.right { background: rgb(61 255 160 / 12%); }
