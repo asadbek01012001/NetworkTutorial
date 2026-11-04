@@ -35,6 +35,7 @@ func (s *Server) adminRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("POST /api/admin/lessons/{id}/access", s.handleAdminLessonAccess)
 	mux.HandleFunc("GET /api/admin/questions", s.handleAdminQuestions)
 	mux.HandleFunc("GET /api/admin/log", s.handleAdminLog)
+	mux.HandleFunc("GET /api/admin/attempts/{kind}/{id}", s.handleAdminAttempt)
 }
 
 // admin returns the logged-in staff member (teacher or higher) or answers
@@ -171,13 +172,14 @@ func (s *Server) handleAdminUser(w http.ResponseWriter, r *http.Request) {
 	}
 	attemptsBy := map[string]int{}
 	type attempt struct {
+		ID    int64     `json:"id"`
 		Index int       `json:"index"`
 		Score int       `json:"score"`
 		Total int       `json:"total"`
 		At    time.Time `json:"at"`
 	}
 	tests := []attempt{}
-	rows, err := s.db.Query(ctx, `SELECT lesson_id, score, total, created_at FROM test_attempts WHERE user_id = $1 ORDER BY id DESC`, id)
+	rows, err := s.db.Query(ctx, `SELECT id, lesson_id, score, total, created_at FROM test_attempts WHERE user_id = $1 ORDER BY id DESC`, id)
 	if err != nil {
 		s.internal(w, err)
 		return
@@ -185,7 +187,7 @@ func (s *Server) handleAdminUser(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var lid string
 		var a attempt
-		if err := rows.Scan(&lid, &a.Score, &a.Total, &a.At); err != nil {
+		if err := rows.Scan(&a.ID, &lid, &a.Score, &a.Total, &a.At); err != nil {
 			rows.Close()
 			s.internal(w, err)
 			return
@@ -226,14 +228,14 @@ func (s *Server) handleAdminUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	exams := []attempt{}
-	rows, err = s.db.Query(ctx, `SELECT score, total, checked_at FROM exam_attempts WHERE user_id = $1 AND score IS NOT NULL ORDER BY id DESC`, id)
+	rows, err = s.db.Query(ctx, `SELECT id, score, total, checked_at FROM exam_attempts WHERE user_id = $1 AND score IS NOT NULL ORDER BY id DESC`, id)
 	if err != nil {
 		s.internal(w, err)
 		return
 	}
 	for rows.Next() {
 		var a attempt
-		if err := rows.Scan(&a.Score, &a.Total, &a.At); err != nil {
+		if err := rows.Scan(&a.ID, &a.Score, &a.Total, &a.At); err != nil {
 			rows.Close()
 			s.internal(w, err)
 			return

@@ -202,6 +202,7 @@ export interface AdminUser {
   email: string
 }
 export interface AdminAttempt {
+  id: number
   index: number
   score: number
   total: number
@@ -256,6 +257,17 @@ export interface AdminQuestion {
   wrong: number
   picks: number[]
 }
+export type AttemptKind = 'test' | 'exam'
+export interface AdminAttemptDetail {
+  kind: AttemptKind
+  index: number
+  title: string
+  score: number
+  total: number
+  at: string
+  changed: boolean // the lesson test was edited after this attempt
+  questions: { q: string; options: string[]; answer: number; picked: number; lesson: number }[]
+}
 export interface AdminLogEntry {
   admin: string
   action: 'password' | 'block' | 'unblock' | 'reset' | 'delete' | 'access_open' | 'access_queue' | 'access_hidden' | 'create' | 'role'
@@ -281,6 +293,7 @@ export const admin = {
   setAccess: (id: string, userId: number, mode: AccessMode) => call<{ ok: boolean }>('POST', `api/admin/lessons/${id}/access`, { userId, mode }),
   questions: () => call<{ lessons: { index: number; title: string; questions: AdminQuestion[] }[] }>('GET', 'api/admin/questions'),
   log: () => call<{ log: AdminLogEntry[] }>('GET', 'api/admin/log'),
+  attempt: (kind: AttemptKind, id: number) => call<AdminAttemptDetail>('GET', `api/admin/attempts/${kind}/${id}`),
 }
 
 export const api = {

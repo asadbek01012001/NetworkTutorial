@@ -11,6 +11,7 @@ import {
   type AdminStats,
   type AdminUser,
   type AdminUserDetail,
+  type AttemptKind,
   type PracticeKind,
   type Role,
 } from '../lib/api'
@@ -196,6 +197,7 @@ const ICON = {
   unlock: 'M5 11h14v10H5zM8 11V7a4 4 0 0 1 7.6-1.7',
   reset: 'M3 12a9 9 0 1 0 2.6-6.4M3 4v5h5',
   trash: 'M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3',
+  close: 'M6 6l12 12M18 6L6 18',
 }
 function IconBtn({ icon, label, className = '', ...rest }: { icon: keyof typeof ICON; label: string } & ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
@@ -590,6 +592,7 @@ function UserView({ id, role, onBack }: { id: number; role: Role; onBack: () => 
   const [busy, setBusy] = useState(false)
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null)
   const [newPw, setNewPw] = useState<string | null>(null)
+  const [open, setOpen] = useState<{ kind: AttemptKind; id: number } | null>(null)
 
   if (error) return <LoadError />
   if (!data) return <Loading />
@@ -778,13 +781,16 @@ function UserView({ id, role, onBack }: { id: number; role: Role; onBack: () => 
             <p className="adm-muted">Hali test topshirmagan</p>
           ) : (
             <ul className="adm-list">
-              {data.tests.map((t, i) => (
-                <li key={i}>
-                  <span>{t.index + 1}-dars</span>
-                  <b className={t.score >= 7 ? 'adm-good' : 'adm-warn'}>
-                    {t.score} / {t.total}
-                  </b>
-                  <span className="adm-muted">{fmtDate(t.at)}</span>
+              {data.tests.map((t) => (
+                <li key={t.id}>
+                  <button type="button" className="adm-attempt" onClick={() => setOpen({ kind: 'test', id: t.id })} title="Javoblarini ko‘rish">
+                    <span>{t.index + 1}-dars</span>
+                    <b className={t.score >= 7 ? 'adm-good' : 'adm-warn'}>
+                      {t.score} / {t.total}
+                    </b>
+                    {t.score < t.total && <span className="adm-attempt-wrong">{t.total - t.score} ta xato</span>}
+                    <span className="adm-muted">{fmtDate(t.at)}</span>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -796,13 +802,16 @@ function UserView({ id, role, onBack }: { id: number; role: Role; onBack: () => 
             <p className="adm-muted">Topshirmagan</p>
           ) : (
             <ul className="adm-list">
-              {data.exams.map((t, i) => (
-                <li key={i}>
-                  <b>
-                    {t.score} / {t.total}
-                  </b>
-                  <span>{pct(t.score, t.total)}%</span>
-                  <span className="adm-muted">{fmtDate(t.at)}</span>
+              {data.exams.map((t) => (
+                <li key={t.id}>
+                  <button type="button" className="adm-attempt" onClick={() => setOpen({ kind: 'exam', id: t.id })} title="Javoblarini ko‘rish">
+                    <b>
+                      {t.score} / {t.total}
+                    </b>
+                    <span>{pct(t.score, t.total)}%</span>
+                    {t.score < t.total && <span className="adm-attempt-wrong">{t.total - t.score} ta xato</span>}
+                    <span className="adm-muted">{fmtDate(t.at)}</span>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -836,6 +845,91 @@ function UserView({ id, role, onBack }: { id: number; role: Role; onBack: () => 
             </ul>
           )}
         </section>
+      </div>
+      {open && <AttemptView kind={open.kind} id={open.id} username={u.username} onClose={() => setOpen(null)} />}
+    </div>
+  )
+}
+
+// One submitted test, question by question: the user's pick against the right answer.
+function AttemptView({ kind, id, username, onClose }: { kind: AttemptKind; id: number; username: string; onClose: () => void }) {
+  const { data, error } = useLoad(() => admin.attempt(kind, id), [kind, id])
+  const [onlyWrong, setOnlyWrong] = useState(true)
+
+  useEffect(() => {
+    // Capture phase so Escape closes only this window, not the whole panel.
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      e.stopPropagation()
+      onClose()
+    }
+    window.addEventListener('keydown', onKey, true)
+    return () => window.removeEventListener('keydown', onKey, true)
+  }, [onClose])
+
+  const all = data?.questions.map((q, i) => ({ ...q, n: i + 1, ok: q.picked === q.answer })) ?? []
+  const wrong = all.filter((q) => !q.ok).length
+  const shown = onlyWrong ? all.filter((q) => !q.ok) : all
+
+  return (
+    <div className="adm-attempt-modal" role="dialog" aria-modal="true" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="adm-attempt-box">
+        <div className="adm-attempt-head">
+          <div>
+            <h2>
+              {username} · {data ? (data.kind === 'exam' ? data.title : `${data.index + 1}-dars: ${data.title}`) : '…'}
+            </h2>
+            {data && (
+              <p className="adm-muted">
+                Natija: <b className={data.kind === 'exam' || data.score >= 7 ? 'adm-good' : 'adm-warn'}>{data.score} / {data.total}</b> · {data.total - data.score} ta xato ·{' '}
+                {fmtDate(data.at)}
+              </p>
+            )}
+          </div>
+          <IconBtn icon="close" label="Yopish" onClick={onClose} />
+        </div>
+        {error && <LoadError />}
+        {!data && !error && <Loading />}
+        {data?.changed && <p className="adm-muted">Bu test keyin o‘zgartirilgan, shuning uchun javoblarni ko‘rsatib bo‘lmaydi.</p>}
+        {data && !data.changed && (
+          <>
+            <span className="adm-access" role="radiogroup" aria-label="Savollar">
+              <button role="radio" aria-checked={onlyWrong} className={`queue${onlyWrong ? ' active' : ''}`} onClick={() => setOnlyWrong(true)}>
+                Faqat xatolar ({wrong})
+              </button>
+              <button role="radio" aria-checked={!onlyWrong} className={`queue${!onlyWrong ? ' active' : ''}`} onClick={() => setOnlyWrong(false)}>
+                Hammasi ({all.length})
+              </button>
+            </span>
+            <div className="adm-attempt-list">
+              {shown.length === 0 && <p className="adm-good">Hamma savolga to‘g‘ri javob bergan</p>}
+              {shown.map((q) => (
+                <div key={q.n} className={`adm-q ${q.ok ? 'is-ok' : 'is-wrong'}`}>
+                  <div className="adm-q-head">
+                    <span className="adm-q-n">
+                      {q.n}-savol{q.lesson > 0 && <span className="adm-muted"> · {q.lesson}-dars mavzusi</span>}
+                    </span>
+                    {q.ok ? <span className="adm-good">✓ To‘g‘ri</span> : <span className="adm-warn">✗ Xato</span>}
+                  </div>
+                  <p className="adm-q-text">{q.q}</p>
+                  <ul className="adm-opts">
+                    {q.options.map((o, i) => (
+                      <li key={i} className={i === q.answer ? 'right' : i === q.picked ? 'picked-wrong' : ''}>
+                        <span className="adm-opt-text">
+                          {i === q.answer ? '✓ ' : i === q.picked ? '✗ ' : ''}
+                          {o}
+                        </span>
+                        {i === q.picked && <span className="adm-opt-tag">Uning javobi</span>}
+                        {i === q.answer && i !== q.picked && <span className="adm-opt-tag">To‘g‘ri javob</span>}
+                      </li>
+                    ))}
+                  </ul>
+                  {q.picked < 0 && <p className="adm-muted">Javob belgilamagan</p>}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   )
