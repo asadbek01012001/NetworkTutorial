@@ -171,7 +171,7 @@ func openDB(ctx context.Context, url string) (*pgxpool.Pool, error) {
 		pool.Close()
 		return nil, err
 	}
-	if _, err := pool.Exec(ctx, schema); err != nil {
+	if _, err := pool.Exec(ctx, schema+azamatSchema); err != nil {
 		pool.Close()
 		return nil, err
 	}

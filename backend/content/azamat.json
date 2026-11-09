@@ -1,0 +1,67 @@
+[
+ {
+  "id": "azamat01",
+  "title": "Kirish",
+  "duration": 5174.3
+ },
+ {
+  "id": "azamat02",
+  "title": "Tarmoq kirish. Tarmoq komponentlari",
+  "duration": 7920.0
+ },
+ {
+  "id": "azamat03",
+  "title": "Qurilmalar: Switch va Router, IOS, xotira turlari",
+  "duration": 8661.1
+ },
+ {
+  "id": "azamat04",
+  "title": "OSI modeli. Physical layer",
+  "duration": 7570.5
+ },
+ {
+  "id": "azamat05",
+  "title": "Kabellar: Twisted Pair, T568A/T568B",
+  "duration": 5976.6
+ },
+ {
+  "id": "azamat06",
+  "title": "Optik tola",
+  "duration": 6168.7
+ },
+ {
+  "id": "azamat07",
+  "title": "OSI modeli. Data-link layer, MAC address",
+  "duration": 8667.7
+ },
+ {
+  "id": "azamat09",
+  "title": "IPv4 address (1-qism): IPv4/IPv6, IANA, Private va Public IP",
+  "duration": 3554.3
+ },
+ {
+  "id": "azamat08",
+  "title": "IPv4 address (2-qism): sinfli IPv4, Multicast, Broadcast, maxsus manzillar",
+  "duration": 3901.2
+ },
+ {
+  "id": "azamat10",
+  "title": "Sinfsiz IPv4 va Subnetting",
+  "duration": 7306.2
+ },
+ {
+  "id": "azamat13",
+  "title": "IPv4 oxiri: Subnetting misollari, NAT",
+  "duration": 6587.7
+ },
+ {
+  "id": "azamat14",
+  "title": "VLSM",
+  "duration": 7927.5
+ },
+ {
+  "id": "azamat15",
+  "title": "OSI modeli. Transport layer: TCP va UDP",
+  "duration": 7143.5
+ }
+]

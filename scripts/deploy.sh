@@ -4,6 +4,7 @@
 #
 #   bash scripts/deploy.sh            # frontend + backend + content
 #   bash scripts/deploy.sh --media    # also compress/encode/upload new videos
+#   bash scripts/deploy.sh --azamat   # also upload media-azamat/ (scripts/azamat-hls.sh)
 set -euo pipefail
 
 SERVER=root@185.191.141.166
@@ -37,9 +38,14 @@ if [[ "${1:-}" == "--media" ]]; then
   done
 fi
 
+if [[ "${1:-}" == "--azamat" ]]; then
+  echo "== Azamat Qodirov lectures: media-azamat -> $APP/media/azamat"
+  tar -C media-azamat -cf - . | ssh "$SERVER" "mkdir -p $APP/media/azamat && tar -C $APP/media/azamat -xf -"
+fi
+
 echo "== upload"
 scp -q backend/networktutorial-linux "$SERVER:$APP/backend/networktutorial.new"
-scp -q -r backend/content/lessons.json backend/content/exam.json backend/content/tests backend/content/timelines "$SERVER:$APP/backend/content/"
+scp -q -r backend/content/lessons.json backend/content/azamat.json backend/content/azamat-notes.json backend/content/exam.json backend/content/tests backend/content/timelines "$SERVER:$APP/backend/content/"
 ssh "$SERVER" "rm -rf $APP/dist.new && mkdir -p $APP/dist.new"
 scp -q -r dist/* "$SERVER:$APP/dist.new/"
 

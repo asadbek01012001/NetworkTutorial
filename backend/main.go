@@ -43,7 +43,12 @@ func main() {
 		log.Fatalf("content: %v", err)
 	}
 
-	s := &Server{cfg: cfg, db: db, course: course, ids: &identity{db: db, trustProxy: cfg.TrustProxy, limiter: newLoginLimiter()}}
+	azamat, err := loadAzamat(cfg.ContentDir)
+	if err != nil {
+		log.Fatalf("content (azamat.json): %v", err)
+	}
+
+	s := &Server{cfg: cfg, db: db, course: course, azamat: azamat, ids: &identity{db: db, trustProxy: cfg.TrustProxy, limiter: newLoginLimiter()}}
 	srv := &http.Server{
 		Addr:              cfg.Addr,
 		Handler:           s.routes(),

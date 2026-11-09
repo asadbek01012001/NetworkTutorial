@@ -103,6 +103,19 @@ Qo'lda qo'shish:
 5. Yangi dars bo'lsa: `lessons.json` ga qo'shing va `backend/content/tests/<id>.json` ga 10 ta savol yozing.
 6. `npm run build`, keyin backend'ni qayta ishga tushiring.
 
+## Azamat Qodirov darslari
+
+Bosh sahifada "Darslar" ostidagi alohida bo'lim: ustoz Azamat Qodirovning jonli dars yozuvlari (har biri 1–2.5 soat, bitta tilda). Testi va qulfi yo'q, kirgan har bir foydalanuvchiga ochiq.
+- Ro'yxat: `backend/content/azamat.json` (`id`, `number`, `title`, `duration`), tartibi = saytdagi tartib. `azamat-hls.sh` bu faylni qayta yozadi: undan keyin `number`/`title` larni qaytadan qo'ying. Muqova: `public/posters/<id>.jpg`.
+- Videolar uzun bo'lgani uchun to'liq yuklanmaydi: AES-128 bilan shifrlangan HLS (10 soniyalik bo'laklar) bo'lib oqim tarzida ochiladi (`hls.js`, Safari'da o'zi). Serverda: `/opt/networktutorial/media/azamat/<id>/` (`index.m3u8`, `key`, `seg*.ts`); hammasi faqat kirgan foydalanuvchiga beriladi (`GET /hls/azamat/{id}/{file}`).
+- O'z pleyeri (brauzer kontrollari o'chiq): orqaga istalgancha, oldinga faqat eng uzoq ko'rilgan joygacha (`furthest`, serverda saqlanadi) o'tkaziladi; tezlik 0.5x–2x; katta ekran yo'q. Qayerda to'xtagani saqlanadi (`azamat_progress`), 90% ko'rilsa "Ko'rildi" va butun video ochiladi. API: `GET /api/azamat`, `POST /api/azamat/{id}/progress`.
+- Kod: `backend/azamat.go`, `src/components/AzamatSection.tsx`, `src/components/AzamatPlayer.tsx`.
+- Konspekt: yuqori menyudagi "Konspekt" tugmasi (`src/components/Notes.tsx`). Ma'lumot `backend/content/azamat-notes.json` da (har dars uchun tayyor HTML), `GET /api/azamat/notes` orqali faqat kirgan foydalanuvchiga beriladi; faylni almashtirish uchun restart shart emas.
+- Yangi dars qo'shish: videolarni siqing (720p gacha, H.264 + AAC mp4), keyin hammasini tartib bilan bering:
+
+      bash scripts/azamat-hls.sh 1-dars.mp4 2-dars.mp4 ...   # media-azamat/, muqovalar, azamat.json
+      bash scripts/deploy.sh --azamat
+
 ## Himoya (nima qiladi va nimani qila olmaydi)
 
 - **Yuklab olish:** serverda video `.dat` ko'rinishida shifrlangan turadi. U faqat sayt ichida ochiladi, to'g'ridan-to'g'ri yuklab olingan fayl pleyerda ishlamaydi. Yuklash tugmasi, PiP va o'ng tugma menyusi o'chirilgan.

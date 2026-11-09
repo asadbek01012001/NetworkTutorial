@@ -41,7 +41,7 @@ function savedVolume(): number {
 }
 
 // A moving mark over the video so recordings are traceable to this site.
-function Watermark() {
+export function Watermark() {
   const { t } = useI18n()
   const [pos, setPos] = useState({ x: 8, y: 10 })
   useEffect(() => {
@@ -62,7 +62,7 @@ interface VolumeProps {
   onMute: () => void
 }
 
-function VolumeControl({ volume, muted, onVolume, onMute }: VolumeProps) {
+export function VolumeControl({ volume, muted, onVolume, onMute }: VolumeProps) {
   const { t } = useI18n()
   const silent = muted || volume === 0
   return (

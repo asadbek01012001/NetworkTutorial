@@ -10,6 +10,7 @@ import { Dashboard } from './pages/Dashboard'
 // The network lab is a large module; load it only when someone opens it.
 const Lab = lazy(() => import('./lab/Lab.tsx').then((m) => ({ default: m.Lab })))
 const Glossary = lazy(() => import('./components/Glossary'))
+const Notes = lazy(() => import('./components/Notes'))
 const AdminPanel = lazy(() => import('./components/AdminPanel').then((m) => ({ default: m.AdminPanel })))
 
 export default function App() {
@@ -24,6 +25,9 @@ export default function App() {
   const [glossOpen, setGlossOpen] = useState(false)
   const openGlossary = useCallback(() => setGlossOpen(true), [])
   const closeGlossary = useCallback(() => setGlossOpen(false), [])
+  const [notesOpen, setNotesOpen] = useState(false)
+  const openNotes = useCallback(() => setNotesOpen(true), [])
+  const closeNotes = useCallback(() => setNotesOpen(false), [])
 
   // The admin panel is opened by the address (#admin/...), so reload and Back work.
   const [adminOpen, setAdminOpen] = useState(() => window.location.hash.startsWith('#admin'))
@@ -47,7 +51,7 @@ export default function App() {
   if (needAuth) return <AuthScreen onDone={() => window.location.reload()} />
 
   return (
-    <Layout username={course?.username} onOpenLab={course ? openLab : undefined} onOpenPractice={course ? openPractice : undefined} onOpenGlossary={course ? openGlossary : undefined} onOpenExam={course ? openExam : undefined} onOpenAdmin={course?.staff ? openAdmin : undefined}>
+    <Layout username={course?.username} onOpenLab={course ? openLab : undefined} onOpenPractice={course ? openPractice : undefined} onOpenGlossary={course ? openGlossary : undefined} onOpenNotes={course ? openNotes : undefined} onOpenExam={course ? openExam : undefined} onOpenAdmin={course?.staff ? openAdmin : undefined}>
       {course ? (
         <Dashboard course={course} refresh={refresh} />
       ) : (
@@ -65,6 +69,11 @@ export default function App() {
       {glossOpen && (
         <Suspense fallback={null}>
           <Glossary onClose={closeGlossary} />
+        </Suspense>
+      )}
+      {notesOpen && course && (
+        <Suspense fallback={null}>
+          <Notes onClose={closeNotes} />
         </Suspense>
       )}
       {adminOpen && course?.staff && (

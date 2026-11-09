@@ -91,6 +91,30 @@ export interface HistoryItem {
   at: string
 }
 
+/** A recorded lecture in the "Azamat Qodirov darslari" section. */
+export interface AzamatVideo {
+  id: string
+  number: number
+  /** Topic of the lecture (may be empty). */
+  title: string
+  duration: number
+  poster: string
+  /** Where the viewer stopped, in seconds. */
+  position: number
+  /** How far the viewer has watched; seeking past it is not allowed. */
+  furthest: number
+  done: boolean
+}
+
+/** Study notes for one lecture; `html` is made by us from the board recordings. */
+export interface AzamatNote {
+  id: string
+  number: number
+  title: string
+  meta: string
+  html: string
+}
+
 /** The server needs a login (no valid session token). */
 export class AuthError extends Error {}
 
@@ -312,6 +336,10 @@ export const api = {
     call<{ username: string }>('POST', 'api/auth/register', { credential, username, password }),
   authConfig: () => call<{ googleClientId: string }>('GET', 'api/auth/config'),
   logout: () => call<{ ok: boolean }>('POST', 'api/auth/logout'),
+  azamat: () => call<{ videos: AzamatVideo[] }>('GET', 'api/azamat'),
+  azamatNotes: () => call<AzamatNote[]>('GET', 'api/azamat/notes'),
+  azamatProgress: (id: string, position: number, furthest: number) =>
+    call('POST', `api/azamat/${id}/progress`, { position, furthest }),
   practiceStats: () => call<{ stats: Record<PracticeKind, PracticeStat> }>('GET', 'api/practice'),
   practiceCurrent: (kind: PracticeKind) => call<PracticeTask>('GET', `api/practice/current/${kind}`),
   practiceNew: (kind: PracticeKind) => call<PracticeTask>('POST', `api/practice/new/${kind}`),

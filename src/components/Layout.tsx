@@ -8,12 +8,13 @@ interface Props {
   onOpenLab?: () => void
   onOpenPractice?: () => void
   onOpenGlossary?: () => void
+  onOpenNotes?: () => void
   onOpenExam?: () => void
   onOpenAdmin?: () => void
   children: ReactNode
 }
 
-export function Layout({ username, onOpenLab, onOpenPractice, onOpenGlossary, onOpenExam, onOpenAdmin, children }: Props) {
+export function Layout({ username, onOpenLab, onOpenPractice, onOpenGlossary, onOpenNotes, onOpenExam, onOpenAdmin, children }: Props) {
   const { t, lang, setLang } = useI18n()
   const [profile, setProfile] = useState(false)
   const closeProfile = useCallback(() => setProfile(false), [])
@@ -67,6 +68,15 @@ export function Layout({ username, onOpenLab, onOpenPractice, onOpenGlossary, on
                 <path d="M5 17a3 3 0 0 1 3-3h11M9 8h6" />
               </svg>
               <span className="nav-lbl">{t.glossary}</span>
+            </button>
+          )}
+          {onOpenNotes && (
+            <button type="button" className="lab-btn" onClick={onOpenNotes} title={t.notes} aria-label={t.notes}>
+              <svg viewBox="0 0 24 24" aria-hidden>
+                <path d="M6 3h9l4 4v14H6z" />
+                <path d="M14 3v5h5M9 12h7M9 16h7M9 8h2" />
+              </svg>
+              <span className="nav-lbl">{t.notes}</span>
             </button>
           )}
           {onOpenAdmin && (

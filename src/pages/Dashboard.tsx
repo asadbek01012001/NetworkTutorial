@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { AzamatSection } from '../components/AzamatSection'
 import { GlobeBackground } from '../components/GlobeBackground'
 import { LessonCard } from '../components/LessonCard'
 import { TopologyMap } from '../components/TopologyMap'
@@ -70,6 +71,7 @@ export function Dashboard({ course, refresh }: Props) {
         </div>
       </section>
 
+      <AzamatSection />
 
       {opened && (
         <VideoModal

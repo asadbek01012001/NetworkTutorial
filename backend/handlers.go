@@ -16,6 +16,7 @@ type Server struct {
 	db     dbtx
 	course *Course
 	ids    *identity
+	azamat []AzamatVideo // "Azamat Qodirov darslari" section (azamat.go)
 }
 
 func writeJSON(w http.ResponseWriter, status int, v any) {
@@ -58,6 +59,10 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /api/practice/current/{kind}", s.handlePracticeCurrent)
 	mux.HandleFunc("POST /api/practice/new/{kind}", s.handlePracticeNew)
 	mux.HandleFunc("POST /api/practice/check/{id}", s.handlePracticeCheck)
+	mux.HandleFunc("GET /api/azamat", s.handleAzamatList)
+	mux.HandleFunc("GET /api/azamat/notes", s.handleAzamatNotes)
+	mux.HandleFunc("POST /api/azamat/{id}/progress", s.handleAzamatProgress)
+	mux.HandleFunc("GET /hls/azamat/{id}/{file}", s.handleAzamatMedia)
 	s.adminRoutes(mux)
 	mux.HandleFunc("GET /media/{file}", s.handleMedia)
 	mux.Handle("/", s.static())
